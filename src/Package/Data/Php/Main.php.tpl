@@ -76,22 +76,22 @@ class {{$class}} {
 {{/if}}
 {{if($variable.private)}}
 
-{{$variable.private = Package.Raxon.Org.Account:Php:php.variable.define($variable.private, 'private')}}
+{{$variable.private = Package.Raxon.Account:Php:php.variable.define($variable.private, 'private')}}
 {{implode("\n", $variable.private)}}
 {{/if}}
 {{if($variable.protected)}}
 
-{{$variable.protected = Package.Raxon.Org.Account:Php:php.variable.define($variable.protected, 'protected')}}
+{{$variable.protected = Package.Raxon.Account:Php:php.variable.define($variable.protected, 'protected')}}
 {{implode("\n", $variable.protected)}}
 {{/if}}
 {{if($variable.public)}}
 
-{{$variable.public = Package.Raxon.Org.Account:Php:php.variable.define($variable.public, 'public')}}
+{{$variable.public = Package.Raxon.Account:Php:php.variable.define($variable.public, 'public')}}
 {{implode("\n", $variable.public)}}
 {{/if}}
 {{if($function)}}
 
-{{$function = Package.Raxon.Org.Account:Php:php.function.define($function)}}
+{{$function = Package.Raxon.Account:Php:php.function.define($function)}}
 {{implode("\n", $function)}}
 {{/if}}
 

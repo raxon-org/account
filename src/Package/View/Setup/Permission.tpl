@@ -1,2 +1,2 @@
 {{R3M}}
-{{Package.Raxon.Org.Account:Main:setup.permission(flags(), options())}}
+{{Package.Raxon.Account:Main:setup.permission(flags(), options())}}

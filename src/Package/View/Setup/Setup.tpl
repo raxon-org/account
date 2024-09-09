@@ -1,7 +1,7 @@
 {{R3M}}
-{{$register = Package.Raxon.Org.Account:Init:register()}}
+{{$register = Package.Raxon.Account:Init:register()}}
 {{if(!is.empty($register))}}
-{{Package.Raxon.Org.Account:Import:role.system()}}
+{{Package.Raxon.Account:Import:role.system()}}
 {{$options = options()}}
 /**
  // setup roles*
