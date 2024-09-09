@@ -45,7 +45,7 @@
             },
             "output": {
                 "filter": [
-                    "Package:Raxon:Org:Account:Output:Filter:Role:permission"
+                    "Package:Raxon:Account:Output:Filter:Role:permission"
                 ]
             },
             "where": "",
