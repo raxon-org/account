@@ -4,7 +4,7 @@
       {
         "#class": "System.Route",
         "name": "raxon-org-cli-account",
-        "path": "raxon_org\/account",
+        "path": "raxon\/account",
         "controller": "Package.Raxon.Org.Account.Controller.Cli.run",
         "request": {
           "language": "en"
