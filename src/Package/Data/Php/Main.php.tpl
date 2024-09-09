@@ -11,7 +11,7 @@
 {{$variable.protected = $options.variable.protected|default:[]}}
 {{$variable.public = $options.variable.public|default:[]}}
 {{$traits = $options.trait_use|default:[]}}
-{{$orgction = $options.orgction|default:[]}}
+{{$function = $options.function|default:[]}}
 {{$user.extends = $options.user.extends}}
 {{$user.implements = $options.user.implements|default:[]}}
 {{$user.variable.private = $options.user.variable.private|default:[]}}
@@ -19,7 +19,7 @@
 {{$user.variable.public = $options.user.variable.public|default:[]}}
 {{$user.traits = $options.user.trait_use|default:[]}}
 {{$user.use = $options.user.use|default:[]}}
-{{$user.orgction = $options.user.orgction|default:[]}}
+{{$user.function = $options.user.function|default:[]}}
 {{$user.constant = $options.user.constant|default:[]}}
 {{$variable.private = array.merge($variable.private, $user.variable.private)}}
 {{$variable.protected = array.merge($variable.protected, $user.variable.protected)}}
@@ -28,7 +28,7 @@
 {{if($user.extends)}}
 {{$extends = $user.extends}}
 {{/if}}
-{{$orgction = array.merge($orgction, $user.orgction)}}
+{{$function = array.merge($function, $user.function)}}
 {{$constant = object.merge($constant, $user.constant)}}
 {{$traits = array.merge($traits, $user.traits)}}
 {{$use = array.merge($use, $user.use)}}
@@ -89,10 +89,10 @@ class {{$class}} {
 {{$variable.public = Package.Raxon.Org.Account:Php:php.variable.define($variable.public, 'public')}}
 {{implode("\n", $variable.public)}}
 {{/if}}
-{{if($orgction)}}
+{{if($function)}}
 
-{{$orgction = Package.Raxon.Org.Account:Php:php.orgction.define($orgction)}}
-{{implode("\n", $orgction)}}
+{{$function = Package.Raxon.Org.Account:Php:php.function.define($function)}}
+{{implode("\n", $function)}}
 {{/if}}
 
 {{if($class || $trait)}}

@@ -2,7 +2,7 @@
   "User" : {
     "options": "{{options()}}",
     "class": "{{$this.options.class}}",
-    "orgction": [
+    "function": [
         {
             "name": "command",
             "type" : "public",

@@ -4,13 +4,13 @@
     "class": "{{$this.options.class}}",
     "trait": "{{$this.options.trait}}",
     "use" : [
-      "Raxon\\org\\App",
-      "Raxon\\org\\Module\\Response",
-      "Raxon\\org\\Module\\Controller",
+      "Raxon\\Org\\App",
+      "Raxon\\Org\\Module\\Response",
+      "Raxon\\Org\\Module\\Controller",
       "Exception",
-      "Raxon\\org\\Exception\\LocateException",
-      "Raxon\\org\\Exception\\UrlEmptyException",
-      "Raxon\\org\\Exception\\UrlNotExistException"
+      "Raxon\\Org\\Exception\\LocateException",
+      "Raxon\\Org\\Exception\\UrlEmptyException",
+      "Raxon\\Org\\Exception\\UrlNotExistException"
     ],
     "extends" : "Controller",
     "implements": [
@@ -114,10 +114,10 @@
       "EXCEPTION_COMMAND" : "'invalid command (' . User::EXCEPTION_COMMAND_PARAMETER . ')' . PHP_EOL"
     },
     "trait_use": [
-      "Package\\Raxon\\org\\Account\\Trait\\User",
-      "Package\\Raxon\\org\\Account\\Trait\\App"
+      "Package\\Raxon\\Org\\Account\\Trait\\User",
+      "Package\\Raxon\\Org\\Account\\Trait\\App"
     ],
-    "orgction": [
+    "function": [
         {
           "name": "__construct",
           "type" : "public",
@@ -246,7 +246,7 @@
       "protected": [],
       "public": [],
       "constant": {},
-      "orgction": [
+      "function": [
         {
           "name": "command",
           "type" : "public",
