@@ -1,0 +1,17 @@
+{
+    "name" : "raxon/account",
+    "description" : "raxon/account see https://raxon.org for detailed usage",
+    "type" : "package",
+    "keywords" : ["node", "raxon", "org", "library", "framework", "account", "raxon.org"],
+    "homepage": "https://raxon.org",
+    "require" : {
+        "raxon_org/framework": "*",
+        "lcobucci/jwt": "*",
+        "lcobucci/clock": "*"
+    },
+    "license" : "MIT",
+    "authors" : [{
+        "name" : "Remco van der Velde",
+        "email" : "development@universeorange.com"
+    }]
+}

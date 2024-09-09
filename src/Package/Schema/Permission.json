@@ -1,0 +1,53 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema": [
+        {
+          "table": "permission",
+          "entity": "Permission",
+          "column": [
+            {
+              "name": "id",
+              "type": "bigint",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "uuid",
+              "type": "string",
+              "options": {
+                "unique": true,
+                "length": 36
+              }
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "options": {
+                "unique": true
+              }
+            },
+            {
+              "name": "role",
+              "type": "many-to-many",
+              "options": {
+                "target": "Role",
+                "map": "permissions",
+                "cascade": [
+                ]
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+          ]
+        }
+      ]
+    }
+  }
+}

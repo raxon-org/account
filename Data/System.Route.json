@@ -1,0 +1,20 @@
+{
+  "System": {
+    "Route": [
+      {
+        "#class": "System.Route",
+        "name": "raxon-org-cli-account",
+        "path": "raxon_org\/account",
+        "controller": "Package.Raxon.Org.Account.Controller.Cli.run",
+        "request": {
+          "language": "en"
+        },
+        "method": [
+          "CLI"
+        ],
+        "priority": 2001
+      }
+    ]
+
+  }
+}

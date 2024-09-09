@@ -1,0 +1,149 @@
+{
+    "Account": {
+        "Profile": {
+            "count": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "list": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "page": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "read": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "record": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "create": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "create_many": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "put_many": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            },
+            "patch_many": {
+                "output": [
+                    {
+                        "role": "ROLE_SYSTEM",
+                        "property": [
+                            "uuid",
+                            "#class",
+                            "nickname",
+                            "user"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

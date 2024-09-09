@@ -1,0 +1,288 @@
+{
+  "User" : {
+    "options": "{{options()}}",
+    "class": "{{$this.options.class}}",
+    "trait": "{{$this.options.trait}}",
+    "use" : [
+      "Raxon\\org\\App",
+      "Raxon\\org\\Module\\Response",
+      "Raxon\\org\\Module\\Controller",
+      "Exception",
+      "Raxon\\org\\Exception\\LocateException",
+      "Raxon\\org\\Exception\\UrlEmptyException",
+      "Raxon\\org\\Exception\\UrlNotExistException"
+    ],
+    "extends" : "Controller",
+    "implements": [
+        "Response",
+        "Controller"
+    ],
+    "private": [
+      {
+        "name": "object",
+        "type" : "App",
+        "doc_comment": [
+          "this is a test"
+        ],
+        "static": true,
+        "value": false
+      },
+      {
+        "name": "array",
+        "type" : "array",
+        "doc_comment": [
+          "do nice"
+        ],
+        "static": false,
+        "value": [
+          null,
+          false,
+          true,
+          "\"mooi\"",
+          "\"{{config('ds')}}\""
+        ]
+      },
+      {
+        "name": "string",
+        "type" : "string",
+        "doc_comment": [],
+        "static": false,
+        "value": "\"{{config('project.dir.root')}}\""
+      }
+    ],
+    "protected": [
+      {
+        "name": "object",
+        "type" : "App",
+        "doc_comment": [
+          "this is a test"
+        ],
+        "static": true,
+        "value": "null"
+      },
+      {
+        "name": "array",
+        "type" : "array",
+        "doc_comment": [],
+        "static": false,
+        "value": []
+      },
+      {
+        "name": "string",
+        "type" : "string",
+        "doc_comment": [],
+        "static": false,
+        "value": []
+      }
+    ],
+    "public": [
+      {
+        "name": "object",
+        "type" : "App",
+        "doc_comment": [
+          "this is a test"
+        ],
+        "static": true,
+        "value": null
+      },
+      {
+        "name": "array",
+        "type" : "array",
+        "doc_comment": [],
+        "static": false,
+        "value": []
+      },
+      {
+        "name": "string",
+        "type" : "string",
+        "doc_comment": [],
+        "static": false,
+        "value": []
+      }
+    ],
+    "constant": {
+      "DIR" : "__DIR__ . DIRECTORY_SEPARATOR",
+      "NAME" : "\"{{$this.#parentNode.options.class}}\"}}",
+      "COMMAND_TOKEN" : "'token'",
+      "COMMAND_INFO" : "'info'",
+      "COMMAND" : [
+        "{{$this.#parentNode.options.class}}::COMMAND_INFO",
+        "{{$this.#parentNode.options.class}}::COMMAND_TOKEN"
+      ],
+      "DEFAULT_COMMAND" : "{{$this.#parentNode.options.class}}::COMMAND_INFO",
+      "EXCEPTION_COMMAND_PARAMETER" : "\"{{literal}}{{$command}}{{/literal}}\"",
+      "EXCEPTION_COMMAND" : "'invalid command (' . User::EXCEPTION_COMMAND_PARAMETER . ')' . PHP_EOL"
+    },
+    "trait_use": [
+      "Package\\Raxon\\org\\Account\\Trait\\User",
+      "Package\\Raxon\\org\\Account\\Trait\\App"
+    ],
+    "orgction": [
+        {
+          "name": "__construct",
+          "type" : "public",
+          "static": false,
+          "argument": [
+            {
+              "name": "object",
+              "type" : "App",
+              "value": "[\"test\"]"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            },
+            {
+              "name": "object",
+              "type" : "App"
+            }
+          ],
+          "attribute": [],
+          "return_type": [
+            "void",
+            "void",
+            "void",
+            "void",
+            "void",
+            "void",
+            "void",
+            "void"
+          ],
+          "body": [
+            "$this->object($object);"
+          ]
+        },
+        {
+            "name": "command",
+            "type" : "public",
+            "static": true,
+            "argument": [
+              {
+                "name": "object",
+                "type" : "App"
+              }
+            ],
+            "doc_comment": [],
+            "attribute": [],
+            "return_type": [
+              "mixed"
+            ],
+            "throw": [
+                "Exception"
+            ],
+            "body": [
+              "$command = $object->parameter($object, __CLASS__, 1);",
+              "if($command === null){",
+              "    $command = {{$this.#parentNode.class}}::DEFAULT_COMMAND;",
+              "}",
+              "if(!in_array($command, {{$this.#parentNode.class}}::COMMAND)){",
+              "    $exception = str_replace(",
+              "        {{$this.#parentNode.class}}::EXCEPTION_COMMAND_PARAMETER,",
+              "        $command,",
+              "        {{$this.#parentNode.class}}::EXCEPTION_COMMAND",
+              "    );",
+              "    throw new Exception($exception);",
+              "}",
+              "$user = new {{$this.#parentNode.class}}($object);",
+              "return $user->{$command}();"
+            ]
+        },
+        {
+            "name": "info",
+            "type" : "private",
+            "static": false,
+            "argument": [],
+            "attribute": [],
+            "return_type": [
+              "mixed"
+            ],
+            "body": [
+              "$object = $this->object();",
+              "try {",
+              "    $name = {{$this.#parentNode.class}}::name(__FUNCTION__, __CLASS__, '/');",
+              "    $url = {{$this.#parentNode.class}}::locate($object, $name);",
+              "    return {{$this.#parentNode.class}}::response($object, $url);",
+              "}",
+              "catch (Exception | LocateException | UrlEmptyException | UrlNotExistException $exception) {",
+              "    return $exception;",
+              "}"
+            ]
+        }
+    ],
+    "user": {
+      "use": [],
+      "trait_use": [
+        "cms_write"
+      ],
+      "private": [],
+      "protected": [],
+      "public": [],
+      "constant": {},
+      "orgction": [
+        {
+          "name": "command",
+          "type" : "public",
+          "static": true,
+          "argument": [
+            {
+              "name": "object",
+              "type" : "App"
+            }
+          ],
+          "doc_comment": [],
+          "attribute": [],
+          "return_type": [
+            "mixed"
+          ],
+          "throw": [
+            "Exception"
+          ],
+          "body": [
+            "$command = $object->parameter($object, __CLASS__, 1);",
+            "if($command === null){",
+            "    $command = {{$this.#parentNode.class}}::DEFAULT_COMMAND;",
+            "}",
+            "if(!in_array($command, {{$this.#parentNode.class}}::COMMAND)){",
+            "    $exception = str_replace(",
+            "        {{$this.#parentNode.class}}::EXCEPTION_COMMAND_PARAMETER,",
+            "        $command,",
+            "        {{$this.#parentNode.class}}::EXCEPTION_COMMAND",
+            "    );",
+            "    throw new Exception($exception);",
+            "}",
+            "$user = new {{$this.#parentNode.class}}($object);",
+            "return $user->{$command}();"
+          ]
+        }
+      ]
+    }
+  }
+}

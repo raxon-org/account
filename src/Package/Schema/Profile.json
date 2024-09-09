@@ -1,0 +1,67 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema" : [
+        {
+          "table": "profile",
+          "entity": "Profile",
+          "column": [
+            {
+              "name": "id",
+              "type": "bigint",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "uuid",
+              "type": "string",
+              "options": {
+                "unique": true,
+                "length": 36
+              }
+            },
+            {
+              "name": "firstname",
+              "type": "string",
+              "options": {
+              }
+            },
+            {
+              "name": "surname",
+              "type": "string",
+              "options": {
+              }
+            },
+            {
+              "name": "user",
+              "type": "one-to-one",
+              "options": {
+                "target": "User",
+                "inversed": "profile",
+                "cascade": [
+                  "persist"
+                ],
+                "join": {
+                  "column": [
+                    {
+                      "name": "user_id",
+                      "reference": "id"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+          ]
+        }
+      ]
+    }
+  }
+}

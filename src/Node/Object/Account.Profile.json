@@ -1,0 +1,36 @@
+{
+    "Node": {
+        "#class": "Account.Profile",
+        "type": "object",
+        "property": [
+            {
+                "name": "nickname",
+                "type": "string"
+            },
+            {
+                "name": "user",
+                "type": "uuid",
+                "relation": true,
+                "is_multiple": false
+            },
+            {
+                "name": "uuid",
+                "type": "uuid"
+            },
+            {
+                "name": "#class",
+                "type": "string"
+            }
+        ]
+    },
+    "is.unique": [
+        "user"
+    ],
+    "relation": [
+        {
+            "type": "one-one",
+            "class": "Account.User",
+            "attribute": "user"
+        }
+    ]
+}

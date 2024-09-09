@@ -1,0 +1,111 @@
+{
+    "Account": {
+        "Profile": {
+            "create": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "nickname": [
+                        {
+                            "string.length": ">=3"
+                        },
+                        {
+                            "is.unique": {
+                                "class": "Account.Profile",
+                                "attribute": [
+                                    "nickname"
+                                ]
+                            }
+                        }
+                    ],
+                    "user": [
+                        {
+                            "is.uuid": true
+                        },
+                        {
+                            "is.unique": {
+                                "class": "Account.User",
+                                "attribute": [
+                                    "uuid"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "put": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "nickname": [
+                        {
+                            "string.length": ">=3"
+                        },
+                        {
+                            "is.unique": {
+                                "class": "Account.Profile",
+                                "attribute": [
+                                    "nickname"
+                                ]
+                            }
+                        }
+                    ],
+                    "user": [
+                        {
+                            "is.uuid": true
+                        },
+                        {
+                            "is.unique": {
+                                "class": "Account.User",
+                                "attribute": [
+                                    "uuid"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "patch": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "?nickname": [
+                        {
+                            "string.length": ">=3"
+                        },
+                        {
+                            "is.unique": {
+                                "class": "Account.Profile",
+                                "attribute": [
+                                    "nickname"
+                                ]
+                            }
+                        }
+                    ],
+                    "?user": [
+                        {
+                            "is.uuid": true
+                        },
+                        {
+                            "is.unique": {
+                                "class": "Account.User",
+                                "attribute": [
+                                    "uuid"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

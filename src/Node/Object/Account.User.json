@@ -1,0 +1,92 @@
+{
+    "Node": {
+        "#class": "Account.User",
+        "type": "object",
+        "property": [
+            {
+                "name": "email",
+                "type": "string"
+            },
+            {
+                "name": "password",
+                "type": "string"
+            },
+            {
+                "name": "refreshToken",
+                "type": "string"
+            },
+            {
+                "name": "is",
+                "type": "object",
+                "property": [
+                    {
+                        "name": "active",
+                        "type": "boolean"
+                    },
+                    {
+                        "name": "loggedIn",
+                        "type": "string"
+                    },
+                    {
+                        "name": "created",
+                        "type": "string"
+                    },
+                    {
+                        "name": "updated",
+                        "type": "string"
+                    },
+                    {
+                        "name": "deleted",
+                        "type": "string"
+                    }
+                ]
+            },
+            {
+                "name": "uuid",
+                "type": "uuid"
+            },
+            {
+                "name": "role",
+                "type": "array",
+                "relation": true,
+                "is_multiple": true
+            },
+            {
+                "name": "profile",
+                "type": "uuid",
+                "relation": true,
+                "is_multiple": false
+            },
+            {
+                "name": "#class",
+                "type": "string"
+            }
+        ]
+    },
+    "is.unique": [
+        "email"
+    ],
+    "relation": [
+        {
+            "type": "one-one",
+            "class": "Account.Profile",
+            "attribute": "profile"
+        },
+        {
+            "type": "one-many",
+            "class": "Account.Role",
+            "attribute": "role",
+            "sort": {
+                "rank": "ASC"
+            },
+            "output": {
+                "filter": [
+                    "Package:Raxon:Org:Account:Output:Filter:Role:user"
+                ]
+            },
+            "where": "",
+            "filter": [],
+            "limit": "*"
+        }
+    ]
+}

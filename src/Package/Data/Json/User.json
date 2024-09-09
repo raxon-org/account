@@ -1,0 +1,172 @@
+{
+  "User" : {
+    "options": "{{options()}}",
+    "class": "{{$this.options.class}}",
+    "trait": "{{$this.options.trait}}",
+    "use" : [
+      "Raxon\\org\\App",
+      "Raxon\\org\\Module\\Controller",
+      "Raxon\\org\\Module\\Handler",
+      "Raxon\\org\\Module\\Response",
+      "Package\\Raxon\\org\\Account\\Service\\User as Service",
+      "Exception",
+      "Raxon\\org\\Exception\\AuthorizationException",
+      "Raxon\\org\\Exception\\FileWriteException",
+      "Raxon\\org\\Exception\\ObjectException",
+      "Raxon\\org\\Exception\\LocateException",
+      "Raxon\\org\\Exception\\UrlEmptyException",
+      "Raxon\\org\\Exception\\UrlNotExistException"
+    ],
+    "extends" : "Controller",
+    "implements": [],
+    "variable": {
+      "private": [],
+      "protected": [],
+      "public": []
+    },
+    "constant": {
+      "DIR" : "__DIR__ . DIRECTORY_SEPARATOR",
+      "NAME" : "\"{{$this.#parentNode.options.class}}\"}}",
+      "COMMAND_TOKEN" : "'token'",
+      "COMMAND_INFO" : "'info'",
+      "COMMAND" : [
+        "{{$this.#parentNode.options.class}}::COMMAND_INFO",
+        "{{$this.#parentNode.options.class}}::COMMAND_TOKEN"
+      ],
+      "DEFAULT_COMMAND" : "{{$this.#parentNode.options.class}}::COMMAND_INFO",
+      "EXCEPTION_COMMAND_PARAMETER" : "'{{literal}}{{$command}}{{/literal}}'",
+      "EXCEPTION_COMMAND" : "'invalid command (' . User::EXCEPTION_COMMAND_PARAMETER . ')' . PHP_EOL"
+    },
+    "trait_use": [],
+    "orgction": [
+      {
+        "name": "user_token",
+        "type" : "public",
+        "static": true,
+        "argument": [
+          {
+            "name": "object",
+            "type" : "App"
+          }
+        ],
+        "attribute": [],
+        "return_type": [
+          "mixed"
+        ],
+        "throw": [
+          "Exception"
+        ],
+        "body": [
+          "if(Handler::method() === Handler::METHOD_CLI){",
+          "    $email = $object->parameter($object, __FUNCTION__, 1);",
+          "    $data = [];",
+          "    $data[] = Cli::tput('color', Cli::COLOR_GREEN);",
+          "    $data[] = Service::token($object, $email);",
+          "    $data[] = Cli::tput('reset');",
+          "    return new Response(",
+          "        $data,",
+          "        Response::TYPE_CLI",
+          "    );",
+          "}"
+        ]
+      },
+      {
+        "name": "user_login",
+        "type" : "public",
+        "static": true,
+        "argument": [
+          {
+            "name": "object",
+            "type" : "App"
+          }
+        ],
+        "attribute": [],
+        "return_type": [
+          "mixed"
+        ],
+        "throw": [
+          "Exception",
+          "Doctrine\\ORM\\Exception\\ORMException"
+        ],
+        "body": [
+          "if (Handler::method() === 'POST') {",
+          "    $data = Service::login($object);",
+          "    return new Response(",
+          "         $data,",
+          "         Response::TYPE_JSON",
+          "    );",
+          "}"
+        ]
+      },
+      {
+        "name": "user_current",
+        "type" : "public",
+        "static": true,
+        "argument": [
+          {
+            "name": "object",
+            "type" : "App"
+          }
+        ],
+        "attribute": [],
+        "return_type": [
+          "mixed"
+        ],
+        "throw": [
+          "Exception",
+          "AuthorizationException",
+          "ObjectException",
+          "FileWriteException"
+        ],
+        "body": [
+            "if (Handler::method() === 'GET') {",
+            "    $data = Service::current($object);",
+            "    return new Response(",
+            "        $data,",
+            "        Response::TYPE_JSON",
+            "    );",
+            "}"
+        ]
+      },
+      {
+        "name": "user_refresh_token",
+        "type" : "public",
+        "static": true,
+        "argument": [
+          {
+            "name": "object",
+            "type" : "App"
+          }
+        ],
+        "attribute": [],
+        "return_type": [
+          "mixed"
+        ],
+        "throw": [
+          "Exception",
+          "AuthorizationException"
+        ],
+        "body": [
+          "if (Handler::method() === 'GET') {",
+          "    $data = Service::refresh_token($object);",
+          "    return new Response(",
+          "        $data,",
+          "        Response::TYPE_JSON",
+          "    );",
+          "}"
+        ]
+      }
+    ],
+    "user": {
+      "use": [],
+      "trait_use": [],
+      "variable": {
+        "private": [],
+        "protected": [],
+        "public": []
+      },
+      "constant": {},
+      "orgction": []
+    }
+  }
+}

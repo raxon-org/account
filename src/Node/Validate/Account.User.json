@@ -1,0 +1,149 @@
+{
+    "Account": {
+        "User": {
+            "create": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "email": [
+                        {
+                            "is.unique": {
+                                "class": "Account.User",
+                                "attribute": [
+                                    "email"
+                                ]
+                            }
+                        }
+                    ],
+                    "password" : [
+                        {
+                            "string.length": ">=8"
+                        },
+                        {
+                            "string.has.number": ">=1"
+                        },
+                        {
+                            "string.has.uppercase": ">=1"
+                        },
+                        {
+                            "string.has.lowercase": ">=1"
+                        },
+                        {
+                            "string.has.symbol" : ">=1"
+                        }
+                    ],
+                    "?is.active" : [
+                        {
+                            "integer": "===0"
+                        }
+                    ]
+                }
+            },
+            "put": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "email": [
+                        {
+                            "is.unique": {
+                                "class": "Account.User",
+                                "attribute": [
+                                    "email"
+                                ]
+                            }
+                        }
+                    ],
+                    "password" : [
+                        {
+                            "string.length": ">=8"
+                        },
+                        {
+                            "string.has.number": ">=1"
+                        },
+                        {
+                            "string.has.uppercase": ">=1"
+                        },
+                        {
+                            "string.has.lowercase": ">=1"
+                        },
+                        {
+                            "string.has.symbol" : ">=1"
+                        }
+                    ],
+                    "is.active" : [
+                        {
+                            "integer": ">=0"
+                        }
+                    ],
+                    "?role": [
+                        {
+                            "in.array.uuid": true
+                        }
+                    ],
+                    "?profile": [
+                        {
+                            "is.uuid": true
+                        }
+                    ]
+                }
+            },
+            "patch": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "?email": [
+                        {
+                            "is.unique": {
+                                "class": "Account.User",
+                                "attribute": [
+                                    "email"
+                                ]
+                            }
+                        }
+                    ],
+                    "?password" : [
+                        {
+                            "string.length": ">=8"
+                        },
+                        {
+                            "string.has.number": ">=1"
+                        },
+                        {
+                            "string.has.uppercase": ">=1"
+                        },
+                        {
+                            "string.has.lowercase": ">=1"
+                        },
+                        {
+                            "string.has.symbol" : ">=1"
+                        }
+                    ],
+                    "?is.active" : [
+                        {
+                            "integer": ">=0"
+                        }
+                    ],
+                    "?role": [
+                        {
+                            "in.array.uuid": true
+                        }
+                    ],
+                    "?profile": [
+                        {
+                            "is.uuid": true
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

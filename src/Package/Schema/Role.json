@@ -1,0 +1,86 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema": [
+        {
+          "table": "role",
+          "entity": "Role",
+          "column": [
+            {
+              "name": "id",
+              "type": "bigint",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "uuid",
+              "type": "string",
+              "options": {
+                "unique": true,
+                "length": 36
+              }
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "options": {
+                "unique": true
+              }
+            },
+            {
+              "name": "rank",
+              "type": "bigint",
+              "options": {
+                "unsigned": true,
+                "unique": true
+              }
+            },
+            {
+              "name": "user",
+              "type": "many-to-many",
+              "options": {
+                "target": "User",
+                "map": "roles",
+                "cascade": [
+                  "persist"
+                ]
+              }
+            },
+            {
+              "name": "permission",
+              "type": "many-to-many",
+              "options": {
+                "target": "Permission",
+                "inverse": "roles",
+                "cascade": [
+                  "persist"
+                ],
+                "join": {
+                  "table": "role_permission",
+                  "column": [
+                    {
+                      "name": "role_id",
+                      "reference": "id"
+                    },
+                    {
+                      "name": "permission_id",
+                      "reference": "id"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+          ]
+        }
+      ]
+    }
+  }
+}

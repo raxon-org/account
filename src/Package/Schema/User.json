@@ -1,0 +1,162 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema": [
+        {
+          "table": "user",
+          "entity": "User",
+          "column": [
+            {
+              "name": "id",
+              "type": "bigint",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "uuid",
+              "type": "string",
+              "options": {
+                "unique": true,
+                "length": 36
+              }
+            },
+            {
+              "name": "email",
+              "type": "string",
+              "options": {
+                "unique": true
+              }
+            },
+            {
+              "name": "key",
+              "type": "string",
+              "options": {
+                "default": null,
+                "nullable": true,
+                "unique": true
+              }
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "options": {
+                "unique": true
+              }
+            },
+            {
+              "name": "refresh_token",
+              "type": "string",
+              "options": {
+                "default": null,
+                "nullable": true,
+                "unique": true
+              }
+            },
+            {
+              "name": "profile",
+              "type": "one-to-one",
+              "options": {
+                "target": {
+                  "entity": "Profile"
+                },
+                "mapped": {
+                  "by": "user"
+                }
+              }
+            },
+            {
+              "name": "parameter",
+              "type": "one-to-many",
+              "options": {
+                "target": {
+                  "entity": "Parameter"
+                },
+                "mapped": {
+                  "by": "user"
+                }
+              }
+            },
+            {
+              "name": "role",
+              "type": "many-to-many",
+              "options": {
+                "target": {
+                  "entity": "Role"
+                },
+                "inverse": {
+                  "by": "users"
+                },
+                "cascade": [
+                  "persist"
+                ],
+                "join": {
+                  "table": "user_role",
+                  "column": [
+                    {
+                      "name": "user_id",
+                      "refer": "id"
+                    },
+                    {
+                      "name": "role_id",
+                      "refer": "id"
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "is_active",
+              "type": "boolean",
+              "options": {
+                "default": false
+              }
+            },
+            {
+              "name": "is_logged_in",
+              "type": "datetime",
+              "options": {
+                "default": null,
+                "nullable": true
+              }
+            },
+            {
+              "name": "is_created",
+              "type": "datetime",
+              "options": {
+                "default": "CURRENT_TIMESTAMP"
+              }
+            },
+            {
+              "name": "is_updated",
+              "type": "datetime",
+              "options": {
+                "default": "CURRENT_TIMESTAMP"
+              }
+            },
+            {
+              "name": "is_deleted",
+              "type": "datetime",
+              "options": {
+                "default": null,
+                "nullable": true
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+            "is_active",
+            "is_logged_in",
+            "is_created",
+            "is_updated",
+            "is_deleted"
+          ]
+        }
+      ]
+    }
+  }
+}

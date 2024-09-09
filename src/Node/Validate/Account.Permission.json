@@ -1,0 +1,63 @@
+{
+    "Account": {
+        "Permission": {
+            "create": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "name": [
+                        {
+                            "is.unique": {
+                                "class": "Account.Permission",
+                                "attribute": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "put": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "name": [
+                        {
+                            "is.unique": {
+                                "class": "Account.Permission",
+                                "attribute": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "patch": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "?name": [
+                        {
+                            "is.unique": {
+                                "class": "Account.Permission",
+                                "attribute": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

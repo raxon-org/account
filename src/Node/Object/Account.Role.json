@@ -1,0 +1,56 @@
+{
+    "Node": {
+        "#class": "Account.Role",
+        "type": "object",
+        "property": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "rank",
+                "type": "integer"
+            },
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "permission",
+                "type": "array",
+                "relation": true,
+                "is_multiple": true
+            },
+            {
+                "name": "uuid",
+                "type": "uuid"
+            },
+            {
+                "name": "#class",
+                "type": "string"
+            }
+        ]
+    },
+    "is.unique": [
+        "rank",
+        "name"
+    ],
+    "relation": [
+        {
+            "type": "one-many",
+            "class": "Account.Permission",
+            "attribute": "permission",
+            "sort": {
+                "name": "ASC"
+            },
+            "output": {
+                "filter": [
+                    "Package:Raxon:Org:Account:Output:Filter:Role:permission"
+                ]
+            },
+            "where": "",
+            "filter": [],
+            "limit": "*"
+        }
+    ]
+}

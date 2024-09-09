@@ -1,0 +1,27 @@
+{
+    "Node": {
+        "#class": "Account.Permission",
+        "type": "object",
+        "property": [
+            {
+                "name": "name",
+                "type": "string"
+            },
+            {
+                "name": "description",
+                "type": "string"
+            },
+            {
+                "name": "uuid",
+                "type": "uuid"
+            },
+            {
+                "name": "#class",
+                "type": "string"
+            }
+        ]
+    },
+    "is.unique": [
+        "name"
+    ]
+}

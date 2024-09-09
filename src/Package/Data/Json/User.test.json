@@ -1,0 +1,38 @@
+{
+  "User" : {
+    "options": "{{options()}}",
+    "class": "{{$this.options.class}}",
+    "orgction": [
+        {
+            "name": "command",
+            "type" : "public",
+            "static": true,
+            "argument": [
+              "App $object"
+            ],
+            "doc-comment": [
+              "/**",
+              " * @throws Exception",
+              " */"
+            ],
+            "body": [
+              "{{literal}}$command{{/literal}}",
+              "$command = $object->parameter($object, __CLASS__, 1);",
+              "if($command === null){",
+              "    $command = {{$this.#parentNode.class}}::DEFAULT_COMMAND;",
+              "}",
+              "if(!in_array($command, {{$this.#parentNode.class}}::COMMAND)){",
+              "    $exception = str_replace(",
+              "        {{$this.#parentNode.class}}::EXCEPTION_COMMAND_PARAMETER,",
+              "        $command,",
+              "        {{$this.#parentNode.class}}::EXCEPTION_COMMAND",
+              "    );",
+              "    throw new Exception($exception);",
+              "}",
+              "$user = new {{$this.#parentNode.class}}($object);",
+              "return $user->{$command}();"
+            ]
+        }
+    ]
+  }
+}

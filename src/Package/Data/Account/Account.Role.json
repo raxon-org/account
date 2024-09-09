@@ -1,0 +1,18 @@
+{
+  "Account": {
+    "Role": [
+      {
+        "#class": "Account.Role",
+        "name": "ROLE_SYSTEM",
+        "rank": 1,
+        "permission": "*"
+      },
+      {
+        "#class": "Account.Role",
+        "name": "ROLE_ADMIN",
+        "rank": 2,
+        "permission": "*"
+      }
+    ]
+  }
+}

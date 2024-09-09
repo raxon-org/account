@@ -1,0 +1,93 @@
+{
+    "Account": {
+        "Role": {
+            "create": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "name": [
+                        {
+                            "is.unique": {
+                                "class": "Account.Role",
+                                "attribute": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    ],
+                    "rank": [
+                        {
+                            "integer": ">=1"
+                        }
+                    ],
+                    "?permission": [
+                        {
+                            "is.relation": true
+                        }
+                    ]
+                }
+            },
+            "put": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "name": [
+                        {
+                            "is.unique": {
+                                "class": "Account.Role",
+                                "attribute": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    ],
+                    "rank": [
+                        {
+                            "integer": ">=1"
+                        }
+                    ],
+                    "?permission": [
+                        {
+                            "is.relation": true
+                        }
+                    ]
+                }
+            },
+            "patch": {
+                "validate": {
+                    "uuid": [
+                        {
+                            "is.uuid": true
+                        }
+                    ],
+                    "?name": [
+                        {
+                            "is.unique": {
+                                "class": "Account.Role",
+                                "attribute": [
+                                    "name"
+                                ]
+                            }
+                        }
+                    ],
+                    "?rank": [
+                        {
+                            "integer": ">=1"
+                        }
+                    ],
+                    "?permission": [
+                        {
+                            "is.relation": true
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
