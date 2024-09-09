@@ -1,18 +1,18 @@
 <?php
-namespace Package\Raxon\Org\Account\Trait;
+namespace Package\Raxon\Account\Trait;
 
-use Raxon\Org\Module\Cli;
-use Raxon\Org\Module\Handler;
-use Raxon\Org\Module\Response;
-use Package\Raxon\Org\Account\Service\User as Service;
+use Raxon\Module\Cli;
+use Raxon\Module\Handler;
+use Raxon\Module\Response;
+use Package\Raxon\Account\Service\User as Service;
 
 use Exception;
 
 use Doctrine\ORM\Exception\ORMException;
 
-use Raxon\Org\Exception\FileWriteException;
-use Raxon\Org\Exception\ObjectException;
-use Raxon\Org\Exception\AuthorizationException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
+use Raxon\Exception\AuthorizationException;
 
 trait User
 {

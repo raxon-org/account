@@ -8,8 +8,8 @@
  * @changeLog
  *     -            all
  */
-use Raxon\Org\Module\Parse;
-use Raxon\Org\Module\Data;
+use Raxon\Module\Parse;
+use Raxon\Module\Data;
 
 function function_variable_define(Parse $parse, Data $data, $array=[], $type='private'){
     foreach($array as $variable){

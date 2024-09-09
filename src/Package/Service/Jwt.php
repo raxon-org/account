@@ -2,13 +2,13 @@
 /**
  * (c) Remco van der Velde
  */
-namespace Package\Raxon\Org\Account\Service;
+namespace Package\Raxon\Account\Service;
 
 use DateTimeImmutable;
 
-use Raxon\Org\App;
+use Raxon\App;
 
-use Raxon\Org\Module\Data;
+use Raxon\Module\Data;
 
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer;
@@ -27,9 +27,9 @@ use Lcobucci\JWT\Token\Plain;
 
 use Exception;
 
-use Raxon\Org\Exception\AuthorizationException;
-use Raxon\Org\Exception\FileWriteException;
-use Raxon\Org\Exception\ObjectException;
+use Raxon\Exception\AuthorizationException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
 
 class Jwt {
 
@@ -231,8 +231,8 @@ class Jwt {
 
     /**
      * @throws AuthorizationException
-     * @throws \Raxon\Org\Exception\ObjectException
-     * @throws \Raxon\Org\Exception\FileWriteException
+     * @throws \Raxon\Exception\ObjectException
+     * @throws \Raxon\Exception\FileWriteException
      */
     public static function decryptRefreshToken(App $object, $token): UnencryptedToken
     {

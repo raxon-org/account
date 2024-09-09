@@ -1,29 +1,29 @@
 <?php
-namespace Package\Raxon\Org\Account\Service;
+namespace Package\Raxon\Account\Service;
 
-use Raxon\Org\Module\Data as Storage;
+use Raxon\Module\Data as Storage;
 use stdClass;
 use DateTime;
 
 //use Entity\User as Entity;
 
 
-use Raxon\Org\App;
+use Raxon\App;
 
-use Raxon\Org\Module\Core;
-use Raxon\Org\Module\Data;
-use Raxon\Org\Module\Database;
-use Raxon\Org\Module\Handler;
-use Raxon\Org\Module\Response;
+use Raxon\Module\Core;
+use Raxon\Module\Data;
+use Raxon\Module\Database;
+use Raxon\Module\Handler;
+use Raxon\Module\Response;
 
-use Raxon\Org\Node\Model\Node;
+use Raxon\Node\Model\Node;
 
 use Exception;
 
-use Raxon\Org\Exception\FileWriteException;
-use Raxon\Org\Exception\ObjectException;
-use Raxon\Org\Exception\AuthorizationException;
-use Raxon\Org\Exception\ErrorException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
+use Raxon\Exception\AuthorizationException;
+use Raxon\Exception\ErrorException;
 
 class User
 {

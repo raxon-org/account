@@ -10,20 +10,20 @@ use Entity\Role;
 use Entity as Entity_class;
 use Entity\User as Entity;
 
-use Raxon\Org\App;
+use Raxon\App;
 
-use Raxon\Org\Module\Core;
-use Raxon\Org\Module\Data;
-use Raxon\Org\Module\Database;
-use Raxon\Org\Module\Handler;
-use Raxon\Org\Module\Response;
+use Raxon\Module\Core;
+use Raxon\Module\Data;
+use Raxon\Module\Database;
+use Raxon\Module\Handler;
+use Raxon\Module\Response;
 
 use Exception;
 
-use Raxon\Org\Exception\FileWriteException;
-use Raxon\Org\Exception\ObjectException;
-use Raxon\Org\Exception\AuthorizationException;
-use Raxon\Org\Exception\ErrorException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
+use Raxon\Exception\AuthorizationException;
+use Raxon\Exception\ErrorException;
 
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\Exception\ORMException;
@@ -202,13 +202,13 @@ class User extends Main
         $role = $repository->findOneBy(['name' => $role_name]);
         $entity = 'User';
         $function = __FUNCTION__;
-        $expose = \Raxon\Org\Doctrine\Service\Entity::expose_get(
+        $expose = \Raxon\Doctrine\Service\Entity::expose_get(
             $object,
             $entity,
             $entity . '.' . $function . '.output'
         );
         $record = [];
-        $record = \Raxon\Org\Doctrine\Service\Entity::output(
+        $record = \Raxon\Doctrine\Service\Entity::output(
             $object,
             $node,
             $expose,
@@ -237,13 +237,13 @@ class User extends Main
         $entityManager->persist($node);
         $entityManager->flush();
 
-        $expose = \Raxon\Org\Doctrine\Service\Entity::expose_get(
+        $expose = \Raxon\Doctrine\Service\Entity::expose_get(
             $object,
             $entity,
             $entity . '.' . $function . '.output'
         );
         $record = [];
-        $record = \Raxon\Org\Doctrine\Service\Entity::output(
+        $record = \Raxon\Doctrine\Service\Entity::output(
             $object,
             $node,
             $expose,
@@ -400,13 +400,13 @@ class User extends Main
                 $entity = 'User';
                 $function = __FUNCTION__;
 
-                $toArray = \Raxon\Org\Doctrine\Service\Entity::expose_get(
+                $toArray = \Raxon\Doctrine\Service\Entity::expose_get(
                     $object,
                     $entity,
                     $entity . '.' . $function . '.output'
                 );
                 $record = [];
-                $record = \Raxon\Org\Doctrine\Service\Entity::output(
+                $record = \Raxon\Doctrine\Service\Entity::output(
                     $object,
                     $node,
                     $toArray,

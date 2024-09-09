@@ -1,10 +1,10 @@
 <?php
 
-namespace Package\Raxon\Org\Account\Output\Filter;
+namespace Package\Raxon\Account\Output\Filter;
 
-use Raxon\Org\App;
+use Raxon\App;
 
-use Raxon\Org\Module\Controller;
+use Raxon\Module\Controller;
 
 class Role extends Controller {
 

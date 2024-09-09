@@ -1,15 +1,15 @@
 <?php
-namespace Package\Raxon\Org\Account\Trait;
+namespace Package\Raxon\Account\Trait;
 
-use Raxon\Org\App;
+use Raxon\App;
 
-use Raxon\Org\Exception\DirectoryCreateException;
-use Raxon\Org\Exception\FileWriteException;
-use Raxon\Org\Exception\ObjectException;
-use Raxon\Org\Module\Core;
-use Raxon\Org\Module\File;
+use Raxon\Exception\DirectoryCreateException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
+use Raxon\Module\Core;
+use Raxon\Module\File;
 
-use Raxon\Org\Node\Model\Node;
+use Raxon\Node\Model\Node;
 
 use Exception;
 trait Import {

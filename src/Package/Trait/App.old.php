@@ -1,7 +1,7 @@
 <?php
-namespace Package\Raxon\Org\Account\Trait;
+namespace Package\Raxon\Account\Trait;
 
-use Raxon\Org\App as Application;
+use Raxon\App as Application;
 
 trait App
 {
