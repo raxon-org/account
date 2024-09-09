@@ -1,24 +1,24 @@
 <?php
-namespace Package\Raxon\Org\Account\Trait;
+namespace Package\Raxon\Account\Trait;
 
 use Composer\ClassMapGenerator\PhpFileParser;
-use Raxon\Org\App;
-use Raxon\Org\Config;
+use Raxon\App;
+use Raxon\Config;
 
-use Raxon\Org\Module\Cli;
-use Raxon\Org\Module\Core;
-use Raxon\Org\Module\File;
-use Raxon\Org\Module\Dir;
-use Raxon\Org\Module\Handler;
+use Raxon\Module\Cli;
+use Raxon\Module\Core;
+use Raxon\Module\File;
+use Raxon\Module\Dir;
+use Raxon\Module\Handler;
 
-use Raxon\Org\Node\Model\Node;
+use Raxon\Node\Model\Node;
 
-use Package\Raxon\Org\Account\Service\User as Service;
+use Package\Raxon\Account\Service\User as Service;
 
 use Exception;
 
-use Raxon\Org\Exception\FileWriteException;
-use Raxon\Org\Exception\ObjectException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
 
 trait Main
 {
@@ -220,7 +220,7 @@ trait Main
                 //create private key
                 //create certificate
                 $command = Core::binary($object) .
-                    ' raxon_org/basic' .
+                    ' raxon/basic' .
                     ' openssl' .
                     ' init' .
                     ' -keyout=' . 'Token_key.pem' .
@@ -265,7 +265,7 @@ trait Main
                 //create private key
                 //create certificate
                 $command = Core::binary($object) .
-                    ' raxon_org/basic' .
+                    ' raxon/basic' .
                     ' openssl' .
                     ' init' .
                     ' -keyout=' . 'RefreshToken_key.pem' .
@@ -538,7 +538,7 @@ trait Main
                             if (property_exists($options, 'force')) {
                                 $output = [];
                                 $command = Core::binary($object) .
-                                    ' raxon_org/node' .
+                                    ' raxon/node' .
                                     ' put' .
                                     ' -class=Account.Role' .
                                     ' -uuid=' . $record['node']->uuid .
@@ -556,7 +556,7 @@ trait Main
                             } elseif (property_exists($options, 'patch')) {
                                 $output = [];
                                 $command = Core::binary($object) .
-                                    ' raxon_org/node' .
+                                    ' raxon/node' .
                                     ' patch' .
                                     ' -class=Account.Role' .
                                     ' -uuid=' . $record['node']->uuid .
@@ -578,7 +578,7 @@ trait Main
                     } else {
                         $output = [];
                         $command = Core::binary($object) .
-                            ' raxon_org/node' .
+                            ' raxon/node' .
                             ' create' .
                             ' -class=Account.Role' .
                             ' -name=' . $roles_role['name'] .
@@ -637,7 +637,7 @@ trait Main
             //create private key
             if (!File::exist($object->config('project.dir.data') . 'Ssl/Token_key.pem')) {
                 $command = Core::binary($object) .
-                    ' raxon_org/basic' .
+                    ' raxon/basic' .
                     ' openssl' .
                     ' init' .
                     ' -keyout=' . 'Token_key.pem' .
@@ -682,7 +682,7 @@ trait Main
             //create private key
             if (!File::exist($object->config('project.dir.data') . 'Ssl/RefreshToken_key.pem')) {
                 $command = Core::binary($object) .
-                    ' raxon_org/basic' .
+                    ' raxon/basic' .
                     ' openssl' .
                     ' init' .
                     ' -keyout=' . 'RefreshToken_key.pem' .
