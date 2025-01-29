@@ -852,6 +852,13 @@ trait Main
                 $class,
                 $node->role_system(),
                 [
+                    'where' => [
+                        [
+                            'value' => 'ROLE_SYSTEM',
+                            'attribute' => 'name',
+                            'operator' => '!=='
+                        ]
+                    ]
                 ]
             );
             ddd($list);
