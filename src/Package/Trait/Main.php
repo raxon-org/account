@@ -845,6 +845,7 @@ trait Main
             if($password !== $password_again){
                 throw new Exception('Passwords do not match...');
             }
+            $is_found = false;
             //role
             $class = 'Account.Role';
             $node = new Node($object);
@@ -858,12 +859,40 @@ trait Main
                             'attribute' => 'name',
                             'operator' => '!=='
                         ]
-                    ]
+                    ],
+                    'sort' => [
+                        'rank' => 'asc'
+                    ],
                 ]
             );
-            ddd($list);
-
-
+            if($list['count'] === 1){
+                $role = $list['list'][0];
+                $is_found = true;
+            }
+            while($is_found === false){
+                foreach($list['list'] as $nr => $item){
+                    echo '  - Role: ' . $item->name  . ', rank (' . $item->rank . ')'. PHP_EOL;
+                }
+                $role = Cli::read(Cli::INPUT, 'Role (Rank or Name): ');
+                if(is_int($role)){
+                    foreach ($list['list'] as $nr => $item){
+                        if($item->rank === $role){
+                            $is_found = true;
+                            break;
+                        }
+                    }
+                } else {
+                    foreach ($list['list'] as $nr => $item){
+                        if(strtolower($item->name) === strtolower($role)){
+                            $is_found = true;
+                            break;
+                        }
+                    }
+                }
+                if($is_found === false){
+                    echo Cli::error('Role not found...') . PHP_EOL;
+                }
+            }
             $class = 'Account.User';
             $node = new Node($object);
             $record = $node->record(
@@ -893,7 +922,7 @@ trait Main
                     'cost' => 13
                 ]),
                 'role' => [
-                    $record['node']->uuid
+                    $item->uuid
                 ],
                 'is' => (object) [
                     'active' => 0, //cannot activate immediately
@@ -901,11 +930,7 @@ trait Main
                     'modified' => $mtime
                 ]
             ];
-
-
-
-            d($email);
-            d($password);
+            d($user);
         }
     }
 }
