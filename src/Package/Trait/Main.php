@@ -845,6 +845,58 @@ trait Main
             if($password !== $password_again){
                 throw new Exception('Passwords do not match...');
             }
+            //role
+            $class = 'Account.Role';
+            $node = new Node($object);
+            $list = $node->list(
+                $class,
+                $node->role_system(),
+                [
+                ]
+            );
+            ddd($list);
+
+
+            $class = 'Account.User';
+            $node = new Node($object);
+            $record = $node->record(
+                $class,
+                $node->role_system(),
+                [
+                    'where' => [
+                        [
+                            'value' => $email,
+                            'attribute' => 'email',
+                            'operator' => '==='
+                        ]
+                    ]
+                ]
+            );
+            if(
+                $record &&
+                array_key_exists('node', $record) &&
+                property_exists($record['node'], 'uuid')
+            ){
+                throw new Exception('User already exists...');
+            }
+            $mtime = microtime(true);
+            $user = (object) [
+                'email' => $email,
+                'password' => password_hash($password, PASSWORD_BCRYPT, [
+                    'cost' => 13
+                ]),
+                'role' => [
+                    $record['node']->uuid
+                ],
+                'is' => (object) [
+                    'active' => 0, //cannot activate immediately
+                    'created' => $mtime,
+                    'modified' => $mtime
+                ]
+            ];
+
+
+
             d($email);
             d($password);
         }
