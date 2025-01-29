@@ -817,6 +817,7 @@ trait Main
             $data[] = Cli::tput('color', Cli::COLOR_GREEN);
             $data[] = Service::token($object, $email);
             $data[] = Cli::tput('reset');
+            breakpoint($data);
             return new Response(
                 $data,
                 Response::TYPE_CLI
