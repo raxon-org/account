@@ -866,7 +866,7 @@ trait Main
                 ]
             );
             if($list['count'] === 1){
-                $role = $list['list'][0];
+                $item = $list['list'][0];
                 $is_found = true;
             }
             while($is_found === false){
