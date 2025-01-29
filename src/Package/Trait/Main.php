@@ -926,6 +926,7 @@ trait Main
             $mtime = microtime(true);
             if($item){
                 $user = (object) [
+                    'uuid' => Core::uuid(), //uuid
                     'email' => $email,
                     'password' => password_hash($password, PASSWORD_BCRYPT, [
                         'cost' => 13
@@ -939,8 +940,21 @@ trait Main
                         'updated' => $mtime
                     ]
                 ];
+                $class = 'Account.User';
+                $node = new Node($object);
+                $result = $node->create(
+                    $class,
+                    $node->role_system(),
+                    $user,
+                    $options
+                );
+                if(
+                    array_key_exists('node', $result) &&
+                    property_exists($result['node'], 'uuid')
+                ){
+                    echo 'User created' . PHP_EOL;
+                }
             }
-            d($user);
         }
     }
 }
