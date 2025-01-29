@@ -281,9 +281,7 @@ class User
         $options['user'] = $record['node'];
         $token = Jwt::get($object, $configuration, $options);
         $token = $token->toString();
-
-        return '';
-
+        return $token;
     }
 
 }
