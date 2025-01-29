@@ -251,7 +251,28 @@ class User
     {
         //get the user from the node list System.User with email=email
         $configuration = Jwt::configuration($object);
-        $record =
+        $class = 'Account.User';
+        $node = new Node($object);
+        $record = $node->record(
+            $class,
+            $node->role_system(),
+            [
+                'where' => [
+                    [
+                        'value' => $email,
+                        'attribute' => 'email',
+                        'operator' => '==='
+                    ],
+                    [
+                        'value' => 1,
+                        'attribute' => 'is.active',
+                        'operator' => '>='
+                    ]
+                ],
+                'relation' => true
+            ]
+        );
+        breakpoint($record);
         $options = [];
         $options['user'] = $record;
         $token = Jwt::get($object, $configuration, $options);
