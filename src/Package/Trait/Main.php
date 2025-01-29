@@ -834,8 +834,8 @@ trait Main
             Core::interactive();
             $email = Cli::read(Cli::INPUT, 'Email: ');
 
-            $password = Cli::read(Cli::INPUT_HIDDEN, 'Password: ');
-            $password_again = Cli::read(Cli::INPUT_HIDDEN, 'Password again: ');
+            $password = Cli::read(Cli::HIDDEN, 'Password: ');
+            $password_again = Cli::read(Cli::HIDDEN, 'Password again: ');
             if(
                 !str_contains($email, '@') ||
                 !str_contains($email, '.'
