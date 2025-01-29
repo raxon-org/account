@@ -833,11 +833,12 @@ trait Main
             $object = $this->object();
             Core::interactive();
             while(true){
+                echo Cli::error('No valid email found...') . PHP_EOL;
                 $email = Cli::read(Cli::INPUT, 'Email: ');
                 if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                     break;
                 }
-                echo Cli::error('No valid email found...') . PHP_EOL;
+
                 flush();
             }
             while(true){
