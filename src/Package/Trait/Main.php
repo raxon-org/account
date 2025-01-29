@@ -832,20 +832,26 @@ trait Main
         if (Handler::method() === Handler::METHOD_CLI) {
             $object = $this->object();
             Core::interactive();
-            $email = Cli::read(Cli::INPUT, 'Email: ');
-
-            $password = Cli::read(Cli::HIDDEN, 'Password: ');
-            $password_again = Cli::read(Cli::HIDDEN, 'Password again: ');
-            if(
-                !str_contains($email, '@') ||
-                !str_contains($email, '.'
-            )){
-                throw new Exception('Email needs (\'@.\') chars...');
+            while(true){
+                $email = Cli::read(Cli::INPUT, 'Email: ');
+                if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+                    break;
+                }
+                echo Cli::error('No valid email found...') . PHP_EOL;
             }
-            if($password !== $password_again){
-                throw new Exception('Passwords do not match...');
+            while(true){
+                $password = Cli::read(Cli::HIDDEN, 'Password: ');
+                $password_again = Cli::read(Cli::HIDDEN, 'Password again: ');
+                if(
+                    !empty($password) &&
+                    $password === $password_again
+                ){
+                    break;
+                }
+                echo Cli::error('Passwords do not match...') . PHP_EOL;
             }
             $is_found = false;
+            $item = false;
             //role
             $class = 'Account.Role';
             $node = new Node($object);
@@ -916,20 +922,22 @@ trait Main
                 throw new Exception('User already exists...');
             }
             $mtime = microtime(true);
-            $user = (object) [
-                'email' => $email,
-                'password' => password_hash($password, PASSWORD_BCRYPT, [
-                    'cost' => 13
-                ]),
-                'role' => [
-                    $item->uuid
-                ],
-                'is' => (object) [
-                    'active' => 0, //cannot activate immediately
-                    'created' => $mtime,
-                    'modified' => $mtime
-                ]
-            ];
+            if($item){
+                $user = (object) [
+                    'email' => $email,
+                    'password' => password_hash($password, PASSWORD_BCRYPT, [
+                        'cost' => 13
+                    ]),
+                    'role' => [
+                        $item->uuid
+                    ],
+                    'is' => (object) [
+                        'active' => true,
+                        'created' => $mtime,
+                        'updated' => $mtime
+                    ]
+                ];
+            }
             d($user);
         }
     }
