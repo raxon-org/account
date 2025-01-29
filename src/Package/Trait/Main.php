@@ -8,6 +8,7 @@ use Raxon\Module\Cli;
 use Raxon\Module\Core;
 use Raxon\Module\File;
 use Raxon\Module\Handler;
+use Raxon\Module\Response;
 
 use Raxon\Node\Model\Node;
 
@@ -963,7 +964,6 @@ trait Main
                             ]
                         ],
                     );
-                    breakpoint($result);
                 }
                 if(
                     array_key_exists('node', $result) &&
