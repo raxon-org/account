@@ -815,6 +815,7 @@ trait Main
             $email = $options->email;
             return Service::token($object, $email);
         }
+        return '';
     }
 
     /**
