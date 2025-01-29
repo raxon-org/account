@@ -246,6 +246,7 @@ class User
     /**
      * @throws FileWriteException
      * @throws ObjectException
+     * @throws ErrorException
      */
     public static function token(App $object, $email=''): string
     {
@@ -272,9 +273,12 @@ class User
                 'relation' => true
             ]
         );
-        breakpoint($record);
+        if(!$record || !array_key_exists('node', $record)){
+            throw new ErrorException('User not found.');
+        }
+
         $options = [];
-        $options['user'] = $record;
+        $options['user'] = $record['node'];
         $token = Jwt::get($object, $configuration, $options);
         $token = $token->toString();
 
