@@ -947,7 +947,23 @@ trait Main
                     $user,
                     $options
                 );
-                breakpoint($result);
+                if(
+                    array_key_exists('node', $result) &&
+                    property_exists($result['node'], 'uuid')
+                ){
+                    $mtime = microtime(true);
+                    $result = $node->patch(
+                        $class,
+                        $node->role_system(),
+                        [
+                            'uuid' => $result['node']->uuid,
+                            'is' => (object) [
+                                'active' => 1,
+                                'updated' => $mtime
+                            ]
+                        ],
+                    );
+                }
                 if(
                     array_key_exists('node', $result) &&
                     property_exists($result['node'], 'uuid')
