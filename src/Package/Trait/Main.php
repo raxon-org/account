@@ -833,12 +833,11 @@ trait Main
             $object = $this->object();
             Core::interactive();
             while(true){
-                fwrite(STDOUT, Cli::error('No valid email found...') . PHP_EOL);
                 $email = Cli::read(Cli::INPUT, 'Email: ');
                 if(filter_var($email, FILTER_VALIDATE_EMAIL)){
                     break;
                 }
-
+                fwrite(STDERR, Cli::error('No valid email found...') . PHP_EOL);
                 flush();
             }
             while(true){
@@ -850,7 +849,8 @@ trait Main
                 ){
                     break;
                 }
-                echo Cli::error('Passwords do not match...') . PHP_EOL;
+                fwrite(STDERR, Cli::error('Passwords do not match...') . PHP_EOL);
+                flush();
             }
             $is_found = false;
             $item = false;
