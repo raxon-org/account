@@ -838,6 +838,7 @@ trait Main
                     break;
                 }
                 echo Cli::error('No valid email found...') . PHP_EOL;
+                flush();
             }
             while(true){
                 $password = Cli::read(Cli::HIDDEN, 'Password: ');
