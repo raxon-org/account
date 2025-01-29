@@ -940,7 +940,6 @@ trait Main
                         'updated' => $mtime
                     ]
                 ];
-                $class = 'Account.User';
                 $node = new Node($object);
                 $result = $node->create(
                     $class,
@@ -948,6 +947,7 @@ trait Main
                     $user,
                     $options
                 );
+                breakpoint($result);
                 if(
                     array_key_exists('node', $result) &&
                     property_exists($result['node'], 'uuid')
