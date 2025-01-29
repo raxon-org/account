@@ -935,7 +935,7 @@ trait Main
                         $item->uuid
                     ],
                     'is' => (object) [
-                        'active' => true,
+                        'active' => 0,
                         'created' => $mtime,
                         'updated' => $mtime
                     ]

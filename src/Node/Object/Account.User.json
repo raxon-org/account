@@ -21,7 +21,7 @@
                 "property": [
                     {
                         "name": "active",
-                        "type": "boolean"
+                        "type": "integer"
                     },
                     {
                         "name": "loggedIn",
