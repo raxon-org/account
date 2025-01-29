@@ -221,11 +221,6 @@ class User
     public static function is_blocked(App $object, $email=''): bool
     {
         return false;
-
-
-
-
-
         $entityManager = Database::entityManager($object);
         if(!$entityManager){
             throw new ErrorException('Entity manager not found.');
@@ -246,6 +241,24 @@ class User
             }
         }
         return false;
+    }
+
+    /**
+     * @throws FileWriteException
+     * @throws ObjectException
+     */
+    public static function token(App $object, $email=''): string
+    {
+        //get the user from the node list System.User with email=email
+        $configuration = Jwt::configuration($object);
+        $record =
+        $options = [];
+        $options['user'] = $record;
+        $token = Jwt::get($object, $configuration, $options);
+        $token = $token->toString();
+
+        return '';
+
     }
 
 }

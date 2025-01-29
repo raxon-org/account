@@ -1,14 +1,12 @@
 <?php
 namespace Package\Raxon\Account\Trait;
 
-use Composer\ClassMapGenerator\PhpFileParser;
 use Raxon\App;
 use Raxon\Config;
 
 use Raxon\Module\Cli;
 use Raxon\Module\Core;
 use Raxon\Module\File;
-use Raxon\Module\Dir;
 use Raxon\Module\Handler;
 
 use Raxon\Node\Model\Node;
@@ -822,6 +820,33 @@ trait Main
                 $data,
                 Response::TYPE_CLI
             );
+        }
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function user_create($flags, $options)
+    {
+        if (Handler::method() === Handler::METHOD_CLI) {
+            $object = $this->object();
+            Core::interactive();
+            $email = Cli::read(Cli::INPUT, 'Email: ');
+
+            $password = Cli::read(Cli::INPUT_HIDDEN, 'Password: ');
+            $password_again = Cli::read(Cli::INPUT_HIDDEN, 'Password again: ');
+            if(
+                !str_contains($email, '@') ||
+                !str_contains($email, '.'
+            )){
+                throw new Exception('Email needs (\'@.\') chars...');
+            }
+            if($password !== $password_again){
+                throw new Exception('Passwords do not match...');
+            }
+            d($email);
+            d($password);
         }
     }
 }
