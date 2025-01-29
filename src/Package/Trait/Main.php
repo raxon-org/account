@@ -805,7 +805,7 @@ trait Main
     /**
      * @throws Exception
      */
-    public function user_token($flags, $options)
+    public function user_token($flags, $options): string
     {
         if (Handler::method() === Handler::METHOD_CLI) {
             $object = $this->object();
@@ -813,15 +813,7 @@ trait Main
                 throw new Exception('Option email required.');
             }
             $email = $options->email;
-            $data = [];
-            $data[] = Cli::tput('color', Cli::COLOR_GREEN);
-            $data[] = Service::token($object, $email);
-            $data[] = Cli::tput('reset');
-            breakpoint($data);
-            return new Response(
-                $data,
-                Response::TYPE_CLI
-            );
+            return Service::token($object, $email);
         }
     }
 
