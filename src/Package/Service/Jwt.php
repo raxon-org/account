@@ -67,8 +67,7 @@ class Jwt {
             return false;
         }
         $claim = false;
-        $debug = debug_backtrace(true);
-        d($debug);
+        trace(2);
         ddd($options);
         if(array_key_exists('user', $options)){
             $user = $options['user'];
