@@ -67,8 +67,11 @@ class Jwt {
             return false;
         }
         $claim = false;
+        $debug = debug_backtrace(true);
+        d($debug);
+        ddd($options);
         if(array_key_exists('user', $options)){
-            $user = (object) $options['user'];
+            $user = $options['user'];
             $role = [];
             if(
                 is_object($user) &&
