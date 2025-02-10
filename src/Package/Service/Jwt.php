@@ -120,6 +120,10 @@ class Jwt {
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
         $claim = false;
+
+
+
+        ddd($options);
         if(
             array_key_exists('user', $options) &&
             property_exists($options['user'], 'uuid') &&
