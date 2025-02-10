@@ -68,9 +68,10 @@ class Jwt {
         }
         $claim = false;
         if(array_key_exists('user', $options)){
-            $user = $options['user'];
+            $user = (object) $options['user'];
             $role = [];
             if(
+                is_object($user) &&
                 property_exists($user, 'role') &&
                 is_array($user->role)
             ){
