@@ -120,33 +120,29 @@ class Jwt {
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
         $claim = false;
-
-
-
-        ddd($options);
         if(
             array_key_exists('user', $options) &&
-            property_exists($options['user'], 'uuid') &&
-            property_exists($options['user'], 'email')
+            array_key_exists('uuid', $options['user']) &&
+            array_key_exists('email', $options['user'])
         ){
             $role = [];
             if(
-                property_exists($options['user'], 'role') &&
-                is_array($options['user']->role)
+                array_key_exists('role', $options['user']) &&
+                is_array($options['user']['role'])
             ){
-                foreach($options['user']->role as $nr => $user_role){
+                foreach($options['user']['role'] as $nr => $user_role){
                     $role[] = [
-                        'name' => $user_role->name,
-                        'rank' => $user_role->rank,
+                        'name' => $user_role['name'],
+                        'rank' => $user_role['rank'],
                         'permission' => [
-                            'count' => count($user_role->permission),
+                            'count' => count($user_role['permission']),
                         ]
                     ];
                 }
             }
             $claim = (object) [
-                'uuid' => $options['user']->uuid,
-                'email' => $options['user']->email,
+                'uuid' => $options['user']['uuid'],
+                'email' => $options['user']['email'],
                 'role' => $role
             ];
         }
