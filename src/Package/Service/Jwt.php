@@ -70,18 +70,17 @@ class Jwt {
         if(array_key_exists('user', $options)){
             $user = $options['user'];
             $role = [];
-            ddd($user);
             if(
-                is_object($user) &&
-                property_exists($user, 'role') &&
-                is_array($user->role)
+                is_array($user) &&
+                array_key_exists('role', $user) &&
+                is_array($user['role'])
             ){
-                foreach($user->role as $nr => $user_role){
+                foreach($user['role'] as $nr => $user_role){
                     $role[] = [
-                        'name' => $user_role->name,
-                        'rank' => $user_role->rank,
+                        'name' => $user_role['name'],
+                        'rank' => $user_role['rank'],
                         'permission' => [
-                            'count' => count($user_role->permission),
+                            'count' => count($user_role['permission']),
                         ]
                     ];
                 }
