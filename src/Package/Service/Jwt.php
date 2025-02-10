@@ -86,8 +86,8 @@ class Jwt {
                 }
             }
             $claim = (object) [
-                'uuid' => $user->uuid,
-                'email' => $user->email,
+                'uuid' => $user['uuid'],
+                'email' => $user['email'],
                 'role' => $role
             ];
         }
