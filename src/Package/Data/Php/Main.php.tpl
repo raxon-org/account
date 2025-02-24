@@ -1,4 +1,4 @@
-{{R3M}}
+{{RAX}}
 {{$options = options()}}
 {{$namespace = $options.namespace}}
 {{$class = $options.class}}
