@@ -10,7 +10,7 @@ use Raxon\Module\File;
 use Raxon\Module\Handler;
 use Raxon\Module\Response;
 
-use Raxon\Node\Model\Node;
+use Raxon\Node\Module\Node;
 
 use Package\Raxon\Account\Service\User as Service;
 

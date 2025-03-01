@@ -16,7 +16,7 @@ use Raxon\Module\Database;
 use Raxon\Module\Handler;
 use Raxon\Module\Response;
 
-use Raxon\Node\Model\Node;
+use Raxon\Node\Module\Node;
 
 use Exception;
 
