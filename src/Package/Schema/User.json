@@ -19,7 +19,6 @@
               "name": "uuid",
               "type": "string",
               "options": {
-                "unique": true,
                 "length": 36
               }
             },
@@ -27,7 +26,6 @@
               "name": "email",
               "type": "string",
               "options": {
-                "unique": true
               }
             },
             {
@@ -35,15 +33,13 @@
               "type": "string",
               "options": {
                 "default": null,
-                "nullable": true,
-                "unique": true
+                "nullable": true
               }
             },
             {
               "name": "password",
               "type": "string",
               "options": {
-                "unique": true
               }
             },
             {
@@ -51,8 +47,7 @@
               "type": "string",
               "options": {
                 "default": null,
-                "nullable": true,
-                "unique": true
+                "nullable": true
               }
             },
             {
@@ -154,6 +149,14 @@
             "is_created",
             "is_updated",
             "is_deleted"
+          ],
+          "unique": [
+            "uuid",
+            "email",
+            "key",
+            "password",
+            "refresh_token"
+
           ]
         }
       ]
