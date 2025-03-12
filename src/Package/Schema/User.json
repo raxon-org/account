@@ -59,7 +59,18 @@
                 },
                 "mapped": {
                   "by": "user"
-                }
+                },
+                "foreign_key": {
+                  "table": "profile",
+                  "column": [
+                    "user_id"
+                  ],
+                  "origin": [
+                    "id"
+                  ],
+                  "action": {
+                    "onUpdate" : "CASCADE"
+                  }}
               }
             },
             {
