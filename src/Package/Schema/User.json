@@ -81,12 +81,12 @@
                     {
                       "name": "user_id",
                       "type": "bigint",
-                      "refer": "id"
+                      "reference": "id"
                     },
                     {
                       "name": "role_id",
                       "type": "bigint",
-                      "refer": "id"
+                      "reference": "id"
                     }
                   ]
                 }
@@ -146,7 +146,6 @@
             "key",
             "password",
             "refresh_token"
-
           ]
         }
       ]
