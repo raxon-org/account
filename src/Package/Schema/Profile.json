@@ -48,6 +48,7 @@
                   "column": [
                     {
                       "name": "user_id",
+                      "type": "bigint",
                       "reference": "id"
                     }
                   ]
