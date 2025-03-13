@@ -19,7 +19,6 @@
               "name": "uuid",
               "type": "string",
               "options": {
-                "unique": true,
                 "length": 36
               }
             },
@@ -27,15 +26,13 @@
               "name": "name",
               "type": "string",
               "options": {
-                "unique": true
               }
             },
             {
               "name": "rank",
               "type": "bigint",
               "options": {
-                "unsigned": true,
-                "unique": true
+                "unsigned": true
               }
             },
             {
@@ -63,10 +60,12 @@
                   "column": [
                     {
                       "name": "role_id",
+                      "type": "bigint",
                       "reference": "id"
                     },
                     {
                       "name": "permission_id",
+                      "type": "bigint",
                       "reference": "id"
                     }
                   ]
@@ -78,6 +77,11 @@
             "id"
           ],
           "index": [
+          ],
+          "unique": [
+            "uuid",
+            "name",
+            "rank"
           ]
         }
       ]

@@ -19,7 +19,6 @@
               "name": "uuid",
               "type": "string",
               "options": {
-                "unique": true,
                 "length": 36
               }
             },
@@ -27,7 +26,6 @@
               "name": "name",
               "type": "string",
               "options": {
-                "unique": true
               }
             },
             {
@@ -45,6 +43,10 @@
             "id"
           ],
           "index": [
+          ],
+          "unique": [
+            "uuid",
+            "name"
           ]
         }
       ]

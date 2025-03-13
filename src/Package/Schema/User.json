@@ -63,18 +63,6 @@
               }
             },
             {
-              "name": "parameter",
-              "type": "one-to-many",
-              "options": {
-                "target": {
-                  "entity": "Parameter"
-                },
-                "mapped": {
-                  "by": "user"
-                }
-              }
-            },
-            {
               "name": "role",
               "type": "many-to-many",
               "options": {
@@ -92,10 +80,12 @@
                   "column": [
                     {
                       "name": "user_id",
+                      "type": "bigint",
                       "refer": "id"
                     },
                     {
                       "name": "role_id",
+                      "type": "bigint",
                       "refer": "id"
                     }
                   ]
