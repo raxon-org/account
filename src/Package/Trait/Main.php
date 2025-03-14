@@ -4,8 +4,10 @@ namespace Package\Raxon\Account\Trait;
 use Raxon\App;
 use Raxon\Config;
 
+use Raxon\Doctrine\Service\Entity;
 use Raxon\Module\Cli;
 use Raxon\Module\Core;
+use Raxon\Module\Database;
 use Raxon\Module\File;
 use Raxon\Module\Handler;
 use Raxon\Module\Response;
@@ -350,6 +352,16 @@ trait Main
                 'created' => $time
             ]
         ];
+        //mysqli connection
+
+        $entityManager = Database::entityManager($object);
+        $options_entity = [
+            'filter' => [
+                'email' => $email
+            ]
+        ];
+        $user = Entity::record($object, $entityManager, $node->role_system(), $options_entity);
+
         ddd($user);
         $result = $node->create('Account.User', $node->role_system(), $user, $options);
         if(
