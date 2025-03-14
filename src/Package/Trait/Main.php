@@ -354,6 +354,7 @@ trait Main
         ];
         //mysqli connection
         $entity = 'User';
+        Database::instance($object, Database::SYSTEM);
         $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
         $options_entity = [
             'filter' => [
