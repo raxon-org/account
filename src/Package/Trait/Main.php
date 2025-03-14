@@ -353,14 +353,14 @@ trait Main
             ]
         ];
         //mysqli connection
-
+        $entity = 'User';
         $entityManager = Database::entityManager($object);
         $options_entity = [
             'filter' => [
                 'email' => $email
             ]
         ];
-        $user = Entity::record($object, $entityManager, $node->role_system(), $options_entity);
+        $user = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
 
         ddd($user);
         $result = $node->create('Account.User', $node->role_system(), $user, $options);
