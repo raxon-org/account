@@ -350,6 +350,7 @@ trait Main
                 'created' => $time
             ]
         ];
+        ddd($user);
         $result = $node->create('Account.User', $node->role_system(), $user, $options);
         if(
             array_key_exists('node', $result) &&
@@ -904,6 +905,9 @@ trait Main
                     echo Cli::error('Role not found...') . PHP_EOL;
                 }
             }
+            d($email);
+            d($password);
+            ddd($item);
             $class = 'Account.User';
             $node = new Node($object);
             $record = $node->record(
