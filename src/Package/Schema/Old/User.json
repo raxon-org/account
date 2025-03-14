@@ -64,12 +64,33 @@
             },
             {
               "name": "role",
-              "type": "json",
+              "type": "many-to-many",
               "options": {
-              },
-              "#comment": [
-                "We get the role from raxon/node, this is an array of uuids"
-              ]
+                "target": {
+                  "entity": "Role"
+                },
+                "inverse": {
+                  "by": "users"
+                },
+                "cascade": [
+                  "persist"
+                ],
+                "join": {
+                  "table": "user_role",
+                  "column": [
+                    {
+                      "name": "user_id",
+                      "type": "bigint",
+                      "reference": "id"
+                    },
+                    {
+                      "name": "role_id",
+                      "type": "bigint",
+                      "reference": "id"
+                    }
+                  ]
+                }
+              }
             },
             {
               "name": "is_active",

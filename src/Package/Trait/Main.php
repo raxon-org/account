@@ -39,8 +39,6 @@ trait Main
         $url_default = $object->config('project.dir.package') .
             'Raxon' .
             $object->config('ds') .
-            'Org' .
-            $object->config('ds') .
             'Account' .
             $object->config('ds') .
             'Data' .
@@ -63,7 +61,17 @@ trait Main
         }
         if(property_exists($options, 'patch')){
             $data = $object->data_read($url_data);
-            $node = new Node($object);
+            $data_default = $object->data_read($url_default);
+            if($data_default){
+                $node = new Node($object);
+                $result = $node->patch_many(
+                    'Account.Role',
+                    $node->role_system(),
+                    $data_default->data('Account.Role'),
+                    $options
+                );
+                return $result;
+            }
 
             ddd($data);
         } else {
