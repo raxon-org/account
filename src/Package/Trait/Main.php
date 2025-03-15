@@ -339,7 +339,7 @@ trait Main
             ]
         ]);
         $time = time();
-        $user = (object) [
+        $user = [
             'email' => $email,
             'password' => password_hash($password, PASSWORD_BCRYPT, [
                 'cost' => 13
@@ -352,7 +352,6 @@ trait Main
                 'created' => $time
             ]
         ];
-        //mysqli connection
         $entity = 'User';
         Database::instance($object, Database::SYSTEM);
         $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
@@ -362,7 +361,18 @@ trait Main
             ]
         ];
         $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
-
+        if(
+            array_key_exists('node', $response) &&
+            property_exists($response['node'], 'uuid')
+        ){
+            ddd($object->request());
+            Entity::updateByUuid($object, $entity, $response['node']->uuid);
+        } else {
+            $create = Entity::create($object, $entityManager, $node->role_system(), $entity, $user);
+            ddd($create);
+            //we can create a record and save it to the database
+        }
+        /*
         ddd($response);
         $result = $node->create('Account.User', $node->role_system(), $user, $options);
         if(
@@ -377,6 +387,7 @@ trait Main
                 ]
             ], $options);
         }
+        */
         return $result;
     }
 
