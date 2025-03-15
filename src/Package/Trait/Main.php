@@ -361,9 +361,9 @@ trait Main
                 'email' => $email
             ]
         ];
-        $user = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
+        $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
 
-        ddd($user);
+        ddd($response);
         $result = $node->create('Account.User', $node->role_system(), $user, $options);
         if(
             array_key_exists('node', $result) &&
