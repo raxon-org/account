@@ -16,6 +16,7 @@ use Raxon\Node\Module\Node;
 
 use Package\Raxon\Account\Service\User as Service;
 
+use DateTime;
 use Exception;
 
 use Raxon\Exception\FileWriteException;
@@ -348,7 +349,7 @@ trait Main
                 $result['node']->uuid
             ],
             'isActive' => 0, //cannot activate immediately
-            'isCreated' => $time
+            'isCreated' => new DateTime('@' . $time),
         ];
         $entity = 'User';
         Database::instance($object, Database::SYSTEM);
