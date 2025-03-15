@@ -340,18 +340,17 @@ trait Main
         ]);
         $time = time();
         $user = [
-            'node' => [
-                'email' => $email,
-                'password' => password_hash($password, PASSWORD_BCRYPT, [
-                    'cost' => 13
-                ]),
-                'role' => [
-                    $result['node']->uuid
-                ],
-                'isActive' => 0, //cannot activate immediately
-                'isCreated' => $time
-            ]
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_BCRYPT, [
+                'cost' => 13
+            ]),
+            'role' => [
+                $result['node']->uuid
+            ],
+            'isActive' => 0, //cannot activate immediately
+            'isCreated' => $time
         ];
+        $object->request('node', $user);
         $entity = 'User';
         Database::instance($object, Database::SYSTEM);
         $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
@@ -369,7 +368,7 @@ trait Main
             ddd($object->request());
             Entity::updateByUuid($object, $entity, $response['node']->uuid);
         } else {
-            $create = Entity::create($object, $entityManager, $node->role_system(), $entity, $user);
+            $create = Entity::create($object, $entityManager, $node->role_system(), $entity, $object->request('node'));
             ddd($create);
             //we can create a record and save it to the database
         }
