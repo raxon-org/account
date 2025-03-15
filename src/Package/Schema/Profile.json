@@ -48,7 +48,8 @@
                     {
                       "name": "user_id",
                       "type": "bigint",
-                      "reference": "id"
+                      "reference": "id",
+                      "nullable": false
                     }
                   ]
                 }
