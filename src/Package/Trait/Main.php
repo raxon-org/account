@@ -340,15 +340,17 @@ trait Main
         ]);
         $time = time();
         $user = [
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_BCRYPT, [
-                'cost' => 13
-            ]),
-            'role' => [
-                $result['node']->uuid
-            ],
-            'isActive' => 0, //cannot activate immediately
-            'isCreated' => $time
+            'node' => [
+                'email' => $email,
+                'password' => password_hash($password, PASSWORD_BCRYPT, [
+                    'cost' => 13
+                ]),
+                'role' => [
+                    $result['node']->uuid
+                ],
+                'isActive' => 0, //cannot activate immediately
+                'isCreated' => $time
+            ]
         ];
         $entity = 'User';
         Database::instance($object, Database::SYSTEM);
