@@ -347,10 +347,8 @@ trait Main
             'role' => [
                 $result['node']->uuid
             ],
-            'is' => (object) [
-                'active' => 0, //cannot activate immediately
-                'created' => $time
-            ]
+            'isActive' => 0, //cannot activate immediately
+            'isCreated' => $time
         ];
         $entity = 'User';
         Database::instance($object, Database::SYSTEM);
