@@ -363,6 +363,7 @@ trait Main
         $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
         if(
             array_key_exists('node', $response) &&
+            is_object($response['node']) &&
             property_exists($response['node'], 'uuid')
         ){
             ddd($object->request());
