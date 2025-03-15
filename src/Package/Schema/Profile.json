@@ -46,7 +46,7 @@
                 "join": {
                   "column": [
                     {
-                      "name": "user_id",
+                      "name": "user",
                       "type": "bigint",
                       "reference": "id",
                       "nullable": false
