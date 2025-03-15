@@ -350,7 +350,6 @@ trait Main
             'isActive' => 0, //cannot activate immediately
             'isCreated' => $time
         ];
-        $object->request('node', $user);
         $entity = 'User';
         Database::instance($object, Database::SYSTEM);
         $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
@@ -368,6 +367,7 @@ trait Main
             ddd($object->request());
             Entity::updateByUuid($object, $entity, $response['node']->uuid);
         } else {
+            $object->request('node', $user);
             $create = Entity::create($object, $entityManager, $node->role_system(), $entity, $object->request('node'));
             ddd($create);
             //we can create a record and save it to the database
