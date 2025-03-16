@@ -30,6 +30,9 @@ trait User
         }
         $config = Database::config($object);
         $connection = $object->config('doctrine.environment.' . $options->connection . '.' . $options->environment);
+        if($connection === null){
+            $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
+        }
         ddd($connection);
         Database::entity_manager($object, $config);
         ddd($options);
