@@ -1,2 +1,2 @@
-{{$response = Package.Raxon.Account:Main:setup.admin(flags(), options())}}
+{{$response = Package.Raxon.Account:User:setup.admin(flags(), options())}}
 {{$response|object:'json'}}
