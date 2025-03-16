@@ -1,13 +1,19 @@
 <?php
 namespace Package\Raxon\Account\Trait;
 
+use DateTime;
+
 use Doctrine\ORM\Exception\ORMException;
+
+use Raxon\Module\Cli;
+
 use Raxon\Doctrine\Module\Database;
 use Raxon\Doctrine\Module\Entity;
 
-use Exception;
-use Raxon\Module\Cli;
 use Raxon\Node\Module\Node;
+
+use Exception;
+
 
 trait User
 {
