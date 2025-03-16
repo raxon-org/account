@@ -37,7 +37,7 @@ trait User
         }
         $em = Database::entity_manager($object, $config, $connection);
 
-        $user = Entity::readById($object, $em, 'user', 1);
+        $user = Entity::readById($object, $em, 'User', 1);
         d($user);
         ddd($options);
     }
