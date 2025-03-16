@@ -1,5 +1,5 @@
 <?php
-namespace Package\Raxon\Account\Trait;
+namespace Raxon\Doctrine\Module;
 
 use Raxon\Doctrine\Module\Database;
 
@@ -22,11 +22,12 @@ trait User
         }
         if (
             property_exists($options, 'email') ||
-            property_exists($options, 'uuid')
+            property_exists($options, 'uuid') ||
+            property_exists($options, 'id')
         ) {
             //nothing
         } else {
-            throw new Exception('Option email or uuid required.');
+            throw new Exception('Option email, id or uuid required.');
         }
         $config = Database::config($object);
         $connection = $object->config('doctrine.environment.' . $options->connection . '.' . $options->environment);
@@ -34,7 +35,8 @@ trait User
             $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
         }
         $em = Database::entity_manager($object, $config, $connection);
-        $user = $em->find('Entity\User', 1);
+
+        $user = Entity::readById($object, $em, 'Entity\User', 1);
         d($user);
         ddd($options);
     }
