@@ -852,6 +852,10 @@ trait Main
         return '';
     }
 
+    public function user_read($flags, $options){
+        ddd($options);
+    }
+
     /**
      * @throws ObjectException
      * @throws Exception
