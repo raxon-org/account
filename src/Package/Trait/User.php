@@ -104,17 +104,10 @@ trait User
 
             }
         }
-        $input =  (int) Cli::read('input', 'Enter connection number') - 1;
+        $input =  (int) Cli::read('input', 'Enter connection number: ') - 1;
         $connection = $list_connection[$input] ?? null;
-        d($input);
-        d($connection);
-        ddd($environments);
         $em = Database::entity_manager($object, $config, $connection);
         $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
-
-
-
-
         ddd($user);
 
 
