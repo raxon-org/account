@@ -33,8 +33,8 @@ trait User
         if($connection === null){
             $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
         }
-        ddd($connection);
-        Database::entity_manager($object, $config);
+        $em = Database::entity_manager($object, $config, $connection);
+        d($em);
         ddd($options);
     }
 }
