@@ -59,7 +59,8 @@
                 },
                 "mapped": {
                   "by": "user"
-                }
+                },
+                "nullable": true
               }
             },
             {
