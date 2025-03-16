@@ -1,6 +1,7 @@
 <?php
 namespace Package\Raxon\Account\Trait;
 
+use Doctrine\ORM\Exception\ORMException;
 use Raxon\Doctrine\Module\Database;
 use Raxon\Doctrine\Module\Entity;
 
@@ -12,7 +13,8 @@ trait User
 
     /**
     * @throws Exception
-    */
+     * @throws ORMException
+     */
     public function user_read($flags, $options)
     {
         $object = $this->object();
