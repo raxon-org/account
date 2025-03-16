@@ -99,7 +99,7 @@ trait User
         foreach($environments as $name => $list){
             foreach($list as $environment => $connection){
                 $list_connection[$nr] = $connection;
-                echo ( $nr + 1 ) . $name . ' ' . $environment . PHP_EOL;
+                echo '(' .  $nr + 1 . ') ' . $name . ' ' . $environment . PHP_EOL;
             }
         }
         $input =  (int) Cli::read('input', 'Enter connection number') - 1;
