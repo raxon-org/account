@@ -4,7 +4,6 @@ namespace Package\Raxon\Account\Trait;
 use Raxon\App;
 use Raxon\Config;
 
-use Raxon\Doctrine\Service\Entity;
 use Raxon\Module\Cli;
 use Raxon\Module\Core;
 use Raxon\Module\Database;
@@ -13,6 +12,7 @@ use Raxon\Module\Handler;
 use Raxon\Module\Response;
 
 use Raxon\Node\Module\Node;
+use Raxon\Doctrine\Module\Entity;
 
 use Package\Raxon\Account\Service\User as Service;
 
@@ -340,7 +340,7 @@ trait Main
             ]
         ]);
         $time = time();
-        $user = [
+        $request = [
             'email' => $email,
             'password' => password_hash($password, PASSWORD_BCRYPT, [
                 'cost' => 13
@@ -352,6 +352,16 @@ trait Main
             'isCreated' => new DateTime('@' . $time),
         ];
         $entity = 'User';
+        $config = Database::config($object);
+        $connection = $object->config('doctrine.environment.' . $options->connection . '.' . $options->environment);
+        if($connection === null){
+            $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
+        }
+        $em = Database::entity_manager($object, $config, $connection);
+        $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
+
+
+
 
         ddd($user);
 
