@@ -34,7 +34,8 @@ trait User
             $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
         }
         $em = Database::entity_manager($object, $config, $connection);
-        d($em);
+        $user = $em->find('User', 1);
+        d($user);
         ddd($options);
     }
 }
