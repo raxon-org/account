@@ -94,14 +94,19 @@ trait User
         $config = Database::config($object);
 
         $environments = $object->config('doctrine.environment');
-        ddd($environments);
-
-
-
-        $connection = $object->config('doctrine.environment.' . $options->connection . '.' . $options->environment);
-        if($connection === null){
-            $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
+        $nr = 0;
+        $list = [];
+        foreach($environments as $name => $list){
+            foreach($list as $environment => $connection){
+                $list[$nr] = $connection;
+                echo ( $nr + 1 ) . $name . ' ' . $environment . PHP_EOL;
+            }
         }
+        $input =  (int) Cli::read('input', 'Enter connection number') - 1;
+        $connection = $list[$nr] ?? null;
+        d($input);
+        d($connection);
+        ddd($environments);
         $em = Database::entity_manager($object, $config, $connection);
         $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
 
