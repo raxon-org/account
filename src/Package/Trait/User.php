@@ -1,7 +1,8 @@
 <?php
-namespace Raxon\Doctrine\Module;
+namespace Package\Raxon\Account\Trait;
 
 use Raxon\Doctrine\Module\Database;
+use Raxon\Doctrine\Module\Entity;
 
 use Exception;
 
