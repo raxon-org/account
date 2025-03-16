@@ -95,15 +95,15 @@ trait User
 
         $environments = $object->config('doctrine.environment');
         $nr = 0;
-        $list = [];
+        $list_connection = [];
         foreach($environments as $name => $list){
             foreach($list as $environment => $connection){
-                $list[$nr] = $connection;
+                $list_connection[$nr] = $connection;
                 echo ( $nr + 1 ) . $name . ' ' . $environment . PHP_EOL;
             }
         }
         $input =  (int) Cli::read('input', 'Enter connection number') - 1;
-        $connection = $list[$nr] ?? null;
+        $connection = $list_connection[$nr] ?? null;
         d($input);
         d($connection);
         ddd($environments);
