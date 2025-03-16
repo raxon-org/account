@@ -100,10 +100,12 @@ trait User
             foreach($list as $environment => $connection){
                 $list_connection[$nr] = $connection;
                 echo '(' .  $nr + 1 . ') ' . $name . ' ' . $environment . PHP_EOL;
+                $nr++;
+
             }
         }
         $input =  (int) Cli::read('input', 'Enter connection number') - 1;
-        $connection = $list_connection[$nr] ?? null;
+        $connection = $list_connection[$input] ?? null;
         d($input);
         d($connection);
         ddd($environments);
