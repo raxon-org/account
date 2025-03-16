@@ -79,7 +79,7 @@ trait User
             ]
         ]);
         $time = time();
-        $request = [
+        $request = (object) [
             'email' => $email,
             'password' => password_hash($password, PASSWORD_BCRYPT, [
                 'cost' => 13
