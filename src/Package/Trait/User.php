@@ -5,6 +5,7 @@ use Raxon\Doctrine\Module\Database;
 use Raxon\Doctrine\Module\Entity;
 
 use Exception;
+use Raxon\Node\Module\Node;
 
 trait User
 {
@@ -36,8 +37,8 @@ trait User
             $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
         }
         $em = Database::entity_manager($object, $config, $connection);
-
-        $user = Entity::readById($object, $em, 'User', 1);
+        $node = new Node($object);
+        $user = Entity::readById($object, $em, $node->role_system(), 'User', 1);
         d($user);
         ddd($options);
     }
