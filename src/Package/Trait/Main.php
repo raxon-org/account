@@ -352,6 +352,10 @@ trait Main
             'isCreated' => new DateTime('@' . $time),
         ];
         $entity = 'User';
+
+        ddd($user);
+
+
         Database::instance($object, Database::SYSTEM);
         $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
         $options_entity = [
