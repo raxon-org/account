@@ -67,9 +67,9 @@
               "name": "role",
               "type": "json",
               "options": {
-                  "node": {
-                  "class": "Account.Role"
-                }
+                  "target": {
+                    "node": "Account.Role"
+                  }
               },
               "#comment": [
                 "We get the role from raxon/node, this is an array of uuids"
