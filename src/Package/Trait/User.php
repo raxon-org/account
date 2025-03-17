@@ -108,12 +108,12 @@ trait User
         $input =  (int) Cli::read('input', 'Enter connection number: ') - 1;
         $connection = $list_connection[$input] ?? null;
         $em = Database::entity_manager($object, $config, $connection);
-        $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
+        $user = Entity::create($object, $em, $node->role_system(), $entity, $request, $error);
         if(is_object($user) && $user->getId() === null){
             throw new Exception('User not created');
         }
-        else {
-            ddd($user);
+        elseif($user === null && $error !== null){
+            ddd($error);
         }
         echo 'User ('. $email .') created' . PHP_EOL;
     }
