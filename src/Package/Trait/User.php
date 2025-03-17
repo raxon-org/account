@@ -57,7 +57,7 @@ trait User
      * @throws ObjectException
      * @throws Exception
      */
-    public function setup_admin($flags, $options): void
+    public function setup_admin($flags, $options): mixed
     {
         echo 'Create admin account' . PHP_EOL;
         echo 'Press ctrl-c to abort' . PHP_EOL;
@@ -113,8 +113,9 @@ trait User
             throw new Exception('User not created');
         }
         elseif($user === null && $error !== null){
-            ddd($error);
+            return $error;
         }
         echo 'User ('. $email .') created' . PHP_EOL;
+        return null;
     }
 }
