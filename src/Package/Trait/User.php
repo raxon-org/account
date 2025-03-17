@@ -14,6 +14,7 @@ use Raxon\Node\Module\Node;
 
 use Exception;
 
+use Raxon\Exception\ObjectException;
 
 trait User
 {
@@ -56,7 +57,7 @@ trait User
      * @throws ObjectException
      * @throws Exception
      */
-    public function setup_admin($flags, $options): array
+    public function setup_admin($flags, $options): void
     {
         echo 'Create admin account' . PHP_EOL;
         echo 'Press ctrl-c to abort' . PHP_EOL;
@@ -108,46 +109,9 @@ trait User
         $connection = $list_connection[$input] ?? null;
         $em = Database::entity_manager($object, $config, $connection);
         $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
-        ddd($user);
-
-
-        Database::instance($object, Database::SYSTEM);
-        $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
-        $options_entity = [
-            'filter' => [
-                'email' => $email
-            ]
-        ];
-        $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
-        if(
-            array_key_exists('node', $response) &&
-            is_object($response['node']) &&
-            property_exists($response['node'], 'uuid')
-        ){
-            ddd($object->request());
-            Entity::updateByUuid($object, $entity, $response['node']->uuid);
-        } else {
-            $object->request('node', $user);
-            $create = Entity::create($object, $entityManager, $node->role_system(), $entity, $object->request('node'));
-            ddd($create);
-            //we can create a record and save it to the database
+        if($user->getId() === null){
+            throw new Exception('User not created');
         }
-        /*
-        ddd($response);
-        $result = $node->create('Account.User', $node->role_system(), $user, $options);
-        if(
-            array_key_exists('node', $result) &&
-            property_exists($result['node'], 'uuid')
-        ){
-
-            $result = $node->patch('Account.User', $node->role_system(), [
-                'uuid' => $result['node']->uuid,
-                'is' => (object) [
-                    'active' => $time
-                ]
-            ], $options);
-        }
-        */
-        return $result;
+        echo 'User ('. $email .') created' . PHP_EOL;
     }
 }
