@@ -109,8 +109,11 @@ trait User
         $connection = $list_connection[$input] ?? null;
         $em = Database::entity_manager($object, $config, $connection);
         $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
-        if($user->getId() === null){
+        if(is_object($user) && $user->getId() === null){
             throw new Exception('User not created');
+        }
+        else {
+            ddd($user);
         }
         echo 'User ('. $email .') created' . PHP_EOL;
     }
