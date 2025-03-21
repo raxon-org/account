@@ -88,7 +88,7 @@ trait User
             'role' => [
                 $result['node']->uuid
             ],
-            'isActive' => 0, //cannot activate immediately
+            'isActive' => 1,
             'isCreated' => new DateTime('@' . $time),
         ];
         $entity = 'User';
