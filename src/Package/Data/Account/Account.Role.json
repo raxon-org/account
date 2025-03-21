@@ -12,6 +12,12 @@
         "name": "ROLE_ADMIN",
         "rank": 2,
         "permission": "*"
+      },
+      {
+        "#class": "Account.Role",
+        "name": "ROLE_ANONYMOUS",
+        "rank": 9999999,
+        "permission": []
       }
     ]
   }
