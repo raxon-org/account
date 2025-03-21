@@ -16,7 +16,7 @@
               }
             },
             {
-              "name": "user_id",
+              "name": "userId",
               "type": "bigint",
               "options": {
                 "unsigned": true,
@@ -25,13 +25,13 @@
               }
             },
             {
-              "name": "ip_address",
+              "name": "ipAddress",
               "type": "string",
               "options": {
               }
             },
             {
-              "name": "date_time",
+              "name": "dateTime",
               "type": "datetime",
               "options": {
                 "default": "CURRENT_TIMESTAMP"
@@ -48,9 +48,9 @@
             "id"
           ],
           "index": [
-            "user_id",
-            "ip_address",
-            "date_time",
+            "userId",
+            "ipAddress",
+            "dateTime",
             "status"
           ]
         }

@@ -43,7 +43,7 @@
               }
             },
             {
-              "name": "refresh_token",
+              "name": "refreshToken",
               "type": "string",
               "options": {
                 "default": null,
@@ -76,14 +76,14 @@
               ]
             },
             {
-              "name": "is_active",
+              "name": "isActive",
               "type": "boolean",
               "options": {
                 "default": false
               }
             },
             {
-              "name": "is_logged_in",
+              "name": "isLoggedIn",
               "type": "datetime",
               "options": {
                 "default": null,
@@ -91,21 +91,21 @@
               }
             },
             {
-              "name": "is_created",
+              "name": "isCreated",
               "type": "datetime",
               "options": {
                 "default": "CURRENT_TIMESTAMP"
               }
             },
             {
-              "name": "is_updated",
+              "name": "isUpdated",
               "type": "datetime",
               "options": {
                 "default": "CURRENT_TIMESTAMP"
               }
             },
             {
-              "name": "is_deleted",
+              "name": "isDeleted",
               "type": "datetime",
               "options": {
                 "default": null,
@@ -117,18 +117,18 @@
             "id"
           ],
           "index": [
-            "is_active",
-            "is_logged_in",
-            "is_created",
-            "is_updated",
-            "is_deleted"
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted"
           ],
           "unique": [
             "uuid",
             "email",
             "key",
             "password",
-            "refresh_token"
+            "refreshToken"
           ]
         }
       ]
