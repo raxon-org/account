@@ -56,6 +56,7 @@ trait User
     /**
      * @throws ObjectException
      * @throws Exception
+     * @throws ORMException
      */
     public function setup_admin($flags, $options): mixed
     {
@@ -88,7 +89,7 @@ trait User
             'role' => [
                 $result['node']->uuid
             ],
-            'isActive' => 1,
+            'isActive' => 0, //cannot activate immediately
             'isCreated' => new DateTime('@' . $time),
         ];
         $entity = 'User';
@@ -107,8 +108,8 @@ trait User
         }
         $input =  (int) Cli::read('input', 'Enter connection number: ') - 1;
         $connection = $list_connection[$input] ?? null;
-        $em = Database::entity_manager($object, $config, $connection);
-        $user = Entity::create($object, $em, $node->role_system(), $entity, $request, $error);
+        $connection->manager = Database::entity_manager($object, $config, $connection);
+        $user = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
         if(is_object($user) && $user->getId() === null){
             throw new Exception('User not created');
         }
@@ -116,6 +117,11 @@ trait User
             return $error;
         }
         echo 'User ('. $email .') created' . PHP_EOL;
+        $request = (object) [
+            'id' => $user->getId(),
+            'isActive' => 1
+        ];
+        $user = Entity::patch($object, $connection, $node->role_system(), $entity, $request, $error);
         return null;
     }
 }
