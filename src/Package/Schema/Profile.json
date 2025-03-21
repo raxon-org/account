@@ -38,7 +38,9 @@
               "name": "user",
               "type": "one-to-one",
               "options": {
-                "target": "User",
+                "target": {
+                  "entity": "User"
+                },
                 "inversed": "profile",
                 "cascade": [
                   "persist"
