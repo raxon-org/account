@@ -168,6 +168,8 @@ trait User
             property_exists($response['node'], 'uuid')
         ){
             $role = $response['node'];
+            $role->rank = $data->get('rank');
+            $role->permission = $permission_array;
         }
         else{
             $response = $node->create(
@@ -181,6 +183,12 @@ trait User
             );
             $role = $response['node'];
         }
+        $response = $node->put(
+            'Account.Role',
+            $node->role_system(),
+            $role
+        );
+        d($response);
         d($role);
         ddd($url);
     }
