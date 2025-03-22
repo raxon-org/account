@@ -130,6 +130,32 @@ trait User
         $object = $this->object();
         $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
         $data = $object->data_read($url);
+        if($data){
+            foreach($data->get('permission') as $permission){
+                $node = new Node($object);
+                $result = $node->record('Account.Permission', $node->role_system(), [
+                    'filter' => [
+                        'name' => $permission->name
+                    ]
+                ]);
+                ddd($result);
+                if($result === null){
+                    $request = (object) [
+                        'name' => $permission,
+                    ];
+                    $entity = 'Permission';
+                    $config = Database::config($object);
+                    $connection = Database::entity_manager($object, $config);
+                    $permission = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
+                    if($permission === null && $error !== null){
+                        d($error);
+                    }
+                }
+            }
+        }
+
+
+
         d($data);
         ddd($url);
     }
