@@ -158,13 +158,12 @@ trait User
                 }
             }
         }
-        ddd($permission_array);
-        $response = $node->record('Account.Permission', $node->role_system(), [
+        $response = $node->record('Account.Role', $node->role_system(), [
             'filter' => [
-                'name' => $permission->name
+                'name' => $data->get('name')
             ]
         ]);
-
+        d($response);
 
         d($data);
         ddd($url);
