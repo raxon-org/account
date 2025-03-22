@@ -128,7 +128,7 @@ trait User
     public function setup_anonymous($flags, $options)
     {
         $object = $this->object();
-        $url = $object->config('framework.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
+        $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
         ddd($url);
     }
 }
