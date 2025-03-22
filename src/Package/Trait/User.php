@@ -163,9 +163,25 @@ trait User
                 'name' => $data->get('name')
             ]
         ]);
-        d($response);
-
-        d($data);
+        if(
+            array_key_exists('node', $response) &&
+            property_exists($response['node'], 'uuid')
+        ){
+            $role = $response['node'];
+        }
+        else{
+            $response = $node->create(
+                'Account.Role',
+                $node->role_system(),
+                [
+                    'name' => $data->get('name'),
+                    'rank' => $data->get('rank'),
+                    'permission' => $permission_array
+                ]
+            );
+            $role = $response['node'];
+        }
+        d($role);
         ddd($url);
     }
 }
