@@ -180,8 +180,7 @@ trait User
                     'permission' => $permission_array
                 ]
             );
-            ddd($response);
-            $role = $response['node'];
+            $role = $response['node'] ?? (object) [];
         }
         else{
             $response = $node->create(
@@ -193,7 +192,7 @@ trait User
                     'permission' => $permission_array
                 ]
             );
-            $role = $response['node'];
+            $role = $response['node'] ?? (object) [];
         }
         if(property_exists($role, 'uuid')){
             return 'ROLE_ANONYMOUS created / reset...';
