@@ -170,6 +170,12 @@ trait User
             $role = $response['node'];
             $role->rank = $data->get('rank');
             $role->permission = $permission_array;
+            $response = $node->put(
+                'Account.Role',
+                $node->role_system(),
+                $role
+            );
+            $role = $response['node'];
         }
         else{
             $response = $node->create(
@@ -183,13 +189,8 @@ trait User
             );
             $role = $response['node'];
         }
-        $response = $node->put(
-            'Account.Role',
-            $node->role_system(),
-            $role
-        );
-        d($response);
-        d($role);
-        ddd($url);
+        if(property_exists($role, 'uuid')){
+            return 'ROLE_ANONYMOUS created / reset...';
+        }
     }
 }
