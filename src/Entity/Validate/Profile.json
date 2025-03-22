@@ -1,0 +1,47 @@
+{
+    "Profile": {
+        "create" : {
+            "validate": {
+                "user" : [
+                    {
+                        "integer" : ">=1"
+                    }
+                ],
+                "firstname" : [
+                    {
+                        "string.length": ">=1"
+                    }
+                ],
+                "surname" : [
+                    {
+                        "string.length": ">=1"
+                    }
+                ]
+            }
+        },
+        "update" : {
+            "validate": {
+                "id" : [
+                    {
+                        "integer" : ">=1"
+                    }
+                ],
+                "?user" : [
+                    {
+                        "integer" : ">=1"
+                    }
+                ],
+                "?firstname" : [
+                    {
+                        "string.length": ">=1"
+                    }
+                ],
+                "?surname" : [
+                    {
+                        "string.length": ">=1"
+                    }
+                ]
+            }
+        }
+    }
+}

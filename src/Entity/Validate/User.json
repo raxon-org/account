@@ -1,0 +1,78 @@
+{
+    "User": {
+        "create" : {
+            "validate": {
+                "isActive" : [
+                    {
+                        "integer": "===0"
+                    }
+                ],
+                "email" : [
+                    {
+                        "is.email": true
+                    },
+                    {
+                        "is.unique.mysql" : {
+                            "table" : "Entity\\User",
+                            "field" : "email"
+                        }
+                    }
+                ],
+                "password" : [
+                    {
+                        "string.length": ">=8"
+                    },
+                    {
+                        "string.has.number": ">=1"
+                    },
+                    {
+                        "string.has.uppercase": ">=1"
+                    },
+                    {
+                        "string.has.lowercase": ">=1"
+                    },
+                    {
+                        "string.has.symbol" : ">=1"
+                    }
+                ]
+            }
+        },
+        "patch" : {
+            "validate": {
+                "?isActive" : [
+                    {
+                        "integer": ">=0"
+                    }
+                ],
+                "?email" : [
+                    {
+                        "is.email": true
+                    },
+                    {
+                        "is.unique.mysql" : {
+                            "table" : "Entity\\User",
+                            "field" : "email"
+                        }
+                    }
+                ],
+                "?password" : [
+                    {
+                        "string.length": ">=8"
+                    },
+                    {
+                        "string.has.number": ">=1"
+                    },
+                    {
+                        "string.has.uppercase": ">=1"
+                    },
+                    {
+                        "string.has.lowercase": ">=1"
+                    },
+                    {
+                        "string.has.symbol" : ">=1"
+                    }
+                ]
+            }
+        }
+    }
+}

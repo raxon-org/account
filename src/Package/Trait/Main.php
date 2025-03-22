@@ -417,6 +417,8 @@ trait Main
         /*
          * - create role ROLE_SYSTEM with rank 1
          * - create role ROLE_ADMIN with rank 2
+         * - create role ROLE_ANONYMOUS with rank 9.999.999 and link its permissions
+         * - collect anonymous roles, currently 3 for the admin / api.
          */
         Core::interactive();
         $object = $this->object();

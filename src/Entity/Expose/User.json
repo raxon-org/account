@@ -1,0 +1,763 @@
+{
+  "User" : {
+    "create" : {
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "isActive",
+            "isCreated",
+            "isUpdated",
+            "role"
+          ],
+          "object" : {
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_ANONYMOUS",
+          "property" : [
+            "email",
+            "isActive",
+            "isCreated",
+            "isUpdated",
+            "role"
+          ],
+          "object" : {
+            "roles" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ANONYMOUS",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "read" : {
+      "output" : [
+        {
+          "role" : "ROLE_SYSTEM",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id:{{user.token.id()}}",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "user_id:{{user.token.id()}}",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "update" : {
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id:{{user.token.id()}}",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "user_id:{{user.token.id()}}",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "delete" : {
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id:{{user.token.id()}}",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "user_id:{{user.token.id()}}",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "list" : {
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "role"
+          ],
+          "object" : {
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "register" : {
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id:{{user.token.id()}}",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "user_id:{{user.token.id()}}",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "getTokens" : {
+      "output" : [
+        {
+          "role" : "ROLE_ANONYMOUS",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ANONYMOUS",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ANONYMOUS",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ANONYMOUS",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "current" : {
+      "output" : [
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id:{{user.token.id()}}",
+            "uuid",
+            "email",
+            "key",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}
