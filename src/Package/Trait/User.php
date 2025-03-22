@@ -181,8 +181,10 @@ trait User
                 ]
             );
             $role = $response['node'] ?? (object) [];
-        }
-        else{
+            if(property_exists($role, 'uuid')){
+                echo 'ROLE_ANONYMOUS reset...' . PHP_EOL;
+            }
+        } else{
             $response = $node->create(
                 'Account.Role',
                 $node->role_system(),
@@ -193,9 +195,10 @@ trait User
                 ]
             );
             $role = $response['node'] ?? (object) [];
+            if(property_exists($role, 'uuid')){
+                echo 'ROLE_ANONYMOUS created...' . PHP_EOL;
+            }
         }
-        if(property_exists($role, 'uuid')){
-            return 'ROLE_ANONYMOUS created / reset...' . PHP_EOL;
-        }
+
     }
 }
