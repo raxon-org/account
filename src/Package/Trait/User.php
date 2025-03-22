@@ -195,7 +195,7 @@ trait User
             $role = $response['node'] ?? (object) [];
         }
         if(property_exists($role, 'uuid')){
-            return 'ROLE_ANONYMOUS created / reset...';
+            return 'ROLE_ANONYMOUS created / reset...' . PHP_EOL;
         }
     }
 }
