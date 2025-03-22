@@ -173,7 +173,12 @@ trait User
             $response = $node->put(
                 'Account.Role',
                 $node->role_system(),
-                $role
+                [
+                    'uuid' => $role->uuid,
+                    'name' => $data->get('name'),
+                    'rank' => $data->get('rank'),
+                    'permission' => $permission_array
+                ]
             );
             ddd($response);
             $role = $response['node'];
