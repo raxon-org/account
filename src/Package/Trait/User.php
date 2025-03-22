@@ -130,7 +130,7 @@ trait User
         $object = $this->object();
         $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
         $data = $object->data_read($url);
-        $permission = [];
+        $permission_array = [];
         if($data){
             foreach($data->get('permission') as $permission){
                 $node = new Node($object);
@@ -143,7 +143,7 @@ trait User
                     array_key_exists('node', $response) &&
                     property_exists($response['node'], 'uuid')
                 ){
-                    $permission[] = $response['node']->uuid;
+                    $permission_array[] = $response['node']->uuid;
                 }
                 else{
                     //create permission
