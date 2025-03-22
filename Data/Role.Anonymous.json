@@ -1,0 +1,23 @@
+{
+  "name" : "ROLE_ANONYMOUS",
+  "rank" : 9999999,
+  "#class": "Account.Role",
+  "permission": [
+    {
+      "#class": "Account.Permission",
+      "name": "Index:overview"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "Index:readme"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "User:getTokens"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "Account:Role:list"
+    }
+  ]
+}

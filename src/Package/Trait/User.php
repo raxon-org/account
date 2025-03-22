@@ -124,4 +124,11 @@ trait User
         $user = Entity::patch($object, $connection, $node->role_system(), $entity, $request, $error);
         return null;
     }
+
+    public function setup_anonymous($flags, $options)
+    {
+        $object = $this->object();
+        $url = $object->config('framework.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
+        ddd($url);
+    }
 }
