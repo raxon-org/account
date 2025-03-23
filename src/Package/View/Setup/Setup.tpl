@@ -1,8 +1,8 @@
 {{$register = Package.Raxon.Account:Init:register()}}
 {{if(!is.empty($register))}}
 {{Package.Raxon.Account:Import:role.system()}}
-{{Package.Raxon.Account:User:setup.anonymous(flags(), options())}}
-{{Package.Raxon.Account:User:setup.user(flags(), options())}}
+{{Package.Raxon.Account:User:setup.role.anonymous(flags(), options())}}
+{{Package.Raxon.Account:User:setup.role.user(flags(), options())}}
 {{$options = options()}}
 /**
  // setup roles*
