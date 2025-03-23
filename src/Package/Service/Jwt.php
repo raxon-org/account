@@ -142,13 +142,25 @@ class Jwt {
                 is_array($options['user']['role'])
             ){
                 foreach($options['user']['role'] as $nr => $user_role){
-                    $role[] = [
-                        'name' => $user_role['name'],
-                        'rank' => $user_role['rank'],
-                        'permission' => [
-                            'count' => count($user_role['permission']),
-                        ]
-                    ];
+                    if(is_object($user_role)){
+                        $role[] = [
+                            'name' => $user_role->name,
+                            'rank' => $user_role->rank,
+                            'permission' => [
+                                'count' => count($user_role->permission),
+                            ]
+                        ];
+                    }
+                    elseif(is_array($user_role)){
+                        $role[] = [
+                            'name' => $user_role['name'],
+                            'rank' => $user_role['rank'],
+                            'permission' => [
+                                'count' => count($user_role['permission']),
+                            ]
+                        ];
+                    }
+
                 }
             }
             $claim = (object) [
