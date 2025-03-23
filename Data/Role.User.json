@@ -1,0 +1,11 @@
+{
+  "name" : "ROLE_USER",
+  "rank" : 999999,
+  "#class": "Account.Role",
+  "permission": [
+    {
+      "#class": "Account.Permission",
+      "name": "User:current"
+    }
+  ]
+}

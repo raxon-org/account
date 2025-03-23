@@ -63,7 +63,7 @@ trait Main
             }
         }
         if(property_exists($options, 'patch')){
-            $data = $object->data_read($url_data);
+//            $data = $object->data_read($url_data);
             $data_default = $object->data_read($url_default);
             if($data_default){
                 $node = new Node($object);
@@ -75,8 +75,7 @@ trait Main
                 );
                 return $result;
             }
-
-            ddd($data);
+//            ddd($data);
         } else {
             if(File::exist($url_data)){
                 File::delete($url_data);
