@@ -6,6 +6,14 @@
     {
       "#class": "Account.Permission",
       "name": "User:current"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "Account:Role.list"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "Account:Role.list.relation"
     }
   ]
 }
