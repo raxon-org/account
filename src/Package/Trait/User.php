@@ -232,7 +232,7 @@ trait User
                             'name' => $permission->name
                         ]
                     );
-                    ddd($response);
+                    $permission_array[] = $response['node']->uuid;
                 }
             }
         }
