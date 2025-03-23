@@ -9,11 +9,11 @@
     },
     {
       "#class": "Account.Permission",
-      "name": "Account:Role.list"
+      "name": "Account:Role:list"
     },
     {
       "#class": "Account.Permission",
-      "name": "Account:Role.list.relation"
+      "name": "Account:Role:list.relation"
     }
   ]
 }
