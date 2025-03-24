@@ -1,0 +1,64 @@
+{
+  "Application" : {
+    "Extension": {
+      "add": {
+        "output": [
+          {
+            "role": "ROLE_ADMIN",
+            "property": [
+              "id",
+              "uuid",
+              "name",
+              "url",
+              "icon_url",
+              "extensions"
+            ],
+            "object": {
+              "extensions": {
+                "multiple": true,
+                "output": [
+                  {
+                    "role": "ROLE_ADMIN",
+                    "property": [
+                      "id",
+                      "name"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "delete": {
+        "output": [
+          {
+            "role": "ROLE_ADMIN",
+            "property": [
+              "id",
+              "uuid",
+              "name",
+              "url",
+              "icon_url",
+              "extensions"
+            ],
+            "object": {
+              "extensions": {
+                "multiple": true,
+                "output": [
+                  {
+                    "role": "ROLE_ADMIN",
+                    "property": [
+                      "id",
+                      "name"
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

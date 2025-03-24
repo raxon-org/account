@@ -1,0 +1,34 @@
+{
+    "Application": {
+        "Extension" : {
+            "add" : {
+                "validate": {
+                    "application_id" : [
+                        {
+                            "integer": ">=1"
+                        }
+                    ],
+                    "extension_id" : [
+                        {
+                            "integer": ">=1"
+                        }
+                    ]
+                }
+            },
+            "delete" : {
+                "validate": {
+                    "application_id" : [
+                        {
+                            "integer": ">=1"
+                        }
+                    ],
+                    "extension_id" : [
+                        {
+                            "integer": ">=1"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}

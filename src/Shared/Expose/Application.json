@@ -1,0 +1,103 @@
+{
+  "Application" : {
+    "create": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        }
+      ]
+    },
+    "read": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url",
+            "extensions"
+          ],
+          "object": {
+            "extensions": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_ADMIN",
+                  "property": [
+                    "id",
+                    "name"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        }
+      ]
+    },
+    "delete": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        }
+      ]
+    },
+    "list": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url",
+            "extensions"
+          ],
+          "object": {
+            "extensions": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_ADMIN",
+                  "property": [
+                    "id",
+                    "name"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

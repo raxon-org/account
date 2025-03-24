@@ -1,0 +1,34 @@
+{
+    "Extension": {
+        "create" : {
+            "validate": {
+                "name" : [
+                    {
+                        "string.length": ">=1"
+                    },
+                    {
+                        "is.unique.mysql" : {
+                            "table" : "Entity\\Extension",
+                            "field" : "name"
+                        }
+                    }
+                ]
+            }
+        },
+        "update" : {
+            "validate": {
+                "?name" : [
+                    {
+                        "string.length": ">=1"
+                    },
+                    {
+                        "is.unique.mysql" : {
+                            "table" : "Entity\\Extension",
+                            "field" : "name"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

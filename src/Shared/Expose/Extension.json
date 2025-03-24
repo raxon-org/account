@@ -1,0 +1,94 @@
+{
+  "Extension" : {
+    "create": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    },
+    "read": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "name",
+            "applications"
+          ],
+          "object": {
+            "applications": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_ADMIN",
+                  "property": [
+                    "id",
+                    "uuid",
+                    "name",
+                    "url",
+                    "icon_url"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "update": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    },
+    "delete": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "name"
+          ]
+        }
+      ]
+    },
+    "list": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "name",
+            "applications"
+          ],
+          "object": {
+            "applications": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_ADMIN",
+                  "property": [
+                    "id",
+                    "uuid",
+                    "name",
+                    "url",
+                    "icon_url"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

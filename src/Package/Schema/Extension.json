@@ -1,0 +1,59 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema" : [
+        {
+          "table": "extension",
+          "entity": "Extension",
+          "column": [
+            {
+              "name": "id",
+              "type": "integer",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "uuid",
+              "type": "string",
+              "options": {
+                "length": 36
+              }
+            },
+            {
+              "name": "applications",
+              "type": "many-to-many",
+              "options": {
+                "target": {
+                  "entity": "Application"
+                },
+                "mapped": {
+                  "by": "extensions"
+                },
+                "cascade": [
+                  "persist"
+                ]
+              }
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "options": {
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+          ],
+          "unique": [
+            "uuid"
+          ]
+        }
+      ]
+    }
+  }
+}
