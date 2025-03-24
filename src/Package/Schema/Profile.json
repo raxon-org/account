@@ -8,7 +8,7 @@
           "column": [
             {
               "name": "id",
-              "type": "int",
+              "type": "integer",
               "options": {
                 "id": true,
                 "unsigned": true,
@@ -49,7 +49,7 @@
                   "column": [
                     {
                       "name": "user",
-                      "type": "int",
+                      "type": "integer",
                       "reference": "id",
                       "nullable": false
                     }
