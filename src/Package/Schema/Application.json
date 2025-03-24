@@ -32,7 +32,24 @@
                 "inversed": {
                   "by": "applications"
                 },
-                "cascade": ["persist"]
+                "cascade": ["persist"],
+                "join": {
+                  "table": "application_extension",
+                  "columns": [
+                      {
+                        "name": "application_id",
+                        "type": "integer",
+                        "reference": "id",
+                        "nullable": false
+                      },
+                      {
+                        "name": "extension_id",
+                        "type": "integer",
+                        "reference": "id",
+                        "nullable": false
+                      }
+                  ]
+                }
               }
             },
             {
