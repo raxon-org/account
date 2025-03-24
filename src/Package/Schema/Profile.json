@@ -8,7 +8,7 @@
           "column": [
             {
               "name": "id",
-              "type": "bigint",
+              "type": "int",
               "options": {
                 "id": true,
                 "unsigned": true,
@@ -49,7 +49,7 @@
                   "column": [
                     {
                       "name": "user",
-                      "type": "bigint",
+                      "type": "int",
                       "reference": "id",
                       "nullable": false
                     }
