@@ -26,7 +26,10 @@
     {
       "#class": "Account.Permission",
         "name": "FileSystem:list"
+    },
+    {
+      "#class": "Account.Permission",
+        "name": "Extension:list"
     }
-
   ]
 }
