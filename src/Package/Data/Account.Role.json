@@ -15,6 +15,12 @@
       },
       {
         "#class": "Account.Role",
+        "name": "ROLE_USER",
+        "rank": 999999,
+        "permission": []
+      },
+      {
+        "#class": "Account.Role",
         "name": "ROLE_ANONYMOUS",
         "rank": 9999999,
         "permission": []

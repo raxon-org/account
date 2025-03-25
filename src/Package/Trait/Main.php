@@ -46,8 +46,6 @@ trait Main
             $object->config('ds') .
             'Data' .
             $object->config('ds') .
-            'Account' .
-            $object->config('ds') .
             'Account.Role' .
             $object->config('extension.json')
         ;
