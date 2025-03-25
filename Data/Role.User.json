@@ -18,6 +18,10 @@
     {
       "#class": "Account.Permission",
       "name": "Application:list"
+    },
+    {
+      "#class": "Account.Permission",
+        "name": "Application:Desktop:Navigation:list"
     }
 
   ]
