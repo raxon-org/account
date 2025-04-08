@@ -17,5 +17,6 @@ trait User_Login
         d($user);
         d($password);
         d('now return user object');
+        return false;
     }
 }
