@@ -3,7 +3,7 @@ namespace Plugin;
 
 use Exception;
 
-use Raxon\Module\Core;
+use Package\Raxon\Account\Service\User;
 
 trait User_Login
 {
@@ -11,12 +11,14 @@ trait User_Login
     /**
      * @throws Exception
      */
-    protected function user_login(string $user='', string $password=''): mixed
+    protected function user_login(string $email='', string $password=''): mixed
     {
         $object = $this->object();
+        $object->request('email', $email);
+        $object->request('password', $password);
+
+        $user = User::login($object);
         d($user);
-        d($password);
-        d('now return user object');
         return false;
     }
 }
