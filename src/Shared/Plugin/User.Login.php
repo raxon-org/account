@@ -3,7 +3,7 @@ namespace Plugin;
 
 use Exception;
 
-use Package\Raxon\Account\Service\User;
+use Package\Raxon\Account\Module\User;
 
 trait User_Login
 {
