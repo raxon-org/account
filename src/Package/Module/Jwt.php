@@ -69,6 +69,7 @@ class Jwt {
         $claim = false;
         if(array_key_exists('user', $options)){
             $user = $options['user'];
+            ddd($user->getUuid());
             $role = [];
             if(
                 is_array($user) &&
