@@ -103,7 +103,14 @@ class UserLogger
                     ->getResult();
                 return count($result);
             } else {
-                throw new ErrorException('Could not determine Ip address.');
+                $ipAddress = '0.0.0.0';
+                $dateTime = date('Y-m-d H:i:s', strtotime(UserLogger::LOGIN_PERIOD));
+                $result = $connection->manager->createQuery(UserLogger::QUERY_FIND_LOG_IP)
+                    ->setParameter('ipAddress', $ipAddress)
+                    ->setParameter('status', $status)
+//                    ->setParameter('dateTime', $dateTime)
+                    ->getResult();
+                return count($result);
             }
         }
     }
