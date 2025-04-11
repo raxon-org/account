@@ -1,25 +1,23 @@
 <?php
 namespace Package\Raxon\Account\Module;
 
+use DateTime;
+
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
+
 use Entity\User as Entity;
 
-//use Entity\User as Entity;
-
+use Exception;
 
 use Raxon\App;
 
-use Raxon\Module\Core;
-use Raxon\Module\Data;
 use Raxon\Module\Handler;
-use Raxon\Module\Response;
 
 use Raxon\Doctrine\Module\Database;
-use Raxon\Node\Module\Node;
 
-use Exception;
+use Raxon\Node\Module\Node;
 
 use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
@@ -37,6 +35,7 @@ class User
      * @throws OptimisticLockException
      * @throws ORMException
      * @throws Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     public static function login(App $object, object $input): array
     {
@@ -58,7 +57,7 @@ class User
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
-                if(empty($verify)){
+                if($verify === false){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
                     $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
@@ -70,6 +69,15 @@ class User
                 $user = User::expose($object, $node);
                 $user['token'] = User::get_token($object, $node);
                 $user['refreshToken'] = User::get_refresh_token($object, $node);
+                $encrypted_refreshToken = sha1($user['refreshToken']);
+                $repository = $connection->manager->getRepository(Entity::class);
+                $cost = 13;
+                $node->setRefreshToken(password_hash($encrypted_refreshToken, PASSWORD_BCRYPT, [
+                    'cost' => $cost
+                ]));
+                $node->setIsLoggedIn(new DateTime());
+                $connection->manager->persist($node);
+                $connection->manager->flush();
                 $data = [];
                 $data['node'] = $user;
                 return $data;
@@ -104,7 +112,7 @@ class User
             $role,
             [
                 'filter' => [
-                    'name' => 'ROLE_ANONYMOUS'
+                    'name' => 'ROLE_USER'
                 ],
                 'relation' => true
             ]
