@@ -69,40 +69,16 @@ class Jwt {
         $claim = false;
         if(array_key_exists('user', $options)){
             $user = $options['user'];
-            ddd($user->getUuid());
-            $role = [];
-            if(
-                is_array($user) &&
-                array_key_exists('role', $user) &&
-                is_array($user['role'])
-            ){
-                foreach($user['role'] as $nr => $user_role){
-                    if(is_object($user_role)){
-                        $role[] = [
-                            'name' => $user_role->name,
-                            'rank' => $user_role->rank,
-                            'permission' => [
-                                'count' => count($user_role->permission),
-                            ]
-                        ];
-                    }
-                    elseif(is_array($user_role)){
-                        $role[] = [
-                            'name' => $user_role['name'],
-                            'rank' => $user_role['rank'],
-                            'permission' => [
-                                'count' => count($user_role['permission']),
-                            ]
-                        ];
-                    }
-                }
-            }
+            ddd($user->getRole());
+
             ddd($user);
+            /*
             $claim = (object) [
                 'uuid' => $user['uuid'],
                 'email' => $user['email'],
                 'role' => $role
             ];
+            */
         }
         $now = new DateTimeImmutable();
         return $configuration->builder()
