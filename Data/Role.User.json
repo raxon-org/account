@@ -38,7 +38,10 @@
     {
       "#class": "Account.Permission",
         "name": "Raxon:Ollama:generate"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "User:login"
     }
-
   ]
 }

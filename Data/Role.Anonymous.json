@@ -13,10 +13,6 @@
     },
     {
       "#class": "Account.Permission",
-      "name": "User:login"
-    },
-    {
-      "#class": "Account.Permission",
       "name": "Account:Role:list"
     },
     {
