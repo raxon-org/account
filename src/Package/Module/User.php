@@ -164,7 +164,15 @@ class User
             }
             */
         } else {
-            $count = UserLogger::count($object, $connection, null, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
+            $old_status = $input->status ?? null;
+            $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
+            $count = UserLogger::count($object, $input, null, $connection);
+            if($old_status){
+                $input->status = $old_status;
+            } else {
+                unset($input->status);
+            }
+//            $count = UserLogger::count($object, $connection, null, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
             if($count >= User::BLOCK_EMAIL_COUNT){
                 Userlogger::log($object, $connection, $node, UserLogger::STATUS_BLOCKED);
                 return true;
