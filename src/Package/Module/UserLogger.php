@@ -47,9 +47,18 @@ class UserLogger
     /**
      * @throws OptimisticLockException
      * @throws ORMException
+     * @throws Exception
      */
-    public static function log(App $object, object $connection=null, User $user=null, $status=null): Entity
+    public static function log(App $object, object $input, User $user=null, object $connection=null,): Entity
     {
+        if(!property_exists($input, 'status')){
+            throw new ErrorException('Status is required.');
+        }
+        if($connection === null){
+            $config = Database::config($object);
+            $connection = $object->config('doctrine.environment.system.*');
+            $connection->manager = Database::entity_manager($object, $config, $connection);
+        }
         $options = [];
         $logger = new Entity();
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
@@ -64,7 +73,7 @@ class UserLogger
         ){
             $logger->setUserid($user->getId());
         }
-        $logger->setStatus($status);
+        $logger->setStatus($input->status);
         $connection->manager->persist($logger);
         $connection->manager->flush();
         return $logger;

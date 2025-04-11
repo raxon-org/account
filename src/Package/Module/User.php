@@ -146,9 +146,9 @@ class User
             $old_status = $input->status ?? null;
             $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
             $count = UserLogger::count($object, $input, $node, $connection);
-            ddd($count);
             if($count >= User::BLOCK_PASSWORD_COUNT){
-                Userlogger::log($object, $connection, $node, UserLogger::STATUS_BLOCKED);
+                $input->status = UserLogger::STATUS_BLOCKED;
+                UserLogger::log($object, $input, $node, $connection);
                 return true;
             }
             if($old_status){
@@ -156,26 +156,19 @@ class User
             } else {
                 unset($input->status);
             }
-            /*
-            $count = UserLogger::count($object, $connection, $node, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
-            if($count >= User::BLOCK_PASSWORD_COUNT){
-                Userlogger::log($object, $connection, $node, UserLogger::STATUS_BLOCKED);
-                return true;
-            }
-            */
         } else {
             $old_status = $input->status ?? null;
             $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
             $count = UserLogger::count($object, $input, null, $connection);
+            if($count >= User::BLOCK_EMAIL_COUNT){
+                $input->status = UserLogger::STATUS_BLOCKED;
+                UserLogger::log($object, $input, $node, $connection);
+                return true;
+            }
             if($old_status){
                 $input->status = $old_status;
             } else {
                 unset($input->status);
-            }
-//            $count = UserLogger::count($object, $connection, null, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
-            if($count >= User::BLOCK_EMAIL_COUNT){
-                Userlogger::log($object, $connection, $node, UserLogger::STATUS_BLOCKED);
-                return true;
             }
         }
         return false;
