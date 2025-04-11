@@ -139,9 +139,6 @@ trait User
                         'name' => $permission->name
                     ]
                 ]);
-                d($permission->name);
-                d($response['node']->uuid ?? null);
-                d($response['node']->name ?? null);
                 if(
                     is_array($response) &&
                     array_key_exists('node', $response) &&
