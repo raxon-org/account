@@ -69,12 +69,18 @@ class User
                 $user = User::expose($object, $node);
                 $user->token = User::get_token($object, $node);
                 $user->refreshToken = User::get_refresh_token($object, $node);
-                $encrypted_refreshToken = sha1($user['refreshToken']);
+                $encrypted_refreshToken = sha1($user->refreshToken);
                 $repository = $connection->manager->getRepository(Entity::class);
                 $cost = 13;
-                $node->setRefreshToken(password_hash($encrypted_refreshToken, PASSWORD_BCRYPT, [
-                    'cost' => $cost
-                ]));
+                $node->setRefreshToken(
+                    password_hash(
+                        $encrypted_refreshToken,
+                        PASSWORD_BCRYPT,
+                        [
+                            'cost' => $cost
+                        ]
+                    )
+                );
                 $node->setIsLoggedIn(new DateTime());
                 $connection->manager->persist($node);
                 $connection->manager->flush();
