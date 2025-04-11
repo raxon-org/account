@@ -68,7 +68,7 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node);
-                $user = User::specific($object, $user);
+                ddd($user);
 
                 $user->token = User::get_token($object, $node);
                 $user->refresh_token = User::get_refresh_token($object, $node);
@@ -89,14 +89,6 @@ class User
             UserLogger::log($object, $input, null, $connection);
             throw new ErrorException('User blocked.');
         }
-    }
-
-    private static function specific(App $object, object $node): object
-    {
-        unset($node->password);
-        unset($node->refreshToken);
-        d($node);
-        return $node;
     }
 
     /**
