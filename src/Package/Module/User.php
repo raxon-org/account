@@ -67,10 +67,14 @@ class User
                 }
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
-                d('bloody');
-                ddd($node);
 
-                $array = User::getTokens($object, $connection, $node);
+                $token = User::get_token($object, $node);
+                $refresh_token = User::get_refresh_token($object, $node);
+
+                d($token);
+                ddd($refresh_token);
+
+                $array = User::getTokens($object, $input, $node);
                 $data = [];
                 $data['node'] = $array;
                 return $data;
@@ -91,20 +95,50 @@ class User
     }
 
     /**
-     * @throws Exception
+     * @throws FileWriteException
+     * @throws ObjectException
      */
-    private static function getTokens(App $object, $record): mixed
+    private static function get_token(App $object, Entity\User $node): string
     {
         $configuration = Jwt::configuration($object);
         $options = [];
-        $options['user'] = $record;
+        $options['user'] = $node;
+        $token = Jwt::get($object, $configuration, $options);
+        return $token->toString();
+    }
+
+    /**
+     * @throws FileWriteException
+     * @throws ObjectException
+     */
+    private static function get_refresh_token(App $object, Entity\User $node): string
+    {
+        $configuration = Jwt::configuration($object);
+        $options = [];
+        $options['user'] = $node;
+        $options['refresh'] = true;
+        $token = Jwt::refresh_get($object, $configuration, $options);
+        return $token->toString();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private static function getTokens(App $object, object $input, Entity\User $node): array
+    {
+        $configuration = Jwt::configuration($object);
+        $options = [];
+        $options['user'] = $node;
         $token = Jwt::get($object, $configuration, $options);
         $token = $token->toString();
         $options['refresh'] = true;
         $configuration = Jwt::configuration($object, $options);
         $refreshToken = Jwt::refresh_get($object, $configuration, $options);
         $refreshToken = $refreshToken->toString();
-        $encrypted_refreshToken = sha1($refreshToken);
+
+        d($token);
+        d($refreshToken);
+
 
         $record->token = $token;
         $record->refresh_token = $refreshToken;
