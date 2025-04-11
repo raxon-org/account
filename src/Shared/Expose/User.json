@@ -639,7 +639,7 @@
     "login" : {
       "output" : [
         {
-          "role" : "ROLE_ANONYMOUS",
+          "role" : "ROLE_USER",
           "property" : [
             "id",
             "uuid",
@@ -659,7 +659,7 @@
               "multiple" : true,
               "output" : [
                 {
-                  "role" : "ROLE_ANONYMOUS",
+                  "role" : "ROLE_USER",
                   "property" : [
                     "id",
                     "name",
@@ -671,7 +671,7 @@
             "profile" : {
               "output" : [
                 {
-                  "role" : "ROLE_ANONYMOUS",
+                  "role" : "ROLE_USER",
                   "property" : [
                     "id",
                     "user_id",
@@ -685,7 +685,7 @@
               "multiple" : true,
               "output" : [
                 {
-                  "role" : "ROLE_ANONYMOUS",
+                  "role" : "ROLE_USER",
                   "property" : [
                     "id",
                     "name",
