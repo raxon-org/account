@@ -68,6 +68,8 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node);
+                $user = User::specific($object, $node);
+
                 $user->token = User::get_token($object, $node);
                 $user->refresh_token = User::get_refresh_token($object, $node);
                 $data = [];
@@ -89,16 +91,22 @@ class User
         }
     }
 
+    private static function specific(App $object, object $node): object
+    {
+        unset($node->password);
+        d($node);
+        return $node;
+    }
+
     private static function expose(App $object, Entity $node): object
     {
         $methods = get_class_methods($node);
         $result = (object) [];
         foreach($methods as $method){
             if(substr($method, 0, 3) ===  'get'){
-                $result->{substr($method, 3)} = $node->{$method}();
+                $result->{lcfirst(substr($method, 3))} = $node->{$method}();
             }
         }
-        ddd($result);
         return $result;
     }
 
