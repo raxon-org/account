@@ -68,7 +68,7 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node);
-                $user = User::specific($object, $node);
+                $user = User::specific($object, $user);
 
                 $user->token = User::get_token($object, $node);
                 $user->refresh_token = User::get_refresh_token($object, $node);
