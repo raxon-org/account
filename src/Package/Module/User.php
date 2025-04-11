@@ -65,7 +65,7 @@ class User
                     throw new ErrorException('Invalid e-mail-password.');
                 }
                 Userlogger::log($object, $connection, $node, UserLogger::STATUS_SUCCESS);
-
+                d('bloody');
                 ddd($node);
 
                 $array = User::getTokens($object, $connection, $node);
