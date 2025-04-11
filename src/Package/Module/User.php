@@ -67,16 +67,11 @@ class User
                 }
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
-
-                $token = User::get_token($object, $node);
-                $refresh_token = User::get_refresh_token($object, $node);
-
-                d($token);
-                ddd($refresh_token);
-
-                $array = User::getTokens($object, $input, $node);
+                $user = User::expose($object, $node);
+                $user->token = User::get_token($object, $node);
+                $user->refresh_token = User::get_refresh_token($object, $node);
                 $data = [];
-                $data['node'] = $array;
+                $data['node'] = $user;
                 return $data;
             } else {
                 $status = 401;
@@ -92,6 +87,14 @@ class User
             UserLogger::log($object, $input, null, $connection);
             throw new ErrorException('User blocked.');
         }
+    }
+
+    private static function expose(App $object, Entity $node): object
+    {
+        $methods = get_class_methods($node);
+        ddd($methods);
+        $result = (object) [];
+        return $result;
     }
 
     /**
