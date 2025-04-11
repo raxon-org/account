@@ -69,16 +69,11 @@ class Jwt {
         $claim = false;
         if(array_key_exists('user', $options)){
             $user = $options['user'];
-            ddd($user->getRole());
-
-            ddd($user);
-            /*
             $claim = (object) [
-                'uuid' => $user['uuid'],
-                'email' => $user['email'],
-                'role' => $role
+                'uuid' => $user->getUuid(),
+                'email' => $user->getEmail(),
+                'role' => $user->getRole(),
             ];
-            */
         }
         $now = new DateTimeImmutable();
         return $configuration->builder()
