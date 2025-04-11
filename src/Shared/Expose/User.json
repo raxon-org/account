@@ -636,7 +636,7 @@
         }
       ]
     },
-    "getTokens" : {
+    "login" : {
       "output" : [
         {
           "role" : "ROLE_ANONYMOUS",
