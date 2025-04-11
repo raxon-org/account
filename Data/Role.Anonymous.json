@@ -10,14 +10,6 @@
     {
       "#class": "Account.Permission",
       "name": "Index:readme"
-    },
-    {
-      "#class": "Account.Permission",
-      "name": "Account:Role:list"
-    },
-    {
-        "#class": "Account.Permission",
-        "name": "Account:Role:list.relation"
     }
   ]
 }
