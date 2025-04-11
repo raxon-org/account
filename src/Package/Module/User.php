@@ -102,7 +102,7 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    private static function expose(App $object, Entity $record): array
+    private static function expose(App $object, Entity $record): object
     {
         $node = new Node($object);
         $class = 'Account.Role';
@@ -118,7 +118,6 @@ class User
             ]
         );
         $role = $response['list'][0];
-        d($role);
         $entity = 'User';
         $function = 'login';
         $expose = \Raxon\Doctrine\Module\Entity::expose_get(
@@ -137,7 +136,7 @@ class User
             $record,
             $role
         );
-        return $record;
+        return (object) $record;
     }
 
     /**
