@@ -130,7 +130,6 @@ trait User
         $object = $this->object();
         $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
         $data = $object->data_read($url);
-        ddd($data);
         $permission_array = [];
         if($data){
             foreach($data->get('permission') as $permission){
