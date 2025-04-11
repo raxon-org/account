@@ -104,7 +104,7 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    private static function expose(App $object, Entity $record): object
+    private static function expose(App $object, Entity $record): array
     {
         $node = new Node($object);
         $class = 'Account.Role';
