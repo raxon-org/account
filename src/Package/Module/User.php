@@ -94,12 +94,54 @@ class User
     private static function specific(App $object, object $node): object
     {
         unset($node->password);
+        unset($node->refreshToken);
         d($node);
         return $node;
     }
 
-    private static function expose(App $object, Entity $node): object
+    /**
+     * @throws AuthorizationException
+     * @throws ObjectException
+     * @throws Exception
+     */
+    private static function expose(App $object, Entity $record): object
     {
+        $node = new Node($object);
+        $class = 'Account.Role';
+        $role = $node->role_system();
+        $response = $node->list(
+            $class,
+            $role,
+            [
+                'filter' => [
+                    'name' => 'ROLE_ANONYMOUS'
+                ],
+                'relation' => true
+            ]
+        );
+        $role = $response['list'][0];
+        $entity = 'User';
+        $function = __FUNCTION__;
+        $expose = \Raxon\Doctrine\Module\Entity::expose_get(
+            $object,
+            $entity,
+            $entity . '.' . $function . '.output'
+        );
+        $node = $record;
+        $record = [];
+        $record = \Raxon\Doctrine\Module\Entity::output(
+            $object,
+            $node,
+            $expose,
+            $entity,
+            $function,
+            $record,
+            $role
+        );
+        ddd($record);
+
+
+
         $methods = get_class_methods($node);
         $result = (object) [];
         foreach($methods as $method){
