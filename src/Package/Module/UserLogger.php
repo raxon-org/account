@@ -40,7 +40,8 @@ class UserLogger
         FROM ' . Entity::class . ' l 
         WHERE l.userId IS NULL 
         AND l.status = :status 
-        AND l.ipAddress = :ipAddress         
+        AND l.ipAddress = :ipAddress  
+        AND l.dateTime >= :dateTime        
         ';
 
     /**
@@ -73,13 +74,17 @@ class UserLogger
      * @throws ErrorException
      * @throws Exception
      */
-    public static function count(App $object, object $connection=null, User $user=null, $status=null): int
+    public static function count(App $object, object $input, User $user=null, object $connection=null): int
     {
         if($connection === null){
             $config = Database::config($object);
             $connection = $object->config('doctrine.environment.system.*');
             $connection->manager = Database::entity_manager($object, $config, $connection);
         }
+        if(!property_exists($input, 'status')){
+            throw new ErrorException('Status is required.');
+        }
+        $status = $input->status;
         if(
             $user !== null &&
             get_class($user) === '\Entity\User'
@@ -99,7 +104,7 @@ class UserLogger
                 $result = $connection->manager->createQuery(UserLogger::QUERY_FIND_LOG_IP)
                     ->setParameter('ipAddress', $ipAddress)
                     ->setParameter('status', $status)
-//                    ->setParameter('dateTime', $dateTime)
+                    ->setParameter('dateTime', $dateTime)
                     ->getResult();
                 return count($result);
             } else {
@@ -108,7 +113,7 @@ class UserLogger
                 $result = $connection->manager->createQuery(UserLogger::QUERY_FIND_LOG_IP)
                     ->setParameter('ipAddress', $ipAddress)
                     ->setParameter('status', $status)
-//                    ->setParameter('dateTime', $dateTime)
+                    ->setParameter('dateTime', $dateTime)
                     ->getResult();
                 return count($result);
             }

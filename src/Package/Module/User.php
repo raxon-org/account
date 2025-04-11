@@ -40,18 +40,23 @@ class User
      */
     public static function login(App $object, object $input): array
     {
-        ddd($input);
+        if(!property_exists($input, 'email')){
+            throw new ErrorException('E-mail is required.');
+        }
+        if(!property_exists($input, 'password')){
+            throw new ErrorException('Password is required.');
+        }
         $config = Database::config($object);
         $connection = $object->config('doctrine.environment.system.*');
         $connection->manager = Database::entity_manager($object, $config, $connection);
-        if(User::is_blocked($object, $connection, $object->request('email')) === false){
+        if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
-                'email' => $object->request('email'),
+                'email' => $input->email,
                 'isActive' => 1
             ]);
             if($node) {
-                $password = $object->request('password');
+                $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
                 if(empty($verify)){
                     $status = 401;
@@ -60,6 +65,9 @@ class User
                     throw new ErrorException('Invalid e-mail-password.');
                 }
                 Userlogger::log($object, $connection, $node, UserLogger::STATUS_SUCCESS);
+
+                ddd($node);
+
                 $array = User::getTokens($object, $connection, $node);
                 $data = [];
                 $data['node'] = $array;
@@ -122,16 +130,32 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    public static function is_blocked(App $object, object $connection=null, $email=''): bool
+    public static function is_blocked(App $object, object $input, object $connection=null): bool
     {
+        if(!property_exists($input, 'email')){
+            throw new ErrorException('E-mail is required.');
+        }
         if($connection === null){
             $config = Database::config($object);
             $connection = $object->config('doctrine.environment.system.*');
             $connection->manager = Database::entity_manager($object, $config, $connection);
         }
         $repository = $connection->manager->getRepository(Entity::class);
-        $node = $repository->findOneBy(['email' => $email]);
+        $node = $repository->findOneBy(['email' => $input->email]);
         if($node){
+            $old_status = $input->status ?? null;
+            $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
+            $count = UserLogger::count($object, $input, $node, $connection);
+            ddd($count);
+            if($count >= User::BLOCK_PASSWORD_COUNT){
+                Userlogger::log($object, $connection, $node, UserLogger::STATUS_BLOCKED);
+                return true;
+            }
+            if($old_status){
+                $input->status = $old_status;
+            } else {
+                unset($input->status);
+            }
             $count = UserLogger::count($object, $connection, $node, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
             if($count >= User::BLOCK_PASSWORD_COUNT){
                 Userlogger::log($object, $connection, $node, UserLogger::STATUS_BLOCKED);
