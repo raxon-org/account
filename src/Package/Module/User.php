@@ -77,13 +77,15 @@ class User
             } else {
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
-                Userlogger::log($object, $connection, null, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
+                $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
+                UserLogger::log($object, $input, null, $connection);
                 throw new ErrorException('Invalid e-mail-password.');
             }
         } else {
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
-            Userlogger::log($object, $connection, null, UserLogger::STATUS_BLOCKED);
+            $input->status = UserLogger::STATUS_BLOCKED;
+            UserLogger::log($object, $input, null, $connection);
             throw new ErrorException('User blocked.');
         }
     }
