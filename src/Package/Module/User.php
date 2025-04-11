@@ -98,7 +98,7 @@ class User
      * @throws FileWriteException
      * @throws ObjectException
      */
-    private static function get_token(App $object, Entity\User $node): string
+    private static function get_token(App $object, Entity $node): string
     {
         $configuration = Jwt::configuration($object);
         $options = [];
@@ -111,7 +111,7 @@ class User
      * @throws FileWriteException
      * @throws ObjectException
      */
-    private static function get_refresh_token(App $object, Entity\User $node): string
+    private static function get_refresh_token(App $object, Entity $node): string
     {
         $configuration = Jwt::configuration($object);
         $options = [];
