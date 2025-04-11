@@ -92,8 +92,13 @@ class User
     private static function expose(App $object, Entity $node): object
     {
         $methods = get_class_methods($node);
-        ddd($methods);
         $result = (object) [];
+        foreach($methods as $method){
+            if(substr($method, 0, 3) ===  'get'){
+                $result->{substr($method, 3)} = $node->{$method}();
+            }
+        }
+        ddd($result);
         return $result;
     }
 
