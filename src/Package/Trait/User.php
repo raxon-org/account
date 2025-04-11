@@ -143,6 +143,7 @@ trait User
                 d($response['node']->uuid ?? null);
                 d($response['node']->name ?? null);
                 if(
+                    is_array($response) &&
                     array_key_exists('node', $response) &&
                     property_exists($response['node'], 'uuid')
                 ){
