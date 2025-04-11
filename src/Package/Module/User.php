@@ -138,6 +138,7 @@ class User
             $record,
             $role
         );
+        d('here');
         ddd($record);
 
 
