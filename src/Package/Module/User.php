@@ -118,7 +118,7 @@ class User
             ]
         );
         $role = $response['list'][0];
-        ddd($role);
+        d($role);
         $entity = 'User';
         $function = 'login';
         $expose = \Raxon\Doctrine\Module\Entity::expose_get(
