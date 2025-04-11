@@ -20,8 +20,6 @@ trait User_Login
         $object->request('email', $email);
         $object->request('password', $password);
 
-        $user = User::login($object, $object->request());
-        d($user);
-        return false;
+        return User::login($object, $object->request());
     }
 }
