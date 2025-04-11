@@ -38,8 +38,9 @@ class User
      * @throws ORMException
      * @throws Exception
      */
-    public static function login(App $object): array
+    public static function login(App $object, object $input): array
     {
+        ddd($input);
         $config = Database::config($object);
         $connection = $object->config('doctrine.environment.system.*');
         $connection->manager = Database::entity_manager($object, $config, $connection);
