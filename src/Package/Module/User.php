@@ -78,6 +78,8 @@ class User
                 $node->setIsLoggedIn(new DateTime());
                 $connection->manager->persist($node);
                 $connection->manager->flush();
+                $user->isLoggedIn = $node->getIsLoggedIn();
+                $user->isUpdated = $node->getIsUpdated();
                 $data = [];
                 $data['node'] = $user;
                 return $data;
