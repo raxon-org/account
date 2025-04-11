@@ -68,10 +68,8 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node);
-                ddd($user);
-
-                $user->token = User::get_token($object, $node);
-                $user->refresh_token = User::get_refresh_token($object, $node);
+                $user['token'] = User::get_token($object, $node);
+                $user['refreshToken'] = User::get_refresh_token($object, $node);
                 $data = [];
                 $data['node'] = $user;
                 return $data;
