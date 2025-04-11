@@ -138,19 +138,7 @@ class User
             $record,
             $role
         );
-        d('here');
-        ddd($record);
-
-
-
-        $methods = get_class_methods($node);
-        $result = (object) [];
-        foreach($methods as $method){
-            if(substr($method, 0, 3) ===  'get'){
-                $result->{lcfirst(substr($method, 3))} = $node->{$method}();
-            }
-        }
-        return $result;
+        return $record;
     }
 
     /**
