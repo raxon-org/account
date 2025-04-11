@@ -61,10 +61,12 @@ class User
                 if(empty($verify)){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
-                    Userlogger::log($object, $connection, $node, UserLogger::STATUS_INVALID_EMAIL_PASSWORD);
+                    $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
+                    UserLogger::log($object, $input, $node, $connection);
                     throw new ErrorException('Invalid e-mail-password.');
                 }
-                Userlogger::log($object, $connection, $node, UserLogger::STATUS_SUCCESS);
+                $input->status = UserLogger::STATUS_SUCCESS;
+                UserLogger::log($object, $input, $node, $connection);
                 d('bloody');
                 ddd($node);
 
