@@ -333,6 +333,10 @@
     },
     {
       "#class": "Account.Permission",
+      "name": "Extension:read"
+    },
+    {
+      "#class": "Account.Permission",
       "name": "FileSystem:read"
     },
     {
