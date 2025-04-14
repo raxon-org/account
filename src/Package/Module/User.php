@@ -306,4 +306,95 @@ class User
         return $token;
     }
 
+    public static function current(App $object): array
+    {
+        $token = '';
+        if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+            $token = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
+            $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        $token = substr($token , 7);
+        if(!$token){
+            throw new AuthorizationException('Please provide a valid token...');
+        }
+        $token_unencrypted = Jwt::decryptToken($object, $token);
+        $claims = $token_unencrypted->claims();
+        if($claims->has('user')){
+            $user =  $claims->get('user');
+            $uuid = false;
+            $email = false;
+            ddd($user);
+            if(array_key_exists('uuid', $user)){
+                $uuid = $user['uuid'];
+            }
+            if(array_key_exists('email', $user)){
+                $email = $user['email'];
+            }
+            if($uuid && $email){
+                $config = Database::config($object);
+                $connection = $object->config('doctrine.environment.system.*');
+                $connection->manager = Database::entity_manager($object, $config, $connection);
+                $repository = $connection->manager->getRepository(Entity::class);
+                $item = $repository->findOneBy([
+                    'uuid' => $uuid,
+                    'email' => $email
+                ]);
+                if(empty($item->getIsActive())){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('User is not active...');
+                }
+                if(!empty($item->getIsDeleted())){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('User is deleted...');
+                }
+                if(empty($item->getRole())){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('User has no roles...');
+                }
+                $node = new Node($object);
+                $class = 'Account.Role';
+                $response = $node->record(
+                    $class,
+                    $node->role_system(),
+                    [
+                        'filter' => [
+                            'name' => 'ROLE_USER'
+                        ],
+                        'relation' => true
+                    ]
+                );
+                $role = $response['node'] ?? null;
+                $entity = 'User';
+                $function = __FUNCTION__;
+
+                $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
+                    $object,
+                    $entity,
+                    $entity . '.' . $function . '.output'
+                );
+                $record = [];
+                $record = \Raxon\Doctrine\Module\Entity::output(
+                    $object,
+                    $item,
+                    $toArray,
+                    $entity,
+                    $function,
+                    $record,
+                    $role
+                );
+                $data = [];
+                $data['node'] = $record;
+                return $data;
+            }
+        }
+        $status = 401;
+        Handler::header('Status: ' . $status, $status, true);
+        throw new AuthorizationException('Authentication failure... (invalid claim)');
+    }
+
 }
