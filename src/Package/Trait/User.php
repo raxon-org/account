@@ -125,88 +125,95 @@ trait User
         return null;
     }
 
-    public function setup_role_anonymous($flags, $options)
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function setup_role_anonymous($flags, $options): void
     {
         $object = $this->object();
         $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.Anonymous.json';
-        $data = $object->data_read($url);
-        $permission_array = [];
-        if($data){
-            foreach($data->get('permission') as $permission){
-                $node = new Node($object);
-                $response = $node->record('Account.Permission', $node->role_system(), [
-                    'filter' => [
-                        'name' => $permission->name
-                    ]
-                ]);
-                if(
-                    is_array($response) &&
-                    array_key_exists('node', $response) &&
-                    property_exists($response['node'], 'uuid')
-                ){
-                    $permission_array[] = $response['node']->uuid;
-                }
-                else{
-                    //create permission
-                    $response = $node->create(
-                        'Account.Permission',
-                        $node->role_system(),
-                        [
-                            'name' => $permission->name
-                        ]
-                    );
-                    ddd($response);
-                }
-            }
+        $options_url = $options->url ?? null;
+        $options_wildcard = $options->wildcard ?? null;
+        $options->url = $url;
+        unset($options->wildcard);
+        $this->setup_role($flags, $options);
+        if($options_url){
+            $options->url = $options_url;
         }
-        $response = $node->record('Account.Role', $node->role_system(), [
-            'filter' => [
-                'name' => $data->get('name')
-            ]
-        ]);
-        if(
-            array_key_exists('node', $response) &&
-            property_exists($response['node'], 'uuid')
-        ){
-            $role = $response['node'];
-            $role->rank = $data->get('rank');
-            $role->permission = $permission_array;
-            $response = $node->put(
-                'Account.Role',
-                $node->role_system(),
-                [
-                    'uuid' => $role->uuid,
-                    'name' => $data->get('name'),
-                    'rank' => $data->get('rank'),
-                    'permission' => $permission_array
-                ]
-            );
-            $role = $response['node'] ?? (object) [];
-            if(property_exists($role, 'uuid')){
-                echo 'ROLE_ANONYMOUS reset...' . PHP_EOL;
-            }
-        } else{
-            $response = $node->create(
-                'Account.Role',
-                $node->role_system(),
-                [
-                    'name' => $data->get('name'),
-                    'rank' => $data->get('rank'),
-                    'permission' => $permission_array
-                ]
-            );
-            $role = $response['node'] ?? (object) [];
-            if(property_exists($role, 'uuid')){
-                echo 'ROLE_ANONYMOUS created...' . PHP_EOL;
-            }
+        else{
+            unset($options->url);
         }
-
+        if($options_wildcard){
+            $options->wildcard = $options_wildcard;
+        } else {
+            unset($options->wildcard);
+        }
     }
 
-    public function setup_role_user($flags, $options)
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function setup_role_user($flags, $options): void
     {
         $object = $this->object();
         $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.User.json';
+        $options_url = $options->url ?? null;
+        $options_wildcard = $options->wildcard ?? null;
+        $options->url = $url;
+        unset($options->wildcard);
+        $this->setup_role($flags, $options);
+        if($options_url){
+            $options->url = $options_url;
+        }
+        else{
+            unset($options->url);
+        }
+        if($options_wildcard){
+            $options->wildcard = $options_wildcard;
+        } else {
+            unset($options->wildcard);
+        }
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function setup_role_system($flags, $options): void
+    {
+        $object = $this->object();
+        $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.System.json';
+        $options_url = $options->url ?? null;
+        $options_wildcard = $options->wildcard ?? null;
+        $options->url = $url;
+        $options->wildcard = '*';
+        $this->setup_role($flags, $options);
+        if($options_url){
+            $options->url = $options_url;
+        }
+        else{
+            unset($options->url);
+        }
+        if($options_wildcard){
+            $options->wildcard = $options_wildcard;
+        } else {
+            unset($options->wildcard);
+        }
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function setup_role($flags, $options)
+    {
+        $object = $this->object();
+        if(!property_exists($options, 'url')){
+            throw new Exception('Option url required');
+        }
+        $url = $options->url;
         $data = $object->data_read($url);
         $permission_array = [];
         if($data){
@@ -242,14 +249,15 @@ trait User
                 'name' => $data->get('name')
             ]
         ]);
+        if(property_exists($options, 'wildcard')){
+            $permission_array = '*';
+        }
         if(
             is_array($response) &&
             array_key_exists('node', $response) &&
             property_exists($response['node'], 'uuid')
         ){
             $role = $response['node'];
-            $role->rank = $data->get('rank');
-            $role->permission = $permission_array;
             $response = $node->put(
                 'Account.Role',
                 $node->role_system(),

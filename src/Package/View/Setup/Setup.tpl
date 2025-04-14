@@ -3,6 +3,7 @@
 {{Package.Raxon.Account:Import:role.system()}}
 {{Package.Raxon.Account:User:setup.role.anonymous(flags(), options())}}
 {{Package.Raxon.Account:User:setup.role.user(flags(), options())}}
+{{Package.Raxon.Account:User:setup.role.system(flags(), options())}}
 {{$options = options()}}
 /**
  // setup roles*
