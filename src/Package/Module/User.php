@@ -306,6 +306,12 @@ class User
         return $token;
     }
 
+    /**
+     * @throws ObjectException
+     * @throws AuthorizationException
+     * @throws FileWriteException
+     * @throws Exception
+     */
     public static function current(App $object): array
     {
         $token = '';
@@ -325,7 +331,6 @@ class User
             $user =  $claims->get('user');
             $uuid = false;
             $email = false;
-            ddd($user);
             if(array_key_exists('uuid', $user)){
                 $uuid = $user['uuid'];
             }
