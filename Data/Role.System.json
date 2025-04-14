@@ -322,6 +322,25 @@
     {
       "name": "User:commit",
       "#class": "Account.Permission"
+    },
+    {
+      "uuid": "af1c4088-0ce9-4963-8129-4ade2ba9d882",
+      "#class": "Account.Permission",
+      "name": "FileSystem:list"
+    },
+    {
+      "uuid": "8733dbf0-8135-4139-8fc1-40630c73bffd",
+      "#class": "Account.Permission",
+      "name": "Extension:list"
+    },
+    {
+      "uuid": "510c5bbd-6f15-49f0-8bef-5f28c1528c0c",
+      "#class": "Account.Permission",
+      "name": "FileSystem:read"
+    },
+    {
+      "name": "FileSystem:upload",
+      "#class": "Account.Permission"
     }
   ]
 }
