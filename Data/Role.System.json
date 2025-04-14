@@ -336,7 +336,7 @@
       "name": "FileSystem:read"
     },
     {
-      "name": "FileSystem:Upload",
+      "name": "FileSystem:upload",
       "#class": "Account.Permission"
     }
   ]
