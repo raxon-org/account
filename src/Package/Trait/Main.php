@@ -314,7 +314,7 @@ trait Main
      * @throws ObjectException
      * @throws Exception
      */
-    public function setup_admin($flags, $options): array
+    public function main_setup_admin($flags, $options): array
     {
         echo 'Create admin account' . PHP_EOL;
         echo 'Press ctrl-c to abort' . PHP_EOL;
