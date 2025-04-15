@@ -346,6 +346,22 @@
     {
       "name": "FileSystem:upload",
       "#class": "Account.Permission"
+    },
+    {
+      "name": "Index:overview",
+      "#class": "Account.Permission"
+    },
+    {
+      "name": "Index:readme",
+      "#class": "Account.Permission"
+    },
+    {
+      "name": "Application:list",
+      "#class": "Account.Permission"
+    },
+    {
+      "name": "Application:Desktop:Navigation:list",
+      "#class": "Account.Permission"
     }
   ]
 }
