@@ -29,7 +29,7 @@ trait Main
      * @throws ObjectException
      * @throws Exception
      */
-    public function setup_role($flags, $options)
+    public function main_setup_role($flags, $options)
     {
         Core::interactive();
         $object = $this->object();

@@ -1,1 +1,1 @@
-{{Package.Raxon.Account:Main:setup.permission(flags(), options())}}
+{{Package.Raxon.Account:Main:main.setup.permission(flags(), options())}}
