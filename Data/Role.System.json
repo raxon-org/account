@@ -357,11 +357,13 @@
     },
     {
       "name": "Application:list",
-      "#class": "Account.Permission"
+      "#class": "Account.Permission",
+      "#comment": "move me to the package where application is defined"
     },
     {
       "name": "Application:Desktop:Navigation:list",
-      "#class": "Account.Permission"
+      "#class": "Account.Permission",
+      "#comment": "move me to the package where application/desktop is defined"
     }
   ]
 }
