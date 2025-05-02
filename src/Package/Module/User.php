@@ -54,10 +54,6 @@ class User
                 'email' => $input->email,
                 'isActive' => 1
             ]);
-            $node->setPassword(password_hash($input->password, PASSWORD_BCRYPT, ['cost' => 13]));
-            $connection->manager->persist($node);
-            $connection->manager->flush();
-            ddd($node);
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
