@@ -237,6 +237,63 @@
     "patch" : {
       "output" : [
         {
+          "role" : "ROLE_SYSTEM",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
           "role" : "ROLE_ADMIN",
           "property" : [
             "id",
