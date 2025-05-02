@@ -54,6 +54,11 @@ class User
                 'email' => $input->email,
                 'isActive' => 1
             ]);
+            $node = $repository->findOneBy([
+                'email' => $input->email
+            ]);
+            ddd($node);
+
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
