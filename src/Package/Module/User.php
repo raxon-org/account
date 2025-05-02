@@ -57,6 +57,9 @@ class User
             $node = $repository->findOneBy([
                 'email' => $input->email
             ]);
+            $node->setIsActive(true);
+            $connection->manager->persist($node);
+            $connection->manager->flush();
             ddd($node);
 
             if($node) {
