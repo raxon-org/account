@@ -88,6 +88,7 @@ class User
                 $connection->manager->flush();
                 $user->isLoggedIn = $node->getIsLoggedIn();
                 $user->isUpdated = $node->getIsUpdated();
+                $user->key = $node->getKey();
                 $data = [];
                 $data['node'] = $user;
                 return $data;
