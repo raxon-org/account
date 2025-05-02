@@ -123,7 +123,7 @@ trait User
         $connection = $list_connection[$input] ?? null;
         $connection->manager = Database::entity_manager($object, $config, $connection);
         $validate_url = Entity::get_validate_url($object, $entity);
-        $validation = Entity::get_validation($object, $validate_url, $entity . '.' . $function);
+        $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
         $object->config('doctrine.entity.manager', $connection->manager);
         if(File::exist($validate_url)) {
             $data_node = new Data($request);
