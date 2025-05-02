@@ -124,6 +124,8 @@ trait User
         $connection->manager = Database::entity_manager($object, $config, $connection);
         $validate_url = Entity::get_validate_url($object, $entity);
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
+        d($validate_url);
+        d($entity. '.patch');
         ddd($validation);
         $object->config('doctrine.entity.manager', $connection->manager);
         if(File::exist($validate_url)) {
