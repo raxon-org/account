@@ -234,7 +234,125 @@
         }
       ]
     },
-    "update" : {
+    "patch" : {
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_ADMIN",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id:{{user.token.id()}}",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "refreshToken",
+            "role"
+          ],
+          "object" : {
+            "parameters" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "body"
+                  ]
+                }
+              ]
+            },
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "user_id:{{user.token.id()}}",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_USER",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "put" : {
       "output" : [
         {
           "role" : "ROLE_ADMIN",

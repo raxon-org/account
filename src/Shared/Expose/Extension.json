@@ -40,7 +40,18 @@
         }
       ]
     },
-    "update": {
+    "patch": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "name"
+          ]
+        }
+      ]
+    },
+    "put": {
       "output": [
         {
           "role": "ROLE_ADMIN",

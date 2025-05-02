@@ -43,7 +43,21 @@
         }
       ]
     },
-    "update": {
+    "put": {
+      "output": [
+        {
+          "role": "ROLE_ADMIN",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        }
+      ]
+    },
+    "patch": {
       "output": [
         {
           "role": "ROLE_ADMIN",

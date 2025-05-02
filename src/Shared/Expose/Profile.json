@@ -77,7 +77,49 @@
         }
       ]
     },
-    "update" : {
+    "patch" : {
+      "input" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "?user",
+            "?firstname",
+            "?surname"
+          ]
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id",
+            "user:{{user.token.id()}}",
+            "?firstname",
+            "?surname"
+          ]
+        }
+      ],
+      "output" : [
+        {
+          "role" : "ROLE_ADMIN",
+          "property" : [
+            "id",
+            "user",
+            "firstname",
+            "surname"
+          ]
+        },
+        {
+          "role" : "ROLE_USER",
+          "property" : [
+            "id",
+            "user:{{user.token.id()}}",
+            "firstname",
+            "surname"
+          ]
+        }
+      ]
+    },
+    "put" : {
       "input" : [
         {
           "role" : "ROLE_ADMIN",
