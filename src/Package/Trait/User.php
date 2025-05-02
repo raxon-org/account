@@ -10,6 +10,8 @@ use Raxon\Module\Cli;
 use Raxon\Doctrine\Module\Database;
 use Raxon\Doctrine\Module\Entity;
 
+use Raxon\Module\Data;
+use Raxon\Module\File;
 use Raxon\Node\Module\Node;
 
 use Exception;
@@ -120,6 +122,15 @@ trait User
         $input =  (int) Cli::read('input', 'Enter connection number: ') - 1;
         $connection = $list_connection[$input] ?? null;
         $connection->manager = Database::entity_manager($object, $config, $connection);
+        $validate_url = Entity::get_validate_url($object, $entity);
+        $validation = Entity::get_validation($object, $validate_url, $entity . '.' . $function);
+        $object->config('doctrine.entity.manager', $connection->manager);
+        if(File::exist($validate_url)) {
+            $data_node = new Data($request);
+            $validate = Entity::validate($object, $validation, $data_node->data());
+        }
+        ddd($validate);
+
         $user = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
         if(is_object($user) && $user->getId() === null){
             throw new Exception('User not created');
