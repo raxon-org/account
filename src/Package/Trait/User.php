@@ -126,7 +126,6 @@ trait User
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
         d($validate_url);
         d($entity. '.patch');
-        ddd($validation);
         $object->config('doctrine.entity.manager', $connection->manager);
         if(File::exist($validate_url)) {
             $data_node = new Data($request);
