@@ -127,14 +127,29 @@ trait User
         d($validate_url);
         d($entity. '.patch');
         $object->config('doctrine.entity.manager', $connection->manager);
+        $validate = false;
         if(File::exist($validate_url)) {
             $data_node = new Data($request);
             $validate = Entity::validate($object, $validation, $data_node->data());
         }
-        ddd($validate);
-
-        $user = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
-        if(is_object($user) && $user->getId() === null){
+        $user = false;
+        if(
+            is_object($validate) &&
+            property_exists($validate, 'success') &&
+            $validate->success === true
+        ){
+            $request->password = password_hash($password, PASSWORD_BCRYPT, [
+                'cost' => 13
+            ]);
+            $user = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
+        }
+        if(
+            !is_object($user) ||
+            (
+                is_object($user) &&
+                $user->getId() === null
+            )
+        ){
             throw new Exception('User not created');
         }
         elseif($user === null && $error !== null){
@@ -144,9 +159,6 @@ trait User
         $request = (object) [
             'id' => $user->getId(),
             'isActive' => 1,
-            'password' => password_hash($password, PASSWORD_BCRYPT, [
-                'cost' => 13
-            ]),
         ];
         $user = Entity::patch($object, $connection, $node->role_system(), $entity, $request, $error);
         return null;
