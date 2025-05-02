@@ -54,6 +54,9 @@ class User
                 'email' => $input->email,
                 'isActive' => 1
             ]);
+            $node->setUuid('cce17bde-e9a0-465b-a6fe-28531d29ce44');
+            $connection->manager->persist($node);
+            $connection->manager->flush();
             dd($node->getUuid());
 
             if($node) {
