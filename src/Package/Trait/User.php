@@ -83,6 +83,16 @@ trait User
         $time = time();
         $request = (object) [
             'email' => $email,
+            'password' => $password,
+            'role' => [
+                $result['node']->uuid
+            ],
+            'isActive' => 0, //cannot activate immediately
+            'isCreated' => new DateTime('@' . $time),
+        ];
+        /*
+        $request = (object) [
+            'email' => $email,
             'password' => password_hash($password, PASSWORD_BCRYPT, [
                 'cost' => 13
             ]),
@@ -92,6 +102,7 @@ trait User
             'isActive' => 0, //cannot activate immediately
             'isCreated' => new DateTime('@' . $time),
         ];
+        */
         $entity = 'User';
         $config = Database::config($object);
 
@@ -119,7 +130,10 @@ trait User
         echo 'User ('. $email .') created' . PHP_EOL;
         $request = (object) [
             'id' => $user->getId(),
-            'isActive' => 1
+            'isActive' => 1,
+            'password' => password_hash($password, PASSWORD_BCRYPT, [
+                'cost' => 13
+            ]),
         ];
         $user = Entity::patch($object, $connection, $node->role_system(), $entity, $request, $error);
         return null;
