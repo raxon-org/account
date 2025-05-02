@@ -124,15 +124,13 @@ trait User
         $connection->manager = Database::entity_manager($object, $config, $connection);
         $validate_url = Entity::get_validate_url($object, $entity);
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
-        d($validate_url);
-        d($entity. '.patch');
         $object->config('doctrine.entity.manager', $connection->manager);
         $validate = false;
+        $user = null;
         if(File::exist($validate_url)) {
             $data_node = new Data($request);
             $validate = Entity::validate($object, $validation, $data_node->data());
         }
-        $user = false;
         if(
             is_object($validate) &&
             property_exists($validate, 'success') &&
