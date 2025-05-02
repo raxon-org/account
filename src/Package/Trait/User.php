@@ -5,6 +5,7 @@ use DateTime;
 
 use Doctrine\ORM\Exception\ORMException;
 
+use Raxon\Module\Core;
 use Raxon\Module\Cli;
 
 use Raxon\Doctrine\Module\Database;
@@ -149,7 +150,7 @@ trait User
                 $user->getId() === null
             )
         ){
-            d($error);
+            echo Core::object($validate, Core::JSON) . PHP_EOL;
             throw new Exception('User not created');
         }
         elseif($user === null && $error !== null){
