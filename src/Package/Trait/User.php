@@ -127,6 +127,7 @@ trait User
         $object->config('doctrine.entity.manager', $connection->manager);
         $validate = false;
         $user = null;
+        $error = null;
         if(File::exist($validate_url)) {
             $data_node = new Data($request);
             $validate = Entity::validate($object, $validation, $data_node->data());
@@ -148,6 +149,7 @@ trait User
                 $user->getId() === null
             )
         ){
+            d($error);
             throw new Exception('User not created');
         }
         elseif($user === null && $error !== null){
