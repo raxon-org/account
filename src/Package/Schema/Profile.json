@@ -41,7 +41,9 @@
                 "target": {
                   "entity": "User"
                 },
-                "inversed": "profile",
+                "inversed": {
+                  "by":"profile"
+                },
                 "cascade": [
                   "persist"
                 ],
