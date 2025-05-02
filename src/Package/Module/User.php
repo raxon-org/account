@@ -13,6 +13,7 @@ use Exception;
 
 use Raxon\App;
 
+use Raxon\Module\Core;
 use Raxon\Module\Handler;
 
 use Raxon\Doctrine\Module\Database;
@@ -82,6 +83,7 @@ class User
                     )
                 );
                 $node->setIsLoggedIn(new DateTime());
+                $node->setKey(Core::uuid() . '-' . Core::uuid());
                 $connection->manager->persist($node);
                 $connection->manager->flush();
                 $user->isLoggedIn = $node->getIsLoggedIn();
