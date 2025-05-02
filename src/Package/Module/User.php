@@ -54,6 +54,8 @@ class User
                 'email' => $input->email,
                 'isActive' => 1
             ]);
+            dd($node->getUuid());
+
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
