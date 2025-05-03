@@ -364,6 +364,11 @@
       "name": "Application:Desktop:Navigation:list",
       "#class": "Account.Permission",
       "#comment": "move me to the package where application/desktop is defined"
+    },
+    {
+      "name": "Youtube:download",
+      "#class": "Account.Permission",
+      "#comment": "move me to the package where application/youtube is defined"
     }
   ]
 }
