@@ -48,6 +48,9 @@ class User
         }
         $config = Database::config($object);
         $connection = $object->config('doctrine.environment.system.*');
+        if($connection === null){
+            throw new ErrorException('Connection not configured.');
+        }
         $connection->manager = Database::entity_manager($object, $config, $connection);
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
