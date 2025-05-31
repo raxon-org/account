@@ -75,7 +75,7 @@
                       },
                       "relation": true,
                       "multiple": true
-                    },
+                    }
                   }
               },
               "#comment": [
