@@ -219,6 +219,7 @@ class Jwt {
         );
         $constraints = $configuration->validationConstraints();
         if (!$configuration->validator()->validate($token_unencrypted, ...$constraints)) {
+            trace();
             d($constraints);
             ddd($token_unencrypted);
             throw new AuthorizationException('Authentication failure...');
