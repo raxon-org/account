@@ -426,6 +426,7 @@ class User
             throw new AuthorizationException('Please provide a valid token...');
         }
         $token_unencrypted = Jwt::decryptRefreshToken($object, $token);
+        ddd($token_unencrypted);
         $claims = $token_unencrypted->claims();
         if($claims->has('user')){
             $user =  $claims->get('user');
