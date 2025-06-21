@@ -49,7 +49,7 @@ class UserLogger
      * @throws ORMException
      * @throws Exception
      */
-    public static function log(App $object, object $input, User $user=null, object $connection=null,): Entity
+    public static function log(App $object, object $input, User|null $user=null, object|null $connection=null,): Entity
     {
         if(!property_exists($input, 'status')){
             throw new ErrorException('Status is required.');
@@ -83,7 +83,7 @@ class UserLogger
      * @throws ErrorException
      * @throws Exception
      */
-    public static function count(App $object, object $input, User $user=null, object $connection=null): int
+    public static function count(App $object, object $input, User|null $user=null, object|null $connection=null): int
     {
         if($connection === null){
             $config = Database::config($object);
