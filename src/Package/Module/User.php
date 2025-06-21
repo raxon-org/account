@@ -227,7 +227,7 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    public static function is_blocked(App $object, object $input, object $connection=null): bool
+    public static function is_blocked(App $object, object $input, object|null $connection=null): bool
     {
         if(!property_exists($input, 'email')){
             throw new ErrorException('E-mail is required.');
