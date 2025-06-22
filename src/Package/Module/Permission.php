@@ -99,6 +99,7 @@ class Permission
         }
         $roles = [];
         $entity = 'Role';
+        ddd($object->config('doctrine'));
         $entityManager = Database::entityManager($object, ['name'=> Main::API]);
         $repository = $entityManager->getRepository($object->config('doctrine.entity.prefix') . $entity);
         if(is_array($access_control)){
