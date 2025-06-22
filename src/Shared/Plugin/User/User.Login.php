@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\User;
+namespace Plugin;
 
 use Doctrine\ORM\Exception\ORMException;
 use Exception;
