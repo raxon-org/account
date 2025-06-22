@@ -356,6 +356,7 @@ class Permission
             }
         }
         if(empty($roles)){
+            ddd($user);
             $roles = $user['role'];
         }
         $has_permission = false;
