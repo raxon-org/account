@@ -1,5 +1,5 @@
 <?php
-namespace Domain\Api_Workandtravel_World\Service;
+namespace Raxon\Account\Module;
 
 use Doctrine\ORM\Exception\ORMException;
 use Entity\User as EntityUser;
