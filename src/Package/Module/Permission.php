@@ -301,6 +301,7 @@ class Permission
                 $has_role = false;
                 $role = false;
                 foreach($roles as $role){
+                    ddd($role);
                     $user_role = [
                         'id' => $role->getId(),
                         'name' => $role->getName(),
