@@ -547,34 +547,63 @@ class User
             $connection = $object->config('doctrine.environment.system.*');
             $em = Database::entity_manager($object, $config, $connection);
             $repository = $em->getRepository('\\Entity\\User');
-            $node = $repository->findOneBy([
+            $item = $repository->findOneBy([
                 'uuid' => $user['uuid'],
                 'email' => $user['email'],
             ]);
-            if($node) {
-                if(empty($node->getIsActive())){
+            if($item) {
+                if(empty($item->getIsActive())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account is not active.');
                 }
-                if(!empty($node->getIsDeleted())){
+                if(!empty($item->getIsDeleted())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account is deleted.');
                 }
-                if(empty($node->getRole())){
+                if(empty($item->getRole())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account has no roles.');
                 }
-                $roles = $node->getRole();
-                ddd($roles);
+                $node = new Node($object);
+                $class = 'Account.Role';
+                $response = $node->record(
+                    $class,
+                    $node->role_system(),
+                    [
+                        'filter' => [
+                            'name' => 'ROLE_USER'
+                        ],
+                        'relation' => true
+                    ]
+                );
+                $role = $response['node'] ?? null;
+                $entity = 'User';
+                $function = __FUNCTION__;
+
+                $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
+                    $object,
+                    $entity,
+                    $entity . '.' . $function . '.output'
+                );
+                $record = [];
+                $record = \Raxon\Doctrine\Module\Entity::output(
+                    $object,
+                    $item,
+                    $toArray,
+                    $entity,
+                    $function,
+                    $record,
+                    $role
+                );
+                ddd($record);
                 $node->setIsLoggedIn(new DateTime());
-                $em->persist($node);
+                $em->persist($item);
                 $em->flush();
-                $object->set('user', $node);
-                ddd($node);
-                return $node;
+                $object->set('user', $record);
+                return $record;
             }
         }
         return null;
