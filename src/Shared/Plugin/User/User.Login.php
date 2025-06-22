@@ -1,10 +1,8 @@
 <?php
-namespace Plugin;
+namespace Plugin\User;
 
 use Doctrine\ORM\Exception\ORMException;
-
 use Exception;
-
 use Package\Raxon\Account\Module\User;
 
 trait User_Login
