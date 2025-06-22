@@ -147,6 +147,10 @@ class Permission
             $user = User::get_by_key($object);
             d($user);
             if(!$user){
+                $response = User::current($object);
+                ddd($response);
+
+
                 $user = User::get_by_authorization($object);
                 ddd($user);
             }
