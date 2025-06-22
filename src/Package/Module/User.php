@@ -571,6 +571,7 @@ class User
                 $em->persist($node);
                 $em->flush();
                 $object->set('user', $node);
+                ddd($node);
                 return $node;
             }
         }
