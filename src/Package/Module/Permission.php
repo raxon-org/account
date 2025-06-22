@@ -368,9 +368,10 @@ class Permission
         foreach($roles as $role){
             if(
                 is_array($role) &&
-                array_key_exists('permissions', $role)
+                array_key_exists('permission', $role)
             ){
-                $permissions = $role['permissions'];
+                $permissions = $role['permission'];
+                $role = Core::object($role, Core::OBJECT);
             } elseif(
                 is_object($role) &&
                 property_exists($role, 'permission')
@@ -383,8 +384,12 @@ class Permission
                     array_key_exists('name', $permission)
                 ){
                     $name = $permission['name'];
-                } else {
-                    $name = $permission->getName();
+                }
+                elseif(
+                    is_object($permission) &&
+                    property_exists($permission, 'name')
+                ) {
+                    $name = $permission->name;
                 }
                 if(
                     (
@@ -409,7 +414,7 @@ class Permission
                     foreach($expose as $expose_nr => $expose_value){
                         if(
                             property_exists($expose_value, 'role') &&
-                            $expose_value->role === $role->getName() &&
+                            $expose_value->role === $role->name &&
                             property_exists($expose_value, 'property')
                         ){
                             $attributes = $expose_value->property;
@@ -437,7 +442,7 @@ class Permission
                                 if ($compare) {
                                     $parse = new Parse($object, $object->data());
                                     $compare = $parse->compile($compare, $object->data());
-                                    $value = Main::castValue($object->request($attribute));
+                                    $value = Permission::castValue($object->request($attribute));
                                     if($is_optional){
                                         if(
                                             $value &&
