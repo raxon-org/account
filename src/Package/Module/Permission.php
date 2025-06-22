@@ -343,12 +343,10 @@ class Permission
      * @throws FileWriteException
      * @throws Exception
      */
-    public static function request(App $object, $entity=null, $action='', Role|null &$role=null, EntityUser|null &$user=null, &$fetchJoinCollection=null): array
+    public static function request(App $object, $entity=null, $action='', object|null &$role=null, object|null &$user=null, &$fetchJoinCollection=null): array
     {
         $roles = Permission::getAccessControl($object, $entity, $action);
         $user = User::current($object);
-        d($roles);
-        ddd($user);
         if($user){
             $session = $object->session('user');
             if($session){
@@ -356,9 +354,8 @@ class Permission
             }
         }
         if(empty($roles)){
-            $roles = $user->getRolesByRank('asc');
+            $roles = $user->role;
         }
-        ddd($roles);
         $has_permission = false;
         $request = [];
         $required_attribute = [];
@@ -375,7 +372,7 @@ class Permission
                 is_object($role) &&
                 property_exists($role, 'permission')
             ){
-                $permissions = $role->getPermissions();
+                $permissions = $role->permission;
             }
             foreach($permissions as $permission){
                 if(
