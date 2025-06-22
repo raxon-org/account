@@ -567,6 +567,8 @@ class User
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account has no roles.');
                 }
+                $roles = $node->getRole();
+                ddd($roles);
                 $node->setIsLoggedIn(new DateTime());
                 $em->persist($node);
                 $em->flush();
