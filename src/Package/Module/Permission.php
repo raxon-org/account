@@ -93,6 +93,7 @@ class Permission
      */
     public static function getAccessControl(App $object, $entity=null, $action=''): array
     {
+        return [];
         $access_control = $object->config('access_control');
         if(!is_array($access_control)){
             $parse = new Parse($object, $object->data());
