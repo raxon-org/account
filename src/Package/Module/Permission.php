@@ -148,7 +148,7 @@ class Permission
             d($user);
             if(!$user){
                 $user = User::get_by_authorization($object);
-                ddd($user);
+                d($user);
             }
             if(
                 !empty($user) &&
