@@ -1,0 +1,507 @@
+<?php
+namespace Domain\Api_Workandtravel_World\Service;
+
+use Doctrine\ORM\Exception\ORMException;
+use Entity\User as EntityUser;
+use Exception;
+use Raxon\App;
+use Raxon\Doctrine\Service\Entity as Service;
+use Raxon\Exception\AuthorizationException;
+use Raxon\Exception\ErrorException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
+use Raxon\Module\Core;
+use Raxon\Module\Controller;
+use Raxon\Module\Database;
+use Raxon\Module\File;
+use Raxon\Module\Parse;
+use Raxon\Node\Module\Node;
+
+class Permission extends Main
+{
+
+    const SCOPE_SYSTEM = 'system';
+    const SCOPE_USER = 'user';
+    const SCOPE_PRIVATE = 'private';
+    const SCOPE_PUBLIC = 'public';
+
+    const CACHE_TIME = 20;  //minutes
+
+
+    public static function has(EntityUser $user, $name): bool
+    {
+        $user_permissions = [];
+        foreach($user->getRoles() as $role){
+            ddd($role);
+            $permissions = $role->getPermissions();
+            if(
+                $permissions &&
+                is_array($permissions)
+            ){
+                foreach($permissions as $permission){
+                    $user_permissions[] = $permission->getName();
+                }
+            }
+        }
+        if(in_array($name, $user_permissions)){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public static function get(App $object, $entity='', $attribute=''){
+        $dir = $object->config('project.dir.source') . 'Permission' . $object->config('ds');
+        $url = $dir . $entity . $object->config('extension.json');
+        if(!File::exist($url)){
+            $explode = explode('.', $entity);
+            if(array_key_exists(1, $explode)){
+                $attribute = explode($entity, $attribute, 2);
+                $explode = array_reverse($explode);
+                $entity = implode('.', $explode);
+                $attribute[0] = $entity;
+                $attribute = implode('', $attribute);
+                $url = $dir . $entity . $object->config('extension.json');
+                if(!File::exist($url)){
+                    throw new Exception('Permission url (' . $url . ') not found for entity: ' . $entity);
+                }
+            } else {
+                throw new Exception('Permission url (' . $url . ') not found for entity: ' . $entity);
+            }
+        }
+        $data = $object->data_read($url);
+        if($data){
+            $get = $data->get($attribute);
+            if(empty($get)){
+                throw new Exception('Cannot find attribute (' . $attribute .') in entity: ' . $entity);
+            }
+            return $get;
+        }
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws FileWriteException
+     * @throws \Doctrine\DBAL\Exception
+     * @throws ORMException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public static function getAccessControl(App $object, $entity=null, $action=''): array
+    {
+        $access_control = $object->config('access_control');
+        if(!is_array($access_control)){
+            $parse = new Parse($object, $object->data());
+            $access_control = $parse->compile($access_control, $object->data());
+            $object->config('access_control', $access_control);
+        }
+        $roles = [];
+        $entity = 'Role';
+        $entityManager = Database::entityManager($object, ['name'=> Main::API]);
+        $repository = $entityManager->getRepository($object->config('doctrine.entity.prefix') . $entity);
+        if(is_array($access_control)){
+            foreach($access_control as $access){
+                if(
+                    property_exists($access, 'entity') &&
+                    property_exists($access, 'action') &&
+                    property_exists($access, 'roles') &&
+                    $access->entity === $entity &&
+                    $access->action === $action
+                ){
+                    foreach($access->roles as $name){
+                        $role = $repository->findOneBy([
+                            'name' => $name
+                        ]);
+                        if($role){
+                            $roles[] = $role;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return $roles;
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws ErrorException
+     * @throws \Doctrine\DBAL\Exception
+     * @throws ORMException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws FileWriteException
+     * @throws Exception
+     */
+    public static function controller(App $object, $controller=null, $action='', &$user=null): ?object
+    {
+        $controller = str_replace('.', ':', Controller::name($controller));
+        $action = strtolower(Controller::name($action));
+        $url = false;
+        try {
+            $user = User::getByKey($object);
+            if(!$user){
+                $user = User::getByAuthorization($object);
+            }
+            if(
+                !empty($user) &&
+                is_object($user) &&
+                $user->getUuid()
+            ){
+                $session = $object->session('user');
+                if($session){
+                    //read roles from session.
+                    $has_role = false;
+                    $roles = $object->session('user.role');
+                    foreach($roles as $role){
+                        if(array_key_exists('permission', $role)){
+                            foreach($role['permission'] as $permission){
+                                if(
+                                    $has_role === false &&
+                                    array_key_exists('name', $permission) &&
+                                    $permission['name'] === $controller . ':' . $action
+                                ){
+                                    $has_permission = true;
+                                    if(
+                                        array_key_exists('name', $role) &&
+                                        array_key_exists('rank', $role)
+                                    ){
+                                        $has_role = Core::object($role);
+                                        $has_role->permission = (array) $has_role->permission;
+                                        break 2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if($has_permission && $has_role){
+                        return $has_role;
+                    }
+                } else {
+                    $has_permission = false;
+                    $has_role = false;
+                    $roles = $user->getRole();
+                    $user_roles = [];
+                    foreach($roles as $role) {
+                        if(
+                            property_exists($role, 'uuid') &&
+                            property_exists($role, 'name') &&
+                            property_exists($role, 'rank') &&
+                            property_exists($role, 'permission') &&
+                            is_array($role->permission)
+                        ) {
+                            $user_role = [
+                                'uuid' => $role->uuid,
+                                'name' => $role->name,
+                                'rank' => $role->rank,
+                                'permission' => []
+                            ];
+                            $permissions = $role->permission;
+                            $has_permission = false;
+                            foreach ($permissions as $permission) {
+                                if(
+                                    property_exists($permission, 'uuid') &&
+                                    property_exists($permission, 'name')
+                                ) {
+                                    $user_role['permission'][] = [
+                                        'uuid' => $permission->uuid,
+                                        'name' => $permission->name,
+                                    ];
+                                    if (
+                                        $has_role === false &&
+                                        $permission->name === $controller . ':' . $action
+                                    ) {
+                                        $has_permission = true;
+                                        $has_role = $role;
+                                    }
+                                }
+                            }
+                            $user_roles[] = $user_role;
+                        }
+                    }
+                    //user->session = session with user info
+                    $session['id'] = $user->getId();
+                    $session['uuid'] = $user->getUuid();
+                    $session['email'] = $user->getEmail();
+                    $session['role'] = $user_roles;
+                    $object->session('user', $session);
+                    if($has_permission && $has_role){
+                        return $has_role;
+                    }
+                }
+            }
+        } catch (Exception $exception){
+            if(!$user){
+                $class = 'Account.Role';
+                $node = new Node($object);
+                $response = $node->record($class, $node->role_system(), [
+                    'filter' => [
+                        'name' => 'ROLE_ANONYMOUS'
+                    ],
+                    'relation' => true
+                ]);
+                if(
+                    is_array($response) &&
+                    array_key_exists('node', $response) &&
+                    property_exists($response['node'], 'uuid') &&
+                    property_exists($response['node'], 'permission') &&
+                    is_array($response['node']->permission)
+                ){
+                    foreach($response['node']->permission as $permission){
+                        if(property_exists($permission, 'name')){
+                            if($permission->name === $controller . ':' . $action){
+                                return $response['node'];
+                            }
+                        }
+                    }
+                }
+//                throw new ErrorException('Need permission ('. $controller .'.' . $action .')...');
+                throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
+            }
+        }
+        if($user){
+            $session = $object->session('user');
+            if($session){
+                $roles = $object->session('user.role');
+                $has_permission = false;
+                $has_role = false;
+                if(is_array($roles)){
+                    foreach($roles as $role){
+                        if(array_key_exists('permission', $role)){
+                            $permissions = $role['permission'];
+                            foreach($permissions as $permission){
+                                if(
+                                    $has_role === false &&
+                                    array_key_exists('name', $permission) &&
+                                    $permission['name'] === $controller . ':' . $action
+                                ){
+                                    $has_permission = true;
+                                    if(
+                                        array_key_exists('name', $role) &&
+                                        array_key_exists('rank', $role)
+                                    ){
+                                        $has_role = Core::object($role);
+                                        $has_role->permission = (array) $has_role->permission;
+                                        break 2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                ddd($user);
+                $user_roles = [];
+                $roles = $user->getRolesByRank('asc');
+                $has_permission = false;
+                $has_role = false;
+                $role = false;
+                foreach($roles as $role){
+                    $user_role = [
+                        'id' => $role->getId(),
+                        'name' => $role->getName(),
+                        'rank' => $role->getRank(),
+                        'permissions' => []
+                    ];
+                    $permissions = $role->getPermissions();
+                    foreach($permissions as $permission){
+                        $user_role['permissions'][] = [
+                            'id' => $permission->getId(),
+                            'name' => $permission->getName()
+                        ];
+                        if(
+                            $has_role === false &&
+                            $permission->getName() === $controller . ':' . $action
+                        ){
+                            $has_permission = true;
+                            $has_role = $role;
+                        }
+                    }
+                    $user_roles[] = $user_role;
+                }
+                $session = $user->session($object);
+                $session['roles'] = $user_roles;
+                $object->session('user', $session);
+            }
+            if(
+                $has_permission &&
+                $has_role
+            ){
+                return $has_role;
+            }
+        }
+        throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws ORMException
+     * @throws AuthorizationException
+     * @throws FileWriteException
+     * @throws Exception
+     */
+    public static function request(App $object, $entity=null, $action='', Role|null &$role=null, EntityUser|null &$user=null, &$fetchJoinCollection=null): array
+    {
+        $roles = Permission::getAccessControl($object, $entity, $action);
+        $user = User::getByAuthorization($object);
+        if($user){
+            $session = $object->session('user');
+            if($session){
+                $roles = $object->session('user.roles');
+            }
+        }
+        if(empty($roles)){
+            $roles = $user->getRolesByRank('asc');
+        }
+        ddd($roles);
+        $has_permission = false;
+        $request = [];
+        $required_attribute = [];
+        $explode = explode('.', $entity);
+        $explode = array_reverse($explode);
+        $alternate = implode('.', $explode);
+        foreach($roles as $role){
+            if(
+                is_array($role) &&
+                array_key_exists('permissions', $role)
+            ){
+                $permissions = $role['permissions'];
+            } elseif(
+                is_object($role) &&
+                property_exists($role, 'permission')
+            ){
+                $permissions = $role->getPermissions();
+            }
+            foreach($permissions as $permission){
+                if(
+                    is_array($permission) &&
+                    array_key_exists('name', $permission)
+                ){
+                    $name = $permission['name'];
+                } else {
+                    $name = $permission->getName();
+                }
+                if(
+                    (
+                        $name === $entity . ':' . $action &&
+                        $has_permission === false
+                    ) ||
+                    (
+                        $name === $alternate . ':' . $action &&
+                        $has_permission === false
+                    )
+                ){
+                    $has_permission = true;
+                    $fetchJoinCollection = true;
+
+                    $attributes = [];
+                    //with-input
+                    $expose = Service::expose_get(
+                        $object,
+                        $entity,
+                        $entity . '.' . $action . '.input'
+                    );
+                    foreach($expose as $expose_nr => $expose_value){
+                        if(
+                            property_exists($expose_value, 'role') &&
+                            $expose_value->role === $role->getName() &&
+                            property_exists($expose_value, 'property')
+                        ){
+                            $attributes = $expose_value->property;
+                            break;
+                        }
+                    }
+                    if (
+                        !empty($attributes) &&
+                        is_array($attributes)
+                    ) {
+                        foreach ($attributes as $attribute) {
+                            $assertion = $attribute;
+                            $explode = explode(':', $attribute, 2);
+                            $compare = null;
+                            if (array_key_exists(1, $explode)) {
+                                $compare = $explode[1];
+                                $attribute = $explode[0];
+                                $is_optional = false;
+                                if(substr($attribute,0, 1) === '?'){
+                                    $is_optional = true;
+                                    $attribute = substr($attribute, 1);
+                                } else {
+                                    $required_attribute[] = $attribute;
+                                }
+                                if ($compare) {
+                                    $parse = new Parse($object, $object->data());
+                                    $compare = $parse->compile($compare, $object->data());
+                                    $value = Main::castValue($object->request($attribute));
+                                    if($is_optional){
+                                        if(
+                                            $value &&
+                                            $value === $compare
+                                        ){
+                                            $request[$attribute] = $compare;
+                                        }
+                                        if(
+                                            $value &&
+                                            $value !== $compare
+                                        ){
+                                            throw new Exception('Assertion failed: ' . $assertion);
+                                        }
+                                    } else {
+                                        if ($value !== $compare) {
+                                            throw new Exception('Assertion failed: ' . $assertion);
+                                        }
+                                        $request[$attribute] = $compare;
+                                    }
+                                }
+                            } else {
+                                $is_optional = false;
+                                if(substr($attribute,0, 1) === '?'){
+                                    $is_optional = true;
+                                    $attribute = substr($attribute, 1);
+                                } else {
+                                    $required_attribute[] = $attribute;
+                                }
+                                $value = $object->request($attribute);
+                                if($is_optional){
+                                    if($value){
+                                        $request[$attribute] = $value;
+                                    }
+                                } else{
+                                    $request[$attribute] = $value;
+                                }
+                            }
+                        }
+                        break 2;
+                    }
+                }
+            }
+        }
+        if(empty($has_permission)){
+            $logger = $object->config('project.log.security');
+            if($logger){
+                $object->logger($logger)->info('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
+            } else {
+                $logger = $object->config('project.log.app');
+                if($logger){
+                    $object->logger($logger)->info('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
+                }
+            }
+            throw new AuthorizationException('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
+        }
+        $missing_attribute = [];
+        foreach($required_attribute as $attribute){
+            $value = $object->request($attribute);
+            if($value === null){
+                $missing_attribute[] = $attribute;
+            }
+        }
+        if(!empty($missing_attribute)){
+            throw new Exception('Method requires attributes [' . implode(', ', $missing_attribute) . '].');
+        }
+        foreach($request as $attribute => $value){
+            $object->request($attribute, $value);
+        }
+        return $request;
+    }
+}
