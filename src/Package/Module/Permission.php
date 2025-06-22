@@ -140,7 +140,7 @@ class Permission
      */
     public static function controller(App $object, $controller=null, $action='', &$user=null): ?object
     {
-        trace();
+        d($object->request());
         d($controller);
         d($action);
         $controller = str_replace('.', ':', Controller::name($controller));
