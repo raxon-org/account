@@ -499,6 +499,7 @@ class User
         if($node){
             ddd($node);
             $node->fetchByKey(true);
+            $node->getRole();
             return $node;
         }
         return null;
