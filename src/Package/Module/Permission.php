@@ -145,9 +145,10 @@ class Permission
         $url = false;
         try {
             $user = User::get_by_key($object);
+            d($user);
             if(!$user){
-                $response = User::current($object);
-                $user = Core::object($response['node']) ?? null;
+                $user = User::get_by_authorization($object);
+                ddd($user);
             }
             if(
                 !empty($user) &&

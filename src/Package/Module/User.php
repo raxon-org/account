@@ -503,7 +503,78 @@ class User
             return $node;
         }
         return null;
+    }
 
+    /**
+     * @throws AuthorizationException
+     * @throws ObjectException
+     * @throws FileWriteException
+     * @throws ORMException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws Exception
+     */
+    public static function get_by_authorization(App $object): mixed
+    {
+        $object->logger()->info('getByAuthorization need session from backend.');
+        $node = $object->get('user');
+        if(!empty($node)){
+            return $node;
+        }
+        $token = '';
+        if($object->request('authorization')){
+            $token = $object->request('authorization');
+        }
+        elseif($object->data(App::REQUEST_HEADER . '.' . 'Authorization')){
+            $token = $object->data(App::REQUEST_HEADER . '.' . 'Authorization');
+        }
+        elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+            $token = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
+            $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        $token = substr($token , 7);
+        if(!$token){
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            throw new AuthorizationException('Please provide a valid token...');
+        }
+        $token_unencrypted = Jwt::decryptToken($object, $token);
+        $claims = $token_unencrypted->claims();
+        if($claims->has('user')) {
+            $user = $claims->get('user');
+            $config = Database::config($object);
+            $connection = $object->config('doctrine.environment.system.*');
+            $em = Database::entity_manager($object, $config, $connection);
+            $repository = $em->getRepository('\\Entity\\User');
+            $node = $repository->findOneBy([
+                'uuid' => $user['uuid'],
+                'email' => $user['email'],
+            ]);
+            if($node) {
+                if(empty($node->getIsActive())){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('Account is not active.');
+                }
+                if(!empty($node->getIsDeleted())){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('Account is deleted.');
+                }
+                if(empty($node->getRoles())){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('Account has no roles.');
+                }
+                $node->setIsLoggedIn(new DateTime());
+                $em->persist($node);
+                $em->flush();
+                $object->set('user', $node);
+                return $node;
+            }
+        }
+        return null;
     }
 
 }
