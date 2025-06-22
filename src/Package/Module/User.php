@@ -561,8 +561,7 @@ class User
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account is deleted.');
                 }
-                ddd($node);
-                if(empty($node->getRoles())){
+                if(empty($node->getRole())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account has no roles.');
