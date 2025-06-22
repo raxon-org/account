@@ -343,10 +343,9 @@ class Permission
      */
     public static function request(App $object, $entity=null, $action='', Role|null &$role=null, EntityUser|null &$user=null, &$fetchJoinCollection=null): array
     {
-        ddd('request');
-
         $roles = Permission::getAccessControl($object, $entity, $action);
-        $user = User::getByAuthorization($object);
+        $user = User::current($object);
+        ddd($user);
         if($user){
             $session = $object->session('user');
             if($session){
