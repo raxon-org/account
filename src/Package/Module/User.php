@@ -479,4 +479,31 @@ class User
         throw new AuthorizationException('Authentication failure... (invalid claim)');
     }
 
+    /**
+     * @throws ObjectException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
+     * @throws \Doctrine\DBAL\Exception
+     * @throws FileWriteException
+     */
+    public static function get_by_key(App $object){
+        $key = $object->request('key');
+        ddd($key);
+        if(!$key){
+            return null;
+        }
+        $config = Database::config($object);
+        $connection = $object->config('doctrine.environment.system.*');
+        $em = Database::entity_manager($object, $config, $connection);
+        $repository = $em->getRepository(Entity::class);
+        $node = $repository->findOneBy(['key' => $key]);
+        if($node){
+            ddd($node);
+            $node->fetchByKey(true);
+            return $node;
+        }
+        return null;
+
+    }
+
 }

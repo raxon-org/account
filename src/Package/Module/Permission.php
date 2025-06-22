@@ -144,9 +144,10 @@ class Permission
         $action = strtolower(Controller::name($action));
         $url = false;
         try {
-            $user = User::getByKey($object);
+            $user = User::get_by_key($object);
             if(!$user){
-                $user = User::getByAuthorization($object);
+                $response = User::current($object);
+                $user = Core::object($response['node']) ?? null;
             }
             if(
                 !empty($user) &&
