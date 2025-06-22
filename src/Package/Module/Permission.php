@@ -27,6 +27,7 @@ class Permission
 
     const CACHE_TIME = 20;  //minutes
 
+    const API = 'system';
 
     public static function has(EntityUser $user, $name): bool
     {
@@ -88,6 +89,7 @@ class Permission
      * @throws \Doctrine\DBAL\Exception
      * @throws ORMException
      * @throws \Doctrine\ORM\ORMException
+     * @throws Exception
      */
     public static function getAccessControl(App $object, $entity=null, $action=''): array
     {
@@ -99,8 +101,7 @@ class Permission
         }
         $roles = [];
         $entity = 'Role';
-        ddd($object->config('doctrine'));
-        $entityManager = Database::entityManager($object, ['name'=> Main::API]);
+        $entityManager = Database::entityManager($object, ['name'=> Permission::API]);
         $repository = $entityManager->getRepository($object->config('doctrine.entity.prefix') . $entity);
         if(is_array($access_control)){
             foreach($access_control as $access){
@@ -346,6 +347,7 @@ class Permission
     {
         $roles = Permission::getAccessControl($object, $entity, $action);
         $user = User::current($object);
+        d($roles);
         ddd($user);
         if($user){
             $session = $object->session('user');
