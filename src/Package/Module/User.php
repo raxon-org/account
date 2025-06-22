@@ -488,7 +488,6 @@ class User
      */
     public static function get_by_key(App $object){
         $key = $object->request('key');
-        ddd($key);
         if(!$key){
             return null;
         }
