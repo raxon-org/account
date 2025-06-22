@@ -298,7 +298,7 @@ class Permission
                 }
             } else {
                 $user_roles = [];
-                $roles = $user->getRole();
+                $roles = $user->role();
                 $has_permission = false;
                 $has_role = false;
                 $role = false;
