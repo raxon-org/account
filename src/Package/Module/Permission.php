@@ -1,11 +1,11 @@
 <?php
-namespace Raxon\Account\Module;
+namespace Package\Raxon\Account\Module;
 
 use Doctrine\ORM\Exception\ORMException;
 use Entity\User as EntityUser;
 use Exception;
 use Raxon\App;
-use Raxon\Doctrine\Service\Entity as Service;
+use Raxon\Doctrine\Module\Entity as Module;
 use Raxon\Exception\AuthorizationException;
 use Raxon\Exception\ErrorException;
 use Raxon\Exception\FileWriteException;
@@ -17,7 +17,7 @@ use Raxon\Module\File;
 use Raxon\Module\Parse;
 use Raxon\Node\Module\Node;
 
-class Permission extends Main
+class Permission
 {
 
     const SCOPE_SYSTEM = 'system';
@@ -343,6 +343,8 @@ class Permission extends Main
      */
     public static function request(App $object, $entity=null, $action='', Role|null &$role=null, EntityUser|null &$user=null, &$fetchJoinCollection=null): array
     {
+        ddd('request');
+
         $roles = Permission::getAccessControl($object, $entity, $action);
         $user = User::getByAuthorization($object);
         if($user){
@@ -397,7 +399,7 @@ class Permission extends Main
 
                     $attributes = [];
                     //with-input
-                    $expose = Service::expose_get(
+                    $expose = Module::expose_get(
                         $object,
                         $entity,
                         $entity . '.' . $action . '.input'
