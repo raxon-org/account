@@ -496,6 +496,8 @@ class Permission
                     $object->logger($logger)->info('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
                 }
             }
+            d($entity);
+            ddd($action);
             throw new AuthorizationException('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
         }
         $missing_attribute = [];
