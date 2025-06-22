@@ -295,7 +295,6 @@ class Permission
                     }
                 }
             } else {
-                ddd($user);
                 $user_roles = [];
                 $roles = $user->getRolesByRank('asc');
                 $has_permission = false;
