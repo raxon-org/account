@@ -492,9 +492,14 @@ class User
         if(!$key){
             return null;
         }
-        $config = Database::config($object);
-        $connection = $object->config('doctrine.environment.system.*');
-        $em = Database::entity_manager($object, $config, $connection);
+        $em = $object->config('doctrine.em');
+        if($em === null){
+            $config = Database::config($object);
+            $connection = $object->config('doctrine.environment.system.*');
+            $em = Database::entity_manager($object, $config, $connection);
+            $object->config('doctrine.em', $em);
+        }
+
         $repository = $em->getRepository(Entity::class);
         $item = $repository->findOneBy(['key' => $key]);
         if($item){
@@ -575,9 +580,13 @@ class User
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
             $user = $claims->get('user');
-            $config = Database::config($object);
-            $connection = $object->config('doctrine.environment.system.*');
-            $em = Database::entity_manager($object, $config, $connection);
+            $em = $object->config('doctrine.em');
+            if($em === null){
+                $config = Database::config($object);
+                $connection = $object->config('doctrine.environment.system.*');
+                $em = Database::entity_manager($object, $config, $connection);
+                $object->config('doctrine.em', $em);
+            }
             $repository = $em->getRepository('\\Entity\\User');
             $item = $repository->findOneBy([
                 'uuid' => $user['uuid'],
