@@ -148,99 +148,32 @@ class Permission
             if(!$user){
                 $user = User::get_by_authorization($object);
             }
+            $has_role = false;
+            $has_permission = false;
             foreach($user->role() as $role){
-                ddd($role);
-            }
-            /*
-            if(
-                !empty($user) &&
-                is_object($user) &&
-                $user->getUuid()
-            ){
-                $session = $object->session('user');
-                if($session){
-                    //read roles from session.
-                    $has_role = false;
-                    $roles = $object->session('user.role');
-                    foreach($roles as $role){
-                        if(array_key_exists('permission', $role)){
-                            foreach($role['permission'] as $permission){
-                                if(
-                                    $has_role === false &&
-                                    array_key_exists('name', $permission) &&
-                                    $permission['name'] === $controller . ':' . $action
-                                ){
-                                    $has_permission = true;
-                                    if(
-                                        array_key_exists('name', $role) &&
-                                        array_key_exists('rank', $role)
-                                    ){
-                                        $has_role = Core::object($role);
-                                        $has_role->permission = (array) $has_role->permission;
-                                        break 2;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if($has_permission && $has_role){
-                        return $has_role;
-                    }
-                } else {
-                    $has_permission = false;
-                    $has_role = false;
-                    $roles = $user->getRole();
-                    $user_roles = [];
-                    foreach($roles as $role) {
+                if(!property_exists($role, 'permission')){
+                    continue;
+                }
+                foreach($role->permission as $permission){
+                    if(
+                        $has_role === false &&
+                        property_exists($permission, 'name') &&
+                        $permission->name === $controller . ':' . $action
+                    ){
+                        $has_permission = true;
                         if(
-                            property_exists($role, 'uuid') &&
-                            property_exists($role, 'name') &&
-                            property_exists($role, 'rank') &&
-                            property_exists($role, 'permission') &&
-                            is_array($role->permission)
-                        ) {
-                            $user_role = [
-                                'uuid' => $role->uuid,
-                                'name' => $role->name,
-                                'rank' => $role->rank,
-                                'permission' => []
-                            ];
-                            $permissions = $role->permission;
-                            $has_permission = false;
-                            foreach ($permissions as $permission) {
-                                if(
-                                    property_exists($permission, 'uuid') &&
-                                    property_exists($permission, 'name')
-                                ) {
-                                    $user_role['permission'][] = [
-                                        'uuid' => $permission->uuid,
-                                        'name' => $permission->name,
-                                    ];
-                                    if (
-                                        $has_role === false &&
-                                        $permission->name === $controller . ':' . $action
-                                    ) {
-                                        $has_permission = true;
-                                        $has_role = $role;
-                                    }
-                                }
-                            }
-                            $user_roles[] = $user_role;
+                            array_key_exists('name', $role) &&
+                            array_key_exists('rank', $role)
+                        ){
+                            $has_role = $role;
+                            break 2;
                         }
-                    }
-                    //user->session = session with user info
-                    $session['id'] = $user->getId();
-                    $session['uuid'] = $user->getUuid();
-                    $session['email'] = $user->getEmail();
-                    $session['role'] = $user_roles;
-                    $object->session('user', $session);
-                    if($has_permission && $has_role){
-                        return $has_role;
                     }
                 }
-
+                if($has_permission && $has_role){
+                    return $has_role;
+                }
             }
-            */
         } catch (Exception $exception){
             if(!$user){
                 $class = 'Account.Role';
@@ -268,78 +201,6 @@ class Permission
                 }
 //                throw new ErrorException('Need permission ('. $controller .'.' . $action .')...');
                 throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')' . PHP_EOL . (string) $exception);
-            }
-        }
-        if($user){
-            $session = $object->session('user');
-            if($session){
-                $roles = $object->session('user.role');
-                $has_permission = false;
-                $has_role = false;
-                if(is_array($roles)){
-                    foreach($roles as $role){
-                        if(array_key_exists('permission', $role)){
-                            $permissions = $role['permission'];
-                            foreach($permissions as $permission){
-                                if(
-                                    $has_role === false &&
-                                    array_key_exists('name', $permission) &&
-                                    $permission['name'] === $controller . ':' . $action
-                                ){
-                                    $has_permission = true;
-                                    if(
-                                        array_key_exists('name', $role) &&
-                                        array_key_exists('rank', $role)
-                                    ){
-                                        $has_role = Core::object($role);
-                                        $has_role->permission = (array) $has_role->permission;
-                                        break 2;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                $user_roles = [];
-                ddd($user);
-                $roles = $user->role();
-                $has_permission = false;
-                $has_role = false;
-                $role = false;
-                foreach($roles as $role){
-                    ddd($role);
-                    $user_role = [
-                        'id' => $role->getId(),
-                        'name' => $role->getName(),
-                        'rank' => $role->getRank(),
-                        'permissions' => []
-                    ];
-                    $permissions = $role->getPermissions();
-                    foreach($permissions as $permission){
-                        $user_role['permissions'][] = [
-                            'id' => $permission->getId(),
-                            'name' => $permission->getName()
-                        ];
-                        if(
-                            $has_role === false &&
-                            $permission->getName() === $controller . ':' . $action
-                        ){
-                            $has_permission = true;
-                            $has_role = $role;
-                        }
-                    }
-                    $user_roles[] = $user_role;
-                }
-                $session = $user->session($object);
-                $session['roles'] = $user_roles;
-                $object->session('user', $session);
-            }
-            if(
-                $has_permission &&
-                $has_role
-            ){
-                return $has_role;
             }
         }
         throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
