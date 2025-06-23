@@ -148,6 +148,10 @@ class Permission
             if(!$user){
                 $user = User::get_by_authorization($object);
             }
+            foreach($user->role() as $role){
+                ddd($role);
+            }
+            /*
             if(
                 !empty($user) &&
                 is_object($user) &&
@@ -234,7 +238,9 @@ class Permission
                         return $has_role;
                     }
                 }
+
             }
+            */
         } catch (Exception $exception){
             if(!$user){
                 $class = 'Account.Role';
