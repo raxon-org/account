@@ -598,7 +598,6 @@ class User
                     $record,
                     $role
                 );
-                ddd($record);
                 $node->setIsLoggedIn(new DateTime());
                 $em->persist($item);
                 $em->flush();
