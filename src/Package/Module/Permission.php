@@ -165,6 +165,7 @@ class Permission
                         $permission->name === $controller . ':' . $action
                     ){
                         $has_permission = true;
+                        ddd($role);
                         if(
                             property_exists($role, 'name') &&
                             property_exists($role,'rank')
