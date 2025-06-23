@@ -603,8 +603,7 @@ class User
                 $em->flush();
                 $object->set('user', $record);
                 $item->setRole($record['role']);
-                ddd($item);
-                return $record;
+                return $item;
             }
         }
         return null;
