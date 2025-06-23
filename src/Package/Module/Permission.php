@@ -144,13 +144,13 @@ class Permission
         $action = strtolower(Controller::name($action));
         $url = false;
         $role = false;
+        $has_role = false;
+        $has_permission = false;
         try {
             $user = User::get_by_key($object);
             if(!$user){
                 $user = User::get_by_authorization($object);
             }
-            $has_role = false;
-            $has_permission = false;
             foreach($user->role() as $role){
                 if(!property_exists($role, 'permission')){
                     continue;
@@ -162,7 +162,6 @@ class Permission
                         $permission->name === $controller . ':' . $action
                     ){
                         $has_permission = true;
-                        ddd($role);
                         if(
                             property_exists($role, 'name') &&
                             property_exists($role,'rank')
@@ -171,10 +170,6 @@ class Permission
                             break 2;
                         }
                     }
-                }
-                ddd($has_role);
-                if($has_permission && $has_role){
-                    return $has_role;
                 }
             }
         } catch (Exception $exception){
@@ -205,6 +200,9 @@ class Permission
 //                throw new ErrorException('Need permission ('. $controller .'.' . $action .')...');
                 throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')' . PHP_EOL . (string) $exception);
             }
+        }
+        if($has_permission && $has_role){
+            return $has_role;
         }
         throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
     }
