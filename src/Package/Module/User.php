@@ -602,6 +602,7 @@ class User
                 $em->persist($item);
                 $em->flush();
                 $object->set('user', $record);
+                ddd($item);
                 return $record;
             }
         }
