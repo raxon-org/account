@@ -156,6 +156,8 @@ class Permission
                     continue;
                 }
                 foreach($role->permission as $permission){
+                    d($permission->name);
+                    d($controller . ':' . $action);
                     if(
                         $has_role === false &&
                         property_exists($permission, 'name') &&
