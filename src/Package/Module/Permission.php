@@ -140,18 +140,13 @@ class Permission
      */
     public static function controller(App $object, $controller=null, $action='', &$user=null): ?object
     {
-        d($object->request());
-        d($controller);
-        d($action);
         $controller = str_replace('.', ':', Controller::name($controller));
         $action = strtolower(Controller::name($action));
         $url = false;
         try {
             $user = User::get_by_key($object);
-            d($user);
             if(!$user){
                 $user = User::get_by_authorization($object);
-                ddd($user);
             }
             if(
                 !empty($user) &&
