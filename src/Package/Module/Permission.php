@@ -150,10 +150,10 @@ class Permission
             $user = User::get_by_key($object);
             if(!$user){
                 $user = User::get_by_authorization($object);
-            } else {
-                ddd($user);
             }
-            ddd($user);
+            if(!is_object($user)){
+                ddd($user);ddd($user);
+            }
             foreach($user->role() as $role){
                 if(!property_exists($role, 'permission')){
                     continue;
