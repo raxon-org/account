@@ -602,7 +602,7 @@ class User
                 $em->persist($item);
                 $em->flush();
                 $object->set('user', $record);
-                $item->setRole($record->role);
+                $item->setRole($record['role']);
                 ddd($item);
                 return $record;
             }
