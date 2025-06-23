@@ -21,27 +21,35 @@
     },
     {
       "#class": "Account.Permission",
-        "name": "Application:Desktop:Navigation:list"
+      "name": "Application:Desktop:Navigation:list"
     },
     {
       "#class": "Account.Permission",
-        "name": "FileSystem:list"
+      "name": "FileSystem:list"
     },
     {
       "#class": "Account.Permission",
-        "name": "FileSystem:read"
+      "name": "FileSystem:read"
     },
     {
       "#class": "Account.Permission",
-        "name": "Extension:list"
+      "name": "Extension:list"
     },
     {
       "#class": "Account.Permission",
-        "name": "Raxon:Ollama:generate"
+      "name": "Raxon:Ollama:generate"
     },
     {
       "#class": "Account.Permission",
       "name": "User:login"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "Extension:list"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "Extension:read"
     }
   ]
 }
