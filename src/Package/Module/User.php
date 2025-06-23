@@ -485,6 +485,7 @@ class User
      * @throws ORMException
      * @throws \Doctrine\DBAL\Exception
      * @throws FileWriteException
+     * @throws Exception
      */
     public static function get_by_key(App $object){
         $key = $object->request('key');
@@ -495,12 +496,43 @@ class User
         $connection = $object->config('doctrine.environment.system.*');
         $em = Database::entity_manager($object, $config, $connection);
         $repository = $em->getRepository(Entity::class);
-        $node = $repository->findOneBy(['key' => $key]);
-        if($node){
-            ddd($node);
-            $node->fetchByKey(true);
-            $node->getRole();
-            return $node;
+        $item = $repository->findOneBy(['key' => $key]);
+        if($item){
+            $node = new Node($object);
+            $class = 'Account.Role';
+            $response = $node->record(
+                $class,
+                $node->role_system(),
+                [
+                    'filter' => [
+                        'name' => 'ROLE_USER'
+                    ],
+                    'relation' => true
+                ]
+            );
+            $role = $response['node'] ?? null;
+            $entity = 'User';
+            $function = 'current';
+
+            $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
+                $object,
+                $entity,
+                $entity . '.' . $function . '.output'
+            );
+            $record = [];
+            $record = \Raxon\Doctrine\Module\Entity::output(
+                $object,
+                $item,
+                $toArray,
+                $entity,
+                $function,
+                $record,
+                $role
+            );
+            $item->fetchByKey(true);
+            $item->setRole($record['role']);
+            $object->set('user', $item);
+            return $item;
         }
         return null;
     }
@@ -601,8 +633,8 @@ class User
                 $item->setIsLoggedIn(new DateTime());
                 $em->persist($item);
                 $em->flush();
-                $object->set('user', $item);
                 $item->setRole($record['role']);
+                $object->set('user', $item);
                 return $item;
             }
         }
