@@ -266,7 +266,7 @@ class Permission
                     }
                 }
 //                throw new ErrorException('Need permission ('. $controller .'.' . $action .')...');
-                throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
+                throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')' . PHP_EOL . (string) $exception);
             }
         }
         if($user){
