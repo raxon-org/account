@@ -581,7 +581,7 @@ class User
                 );
                 $role = $response['node'] ?? null;
                 $entity = 'User';
-                $function = __FUNCTION__;
+                $function = 'current';
 
                 $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
                     $object,
