@@ -598,7 +598,7 @@ class User
                     $record,
                     $role
                 );
-                $node->setIsLoggedIn(new DateTime());
+                $item->setIsLoggedIn(new DateTime());
                 $em->persist($item);
                 $em->flush();
                 $object->set('user', $record);
