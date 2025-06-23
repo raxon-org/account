@@ -601,7 +601,7 @@ class User
                 $item->setIsLoggedIn(new DateTime());
                 $em->persist($item);
                 $em->flush();
-                $object->set('user', $record);
+                $object->set('user', $item);
                 $item->setRole($record['role']);
                 return $item;
             }
