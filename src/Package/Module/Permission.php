@@ -156,8 +156,9 @@ class Permission
                     continue;
                 }
                 foreach($role->permission as $permission){
-                    d($permission->name);
-                    d($controller . ':' . $action);
+                    if($permission->name === 'Extension:list'){
+                        ddd('found');
+                    }
                     if(
                         $has_role === false &&
                         property_exists($permission, 'name') &&
