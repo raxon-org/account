@@ -153,6 +153,7 @@ class Permission
             } else {
                 ddd($user);
             }
+            ddd($user);
             foreach($user->role() as $role){
                 if(!property_exists($role, 'permission')){
                     continue;
