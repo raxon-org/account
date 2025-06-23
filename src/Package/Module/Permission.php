@@ -162,8 +162,8 @@ class Permission
                     ){
                         $has_permission = true;
                         if(
-                            array_key_exists('name', $role) &&
-                            array_key_exists('rank', $role)
+                            property_exists($role, 'name') &&
+                            property_exists($role,'rank')
                         ){
                             $has_role = $role;
                             break 2;
