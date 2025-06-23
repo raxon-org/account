@@ -143,6 +143,7 @@ class Permission
         $controller = str_replace('.', ':', Controller::name($controller));
         $action = strtolower(Controller::name($action));
         $url = false;
+        $role = false;
         try {
             $user = User::get_by_key($object);
             if(!$user){
@@ -203,6 +204,7 @@ class Permission
                 throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')' . PHP_EOL . (string) $exception);
             }
         }
+        ddd($role);
         throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
     }
 
