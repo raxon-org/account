@@ -173,6 +173,7 @@ class Permission
                         }
                     }
                 }
+                ddd($has_role);
                 if($has_permission && $has_role){
                     return $has_role;
                 }
@@ -206,7 +207,6 @@ class Permission
                 throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')' . PHP_EOL . (string) $exception);
             }
         }
-        ddd($role);
         throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
     }
 
