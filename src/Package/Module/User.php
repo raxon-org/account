@@ -353,9 +353,6 @@ class User
                     'uuid' => $uuid,
                     'email' => $email
                 ]);
-                $duration = microtime(true) - $object->config('time.start');
-                d($item);
-                ddd(Time::format($duration));
                 if(empty($item->getIsActive())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
@@ -386,6 +383,11 @@ class User
                 $role = $response['node'] ?? null;
                 $entity = 'User';
                 $function = __FUNCTION__;
+
+                $duration = microtime(true) - $object->config('time.start');
+                d($item);
+                ddd(Time::format($duration));
+
 
                 $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
                     $object,
