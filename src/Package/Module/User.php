@@ -390,11 +390,6 @@ class User
                     $entity,
                     $entity . '.' . $function . '.output'
                 );
-
-                $duration = microtime(true) - $object->config('time.start');
-                d($toArray);
-                ddd(Time::format($duration));
-
                 $record = [];
                 $record = \Raxon\Doctrine\Module\Entity::output(
                     $object,
@@ -405,6 +400,9 @@ class User
                     $record,
                     $role
                 );
+                $duration = microtime(true) - $object->config('time.start');
+                d($record);
+                ddd(Time::format($duration));
                 $data = [];
                 $data['node'] = $record;
                 ddd($record);
