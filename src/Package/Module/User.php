@@ -15,6 +15,7 @@ use Raxon\App;
 
 use Raxon\Module\Core;
 use Raxon\Module\Handler;
+use Raxon\Module\Time;
 
 use Raxon\Doctrine\Module\Database;
 
