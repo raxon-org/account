@@ -321,8 +321,6 @@ class User
      */
     public static function current(App $object): array
     {
-        $duration = microtime(true) - $object->config('time.start');
-        ddd(Time::format($duration));
         $token = '';
         if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
             $token = $_SERVER['HTTP_AUTHORIZATION'];
@@ -335,6 +333,8 @@ class User
             throw new AuthorizationException('Please provide a valid token...');
         }
         $token_unencrypted = Jwt::decryptToken($object, $token);
+        $duration = microtime(true) - $object->config('time.start');
+        ddd(Time::format($duration));
         $claims = $token_unencrypted->claims();
         if($claims->has('user')){
             $user =  $claims->get('user');
