@@ -71,7 +71,7 @@ class User
                 }
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
-                $user = User::expose($object, $node);
+                $user = User::expose($object, $node, __FUNCTION__);
                 $user->token = User::get_token($object, $node);
                 $user->refreshToken = User::get_refresh_token($object, $node);
                 $encrypted_refreshToken = sha1($user->refreshToken);
@@ -117,7 +117,7 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    private static function expose(App $object, Entity $record): object
+    public static function expose(App $object, Entity $record, string $function): object
     {
         $node = new Node($object);
         $class = 'Account.Role';
@@ -134,7 +134,6 @@ class User
         );
         $role = $response['list'][0];
         $entity = 'User';
-        $function = 'login';
         $expose = \Raxon\Doctrine\Module\Entity::expose_get(
             $object,
             $entity,
@@ -321,53 +320,7 @@ class User
      */
     public static function current(App $object): array
     {
-        $token = '';
-        if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
-            $token = $_SERVER['HTTP_AUTHORIZATION'];
-        }
-        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
-            $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-        }
-        $token = substr($token , 7);
-        if(!$token){
-            throw new AuthorizationException('Please provide a valid token...');
-        }
-        $token_unencrypted = Jwt::decryptToken($object, $token);
-        $claims = $token_unencrypted->claims();
-        if($claims->has('user')){
-            $user =  $claims->get('user');
-            $uuid = false;
-            $email = false;
-            if(array_key_exists('uuid', $user)){
-                $uuid = $user['uuid'];
-            }
-            if(array_key_exists('email', $user)){
-                $email = $user['email'];
-            }
-            if($uuid && $email){
-                $config = Database::config($object);
-                $connection = $object->config('doctrine.environment.system.*');
-                $connection->manager = Database::entity_manager($object, $config, $connection);
-                $repository = $connection->manager->getRepository(Entity::class);
-                $item = $repository->findOneBy([
-                    'uuid' => $uuid,
-                    'email' => $email
-                ]);
-                if(empty($item->getIsActive())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('User is not active...');
-                }
-                if(!empty($item->getIsDeleted())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('User is deleted...');
-                }
-                if(empty($item->getRole())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('User has no roles...');
-                }
+        $user = User::get_by_authorization($object);
                 $object->config('user', $item);
                 $node = new Node($object);
                 $class = 'Account.Role';
