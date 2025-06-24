@@ -322,53 +322,9 @@ class User
     {
         $user = User::get_by_authorization($object);
         $node = User::expose($object, $user, __FUNCTION__);
-        ddd($node);
-        /*
-//                $object->config('user', $item);
-                $node = new Node($object);
-                $class = 'Account.Role';
-                $response = $node->record(
-                    $class,
-                    $node->role_system(),
-                    [
-                        'filter' => [
-                            'name' => 'ROLE_USER'
-                        ],
-                        'relation' => true
-                    ]
-                );
-                $role = $response['node'] ?? null;
-                $entity = 'User';
-                $function = __FUNCTION__;
-
-                $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
-                    $object,
-                    $entity,
-                    $entity . '.' . $function . '.output'
-                );
-                $record = [];
-                $record = \Raxon\Doctrine\Module\Entity::output(
-                    $object,
-                    $item,
-                    $toArray,
-                    $entity,
-                    $function,
-                    $record,
-                    $role
-                );
-                $duration = microtime(true) - $object->config('time.start');
-                d($record);
-                ddd(Time::format($duration));
-                $data = [];
-                $data['node'] = $record;
-                ddd($record);
-                return $data;
-            }
-        }
-        $status = 401;
-        Handler::header('Status: ' . $status, $status, true);
-        throw new AuthorizationException('Authentication failure... (invalid claim)');
-        */
+        $data = [];
+        $data['node'] = $node;
+        return $data;
     }
 
     /**
