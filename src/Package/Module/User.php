@@ -368,6 +368,7 @@ class User
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('User has no roles...');
                 }
+                $object->config('user', $item);
                 $node = new Node($object);
                 $class = 'Account.Role';
                 $response = $node->record(
