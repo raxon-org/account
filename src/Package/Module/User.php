@@ -320,6 +320,8 @@ class User
      */
     public static function current(App $object): array
     {
+        $duration = microtime(true) - $object->config('time.start');
+        ddd(Time::format($duration));
         $token = '';
         if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
             $token = $_SERVER['HTTP_AUTHORIZATION'];
