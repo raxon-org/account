@@ -509,40 +509,26 @@ class User
         $repository = $em->getRepository(Entity::class);
         $item = $repository->findOneBy(['key' => $key]);
         if($item){
-            $node = new Node($object);
-            $class = 'Account.Role';
-            $response = $node->record(
-                $class,
-                $node->role_system(),
-                [
-                    'filter' => [
-                        'name' => 'ROLE_USER'
-                    ],
-                    'relation' => true
-                ]
-            );
-            $role = $response['node'] ?? null;
-            $entity = 'User';
-            $function = 'current';
-
-            $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
-                $object,
-                $entity,
-                $entity . '.' . $function . '.output'
-            );
-            $record = [];
-            $record = \Raxon\Doctrine\Module\Entity::output(
-                $object,
-                $item,
-                $toArray,
-                $entity,
-                $function,
-                $record,
-                $role
-            );
+            if(empty($item->getIsActive())){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is not active.');
+            }
+            if(!empty($item->getIsDeleted())){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is deleted.');
+            }
+            if(empty($item->getRole())){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account has no roles.');
+            }
+            $item->setIsLoggedIn(new DateTime());
+            $em->persist($item);
+            $em->flush();
+            $object->config('user', $item);
             $item->fetchByKey(true);
-            $item->setRole($record['role']);
-            $object->set('user', $item);
             return $item;
         }
         return null;
@@ -556,12 +542,51 @@ class User
      * @throws \Doctrine\ORM\ORMException
      * @throws Exception
      */
+    public static function get_by_authorization_old(App $object): mixed
+    {
+        $item = User::token_id($object);
+        ddd($item);
+        $node = new Node($object);
+        $class = 'Account.Role';
+        $response = $node->record(
+            $class,
+            $node->role_system(),
+            [
+                'filter' => [
+                    'name' => 'ROLE_USER'
+                ],
+                'relation' => true
+            ]
+        );
+        $role = $response['node'] ?? null;
+        $entity = 'User';
+        $function = 'current';
+
+        $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
+            $object,
+            $entity,
+            $entity . '.' . $function . '.output'
+        );
+        $record = [];
+        $record = \Raxon\Doctrine\Module\Entity::output(
+            $object,
+            $item,
+            $toArray,
+            $entity,
+            $function,
+            $record,
+            $role
+        );
+        $item->setRole($record['role']);
+        $object->set('user', $item);
+        return $item;
+    }
+
     public static function get_by_authorization(App $object): mixed
     {
-        $object->logger()->info('getByAuthorization need session from backend.');
-        $node = $object->get('user');
-        if(!empty($node)){
-            return $node;
+        $item = $object->config('user');
+        if($item){
+            return $item;
         }
         $token = '';
         if($object->request('authorization')){
@@ -614,42 +639,10 @@ class User
                     Handler::header('Status: ' . $status, $status, true);
                     throw new AuthorizationException('Account has no roles.');
                 }
-                $node = new Node($object);
-                $class = 'Account.Role';
-                $response = $node->record(
-                    $class,
-                    $node->role_system(),
-                    [
-                        'filter' => [
-                            'name' => 'ROLE_USER'
-                        ],
-                        'relation' => true
-                    ]
-                );
-                $role = $response['node'] ?? null;
-                $entity = 'User';
-                $function = 'current';
-
-                $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
-                    $object,
-                    $entity,
-                    $entity . '.' . $function . '.output'
-                );
-                $record = [];
-                $record = \Raxon\Doctrine\Module\Entity::output(
-                    $object,
-                    $item,
-                    $toArray,
-                    $entity,
-                    $function,
-                    $record,
-                    $role
-                );
                 $item->setIsLoggedIn(new DateTime());
                 $em->persist($item);
                 $em->flush();
-                $item->setRole($record['role']);
-                $object->set('user', $item);
+                $object->config('user', $item);
                 return $item;
             }
         }
