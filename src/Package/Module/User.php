@@ -407,20 +407,25 @@ class User
      * @throws Exception
      */
     public static function get_by_key(App $object){
-        $key = $object->request('key');
-        if(!$key){
-            return null;
-        }
-        $em = $object->config('doctrine.em');
-        if($em === null){
-            $config = Database::config($object);
-            $connection = $object->config('doctrine.environment.system.*');
-            $em = Database::entity_manager($object, $config, $connection);
-            $object->config('doctrine.em', $em);
-        }
+        $item = $object->config('user');
+        if($item){
+            return $item;
+        } else {
+            $key = $object->request('key');
+            if(!$key){
+                return null;
+            }
+            $em = $object->config('doctrine.em');
+            if($em === null){
+                $config = Database::config($object);
+                $connection = $object->config('doctrine.environment.system.*');
+                $em = Database::entity_manager($object, $config, $connection);
+                $object->config('doctrine.em', $em);
+            }
 
-        $repository = $em->getRepository(Entity::class);
-        $item = $repository->findOneBy(['key' => $key]);
+            $repository = $em->getRepository(Entity::class);
+            $item = $repository->findOneBy(['key' => $key]);
+        }
         if($item){
             if(empty($item->getIsActive())){
                 $status = 401;
@@ -441,7 +446,6 @@ class User
             $em->persist($item);
             $em->flush();
             $object->config('user', $item);
-            $item->fetchByKey(true);
             return $item;
         }
         return null;
