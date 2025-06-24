@@ -321,7 +321,10 @@ class User
     public static function current(App $object): array
     {
         $user = User::get_by_authorization($object);
-                $object->config('user', $item);
+        $node = User::expose($object, $user, __FUNCTION__);
+        ddd($node);
+        /*
+//                $object->config('user', $item);
                 $node = new Node($object);
                 $class = 'Account.Role';
                 $response = $node->record(
@@ -365,6 +368,7 @@ class User
         $status = 401;
         Handler::header('Status: ' . $status, $status, true);
         throw new AuthorizationException('Authentication failure... (invalid claim)');
+        */
     }
 
     /**
