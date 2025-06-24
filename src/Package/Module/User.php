@@ -384,16 +384,16 @@ class User
                 $entity = 'User';
                 $function = __FUNCTION__;
 
-                $duration = microtime(true) - $object->config('time.start');
-                d($item);
-                ddd(Time::format($duration));
-
-
                 $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
                     $object,
                     $entity,
                     $entity . '.' . $function . '.output'
                 );
+
+                $duration = microtime(true) - $object->config('time.start');
+                d($toArray);
+                ddd(Time::format($duration));
+
                 $record = [];
                 $record = \Raxon\Doctrine\Module\Entity::output(
                     $object,
