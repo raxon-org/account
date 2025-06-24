@@ -400,6 +400,7 @@ class User
                 );
                 $data = [];
                 $data['node'] = $record;
+                ddd($record);
                 return $data;
             }
         }
