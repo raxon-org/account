@@ -333,8 +333,6 @@ class User
             throw new AuthorizationException('Please provide a valid token...');
         }
         $token_unencrypted = Jwt::decryptToken($object, $token);
-        $duration = microtime(true) - $object->config('time.start');
-        ddd(Time::format($duration));
         $claims = $token_unencrypted->claims();
         if($claims->has('user')){
             $user =  $claims->get('user');
@@ -355,6 +353,9 @@ class User
                     'uuid' => $uuid,
                     'email' => $email
                 ]);
+                $duration = microtime(true) - $object->config('time.start');
+                d($item);
+                ddd(Time::format($duration));
                 if(empty($item->getIsActive())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
