@@ -259,7 +259,14 @@ trait User
                     'name' => 'ROLE_ADMIN'
                 ]
             ]
-        );        
+        );    
+        if(
+            is_array($response) &&
+            array_key_exists('node', $response) &&
+            property_exists($response['node'], 'uuid')
+        ){
+            return;
+        }
         ddd($response);
     }
 
