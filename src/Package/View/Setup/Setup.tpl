@@ -1,8 +1,8 @@
 {{$register = Package.Raxon.Account:Init:register()}}
 {{if(!is.empty($register))}}
 {{Package.Raxon.Account:Import:role.system()}}
-{{Package.Raxon.Account:Main:account.create.default(flags(), options())}}
-{{Package.Raxon.Account:Main:account.create.jwt(flags(), options())}}
+{{$response = Package.Raxon.Account:Main:account.create.default(flags(), options())}}
+{{$response = Package.Raxon.Account:Main:account.create.jwt(flags(), options())}}
 {{Package.Raxon.Account:User:setup.role.anonymous(flags(), options())}}
 {{Package.Raxon.Account:User:setup.role.user(flags(), options())}}
 {{Package.Raxon.Account:User:setup.role.admin(flags(), options())}}
