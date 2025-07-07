@@ -247,6 +247,26 @@ trait User
      * @throws ObjectException
      * @throws Exception
      */
+    public function setup_role_admin($flags, $options): void
+    {
+        $object = $this->object();
+        $node = new Node($object);
+        $response = $node->record(
+            'Account.Role', 
+            $node->role_system(), 
+            [
+                'filter' => [
+                    'name' => 'System'
+                ]
+            ]
+        );
+        ddd($response);
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
     public function setup_role($flags, $options)
     {
         $object = $this->object();
