@@ -256,7 +256,7 @@ trait User
             $node->role_system(), 
             [
                 'filter' => [
-                    'name' => 'System'
+                    'name' => 'ROLE_SYSTEM'
                 ]
             ]
         );
