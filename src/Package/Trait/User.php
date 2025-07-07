@@ -124,6 +124,7 @@ trait User
         $connection = $list_connection[$input] ?? null;
         $connection->manager = Database::entity_manager($object, $config, $connection);
         $validate_url = Entity::get_validate_url($object, $entity);
+        ddd($validate_url);
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
         $object->config('doctrine.entity.manager', $connection->manager);
         $validate = false;
