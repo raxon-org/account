@@ -177,7 +177,7 @@ class Jwt {
         $token_unencrypted = $configuration->parser()->parse($token);
         assert($token_unencrypted instanceof UnencryptedToken);
         $clock = SystemClock::fromUTC(); // use the clock for issuing and validation
-        $configuration->setValidationConstraints(
+        $configuration->withValidationConstraints(
             new IssuedBy($config->get('token.issued_by')),
             new IdentifiedBy($config->get('token.identified_by')),
             new PermittedFor($config->get('token.permitted_for')),
@@ -209,7 +209,7 @@ class Jwt {
         $token_unencrypted = $configuration->parser()->parse($token);
         assert($token_unencrypted instanceof UnencryptedToken);
         $clock = SystemClock::fromUTC(); // use the clock for issuing and validation
-        $configuration->setValidationConstraints(
+        $configuration->withValidationConstraints(
             new IssuedBy($config->get('refresh.token.issued_by')),
             new IdentifiedBy($config->get('refresh.token.identified_by')),
             new PermittedFor($config->get('refresh.token.permitted_for')),
