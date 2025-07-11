@@ -186,6 +186,7 @@ class Jwt {
             new LooseValidAt($clock)
         );
         $constraints = $configuration->validationConstraints();
+        ddd($constraints);
         if (!$configuration->validator()->validate($token_unencrypted, ...$constraints)) {
             throw new AuthorizationException('Expired or invalid token...');
         }
