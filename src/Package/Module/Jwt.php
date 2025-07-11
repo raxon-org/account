@@ -16,6 +16,8 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\UnencryptedToken;
+use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
+use Lcobucci\JWT\Validation\Validator;
 use Lcobucci\JWT\Validation\Constraint\IdentifiedBy;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\LooseValidAt;
@@ -185,9 +187,17 @@ class Jwt {
             new StrictValidAt($clock),
             new LooseValidAt($clock)
         );
-        $constraints = $configuration->validationConstraints();
-        ddd($constraints);
-        if (!$configuration->validator()->validate($token_unencrypted, ...$constraints)) {
+        $validator = new Validator();
+        try {
+            $validator->assert($token_unencrypted, new IssuedBy($config->get('token.issued_by'))); // doesn't throw an exception
+            $validator->assert($token_unencrypted, new IdentifiedBy($config->get('token.identified_by')));
+            $validator->assert($token_unencrypted, new PermittedFor($config->get('token.permitted_for')));
+            $validator->assert($token_unencrypted, new SignedWith(new Sha256(), InMemory::file($config->get('token.certificate'))));
+            $validator->assert($token_unencrypted, new StrictValidAt($clock));
+            $validator->assert($token_unencrypted, new LooseValidAt($clock));            
+        } catch (RequiredConstraintsViolated $e) {
+            // list of constraints violation exceptions:
+            var_dump($e->violations());
             throw new AuthorizationException('Expired or invalid token...');
         }
         return $token_unencrypted;
