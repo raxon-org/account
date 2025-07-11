@@ -244,87 +244,87 @@
       "#class": "Account.Permission"
     },
     {
-      "name": "User:login",
+      "name": "Account:User:login",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:current",
+      "name": "Account:User:current",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:create",
+      "name": "Account:User:create",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:read",
+      "name": "Account:User:read",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:read.relation",
+      "name": "Account:User:read.relation",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:page",
+      "name": "Account:User:page",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:page.relation",
+      "name": "Account:User:page.relation",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:property.delete",
+      "name": "Account:User:property.delete",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:rename",
+      "name": "Account:User:rename",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:import",
+      "name": "Account:User:import",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:export",
+      "name": "Account:User:export",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:count",
+      "name": "Account:User:count",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:count.relation",
+      "name": "Account:User:count.relation",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:record",
+      "name": "Account:User:record",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:record.relation",
+      "name": "Account:User:record.relation",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:patch",
+      "name": "Account:User:patch",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:put",
+      "name": "Account:User:put",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:delete",
+      "name": "Account:User:delete",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:list",
+      "name": "Account:User:list",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:list.relation",
+      "name": "Account:User:list.relation",
       "#class": "Account.Permission"
     },
     {
-      "name": "User:commit",
+      "name": "Account:User:commit",
       "#class": "Account.Permission"
     },
     {
