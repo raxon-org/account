@@ -174,10 +174,8 @@ class Jwt {
         $options = [];
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
-        $configuration = Jwt::configuration($object, $options);
-        assert($configuration instanceof Configuration);
-        $token_unencrypted = $configuration->parser()->parse($token);
-        assert($token_unencrypted instanceof UnencryptedToken);
+        $configuration = Jwt::configuration($object, $options);        
+        $token_unencrypted = $configuration->parser()->parse($token);        
         $clock = SystemClock::fromUTC(); // use the clock for issuing and validation
         $configuration->withValidationConstraints(
             new IssuedBy($config->get('token.issued_by')),
@@ -196,8 +194,7 @@ class Jwt {
             $validator->assert($token_unencrypted, new StrictValidAt($clock));
             $validator->assert($token_unencrypted, new LooseValidAt($clock));            
         } catch (RequiredConstraintsViolated $e) {
-            // list of constraints violation exceptions:
-            var_dump($e->violations());
+            // list of constraints violation exceptions:            
             throw new AuthorizationException('Expired or invalid token...');
         }
         return $token_unencrypted;
@@ -215,10 +212,8 @@ class Jwt {
         ];
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
-        $configuration = Jwt::configuration($object, $options);
-        assert($configuration instanceof Configuration);
+        $configuration = Jwt::configuration($object, $options);        
         $token_unencrypted = $configuration->parser()->parse($token);
-        assert($token_unencrypted instanceof UnencryptedToken);
         $clock = SystemClock::fromUTC(); // use the clock for issuing and validation
         $configuration->withValidationConstraints(
             new IssuedBy($config->get('refresh.token.issued_by')),
@@ -228,12 +223,17 @@ class Jwt {
             new StrictValidAt($clock),
             new LooseValidAt($clock)
         );
-        $constraints = $configuration->validationConstraints();
-        if (!$configuration->validator()->validate($token_unencrypted, ...$constraints)) {
-            trace();
-            d($constraints);
-            ddd($token_unencrypted);
-            throw new AuthorizationException('Authentication failure...');
+        $validator = new Validator();
+        try {
+            $validator->assert($token_unencrypted, new IssuedBy($config->get('refresh.token.issued_by'))); // doesn't throw an exception
+            $validator->assert($token_unencrypted, new IdentifiedBy($config->get('refresh.token.identified_by')));
+            $validator->assert($token_unencrypted, new PermittedFor($config->get('refresh.token.permitted_for')));
+            $validator->assert($token_unencrypted, new SignedWith(new Sha256(), InMemory::file($config->get('refresh.token.certificate'))));
+            $validator->assert($token_unencrypted, new StrictValidAt($clock));
+            $validator->assert($token_unencrypted, new LooseValidAt($clock));            
+        } catch (RequiredConstraintsViolated $e) {
+            // list of constraints violation exceptions:            
+            throw new AuthorizationException('Expired or invalid token...');
         }
         return $token_unencrypted;
     }
