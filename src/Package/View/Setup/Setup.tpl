@@ -2,6 +2,7 @@
 {{if(!is.empty($register))}}
 {{Package.Raxon.Account:Setup:import.role.system()}}
 {{$response = Package.Raxon.Account:Setup:default.create(flags(), options())}}
+{{$response = Package.Raxon.Account:Setup:jwt.create(flags(), options())}}
 /*
 {{$response = Package.Raxon.Account:Main:account.create.default(flags(), options())}}
 {{$response = Package.Raxon.Account:Main:account.create.jwt(flags(), options())}}
