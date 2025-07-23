@@ -349,7 +349,9 @@ trait Setup {
         if (File::exist($url_jwt)) {
             if (property_exists($options, 'force')) {
                 File::delete($url_jwt);
-            } else {
+            }
+            else {
+                echo 'Skipping jwt creation, use option -force to create a new jwt...' . PHP_EOL;
                 return false;
             }
         }
