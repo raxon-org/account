@@ -358,6 +358,7 @@ trait Setup {
         }
         if (!property_exists($options, 'token')) {
             $options_jwt->token = (object)[];
+            $options->token = (object)[];
         } else {
             $options_jwt->token = $options->token;
         }
@@ -424,6 +425,8 @@ trait Setup {
         if (!property_exists($options, 'refresh')) {
             $options_jwt->refresh = (object)[];
             $options_jwt->refresh->token = (object)[];
+            $options->refresh = (object)[];
+            $options->refresh->token = (object)[];
         } else {            
             $options_jwt->refresh->token = $options->refresh->token ?? (object)[];
         }
