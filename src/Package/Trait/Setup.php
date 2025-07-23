@@ -452,6 +452,7 @@ trait Setup {
         if(property_exists($options, 'skip')){
             unset($options->skip);
         }
-        File::write($url_jwt, Core::object($options, Core::OBJECT_JSON));
+        $bytes = File::write($url_jwt, Core::object($options, Core::OBJECT_JSON));
+        echo 'Written: ' . $url_jwt . ' size:  ' . File::size_format($bytes) . PHP_EOL;
     }
 }
