@@ -490,6 +490,7 @@ trait Setup {
             $options_jwt->refresh->token->issued_by = $options->refresh->token->issued_by;
         }    
         $bytes = File::write($url_jwt, Core::object($options_jwt, Core::OBJECT_JSON));
+        d($bytes);
         echo 'Written: ' . $url_jwt . ' size:  ' . File::size_format($bytes) . PHP_EOL;
     }
 }
