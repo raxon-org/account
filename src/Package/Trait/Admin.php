@@ -19,7 +19,7 @@ trait Admin {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function admin_create(object $flags, object $options): void
+    public function admin_create(object $flags, object $options): array
     {
         $object = $this->object();
         if(!property_exists($options, 'email')) {
