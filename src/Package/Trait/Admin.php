@@ -103,10 +103,10 @@ trait Admin {
             return $error;
         }
         echo 'User ('. $options->email .') created' . PHP_EOL;
+        $object->request('entity', $entity);
         $request = (object) [
             'id' => $user->getId(),
-            'isActive' => 1,
-            'entity' => $entity            
+            'isActive' => 1,                       
         ];
         $user = Entity::patch($object, $connection, $node->role_system(), $request, $error);
     }
