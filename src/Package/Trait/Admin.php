@@ -40,8 +40,8 @@ trait Admin {
         ]);
         $time = time();
         $request = (object) [
-            'email' => $email,
-            'password' => $password,
+            'email' => $options->email,
+            'password' => $options->password,
             'role' => [
                 $result['node']->uuid
             ],
