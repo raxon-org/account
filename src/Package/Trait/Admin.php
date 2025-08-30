@@ -1,6 +1,7 @@
 <?php
 namespace Package\Raxon\Account\Trait;
 
+use DateTime;
 use Exception;
 use Raxon\App;
 use Raxon\Config;
