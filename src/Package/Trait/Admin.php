@@ -107,7 +107,7 @@ trait Admin {
             'id' => $user->getId(),
             'isActive' => 1,
         ];
-        $user = Entity::patch($object, $connection, $node->role_system(), $entity, $request, $error);
+        $user = Entity::patch($object, $connection, $node->role_system(), $request, $error);
     }
 
      
