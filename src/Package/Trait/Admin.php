@@ -84,7 +84,7 @@ trait Admin {
             property_exists($validate, 'success') &&
             $validate->success === true
         ){
-            $request->password = password_hash($password, PASSWORD_BCRYPT, [
+            $request->password = password_hash($options->password, PASSWORD_BCRYPT, [
                 'cost' => 13
             ]);
             $user = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
