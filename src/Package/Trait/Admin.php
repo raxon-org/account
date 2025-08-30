@@ -54,14 +54,21 @@ trait Admin {
         $entity = 'User';
         $config = Database::config($object);
 
-        $environments = $object->config('doctrine.environment');        
+        $environments = $object->config('doctrine.environment'); 
+        $framework_environment = $object->config('framework.enviroment');       
         foreach($environments as $name => $list){
-            foreach($list as $environment => $connection){
-                d($environment);
-
+            if($name === $options->connection){
+                foreach($list as $environment => $connection){
+                    if($environment === $framework_environment){
+                        break 2;
+                    }
+                    elseif($environment === '*'){
+                        break 2;
+                    }
+                }
             }
         }
-        ddd('end');
+        ddd($connection);
         $connection->manager = Database::entity_manager($object, $config, $connection);
         $validate_url = Entity::get_validate_url($object, $entity);        
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
