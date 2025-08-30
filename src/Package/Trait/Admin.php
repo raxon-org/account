@@ -102,7 +102,7 @@ trait Admin {
         elseif($user === null && $error !== null){
             return $error;
         }
-        echo 'User ('. $email .') created' . PHP_EOL;
+        echo 'User ('. $options->email .') created' . PHP_EOL;
         $request = (object) [
             'id' => $user->getId(),
             'isActive' => 1,
