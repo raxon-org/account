@@ -1,0 +1,104 @@
+<?php
+namespace Package\Raxon\Account\Trait;
+
+use Exception;
+use Raxon\App;
+use Raxon\Config;
+use Raxon\Exception\DirectoryCreateException;
+use Raxon\Exception\FileWriteException;
+use Raxon\Exception\ObjectException;
+use Raxon\Module\Core;
+use Raxon\Module\File;
+use Raxon\Node\Module\Node;
+
+trait Admin {
+
+    /**
+     * @throws DirectoryCreateException
+     * @throws ObjectException
+     * @throws FileWriteException
+     */
+    public function admin_create(object $flags, object $options): void
+    {
+        $object = $this->object();
+        if(!property_exists($options, 'email')) {
+            throw new ObjectException('Email is required');
+        }
+        if(!property_exists($options, 'password')) {
+            throw new ObjectException('Password is required');
+        }
+        if(!property_exists($options, 'connection')) {
+            throw new ObjectException('Connection is required');
+        }
+        $object = $this->object();
+        $node = new Node($object);
+        $result = $node->record('Account.Role', $node->role_system(), [
+            'filter' => [
+                'name' => 'ROLE_ADMIN'
+            ]
+        ]);
+        $time = time();
+        $request = (object) [
+            'email' => $email,
+            'password' => $password,
+            'role' => [
+                $result['node']->uuid
+            ],
+            'isActive' => 0, //cannot activate immediately
+            'isCreated' => new DateTime('@' . $time),
+        ];        
+        $entity = 'User';
+        $config = Database::config($object);
+
+        $environments = $object->config('doctrine.environment');        
+        foreach($environments as $name => $list){
+            foreach($list as $environment => $connection){
+                d($environment);
+
+            }
+        }
+        ddd('end');
+        $connection->manager = Database::entity_manager($object, $config, $connection);
+        $validate_url = Entity::get_validate_url($object, $entity);        
+        $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
+        $object->config('doctrine.entity.manager', $connection->manager);
+        $validate = false;
+        $user = null;
+        $error = null;
+        if(File::exist($validate_url)) {
+            $data_node = new Data($request);
+            $validate = Entity::validate($object, $validation, $data_node->data());
+        }
+        if(
+            is_object($validate) &&
+            property_exists($validate, 'success') &&
+            $validate->success === true
+        ){
+            $request->password = password_hash($password, PASSWORD_BCRYPT, [
+                'cost' => 13
+            ]);
+            $user = Entity::create($object, $connection, $node->role_system(), $entity, $request, $error);
+        }
+        if(
+            !is_object($user) ||
+            (
+                is_object($user) &&
+                $user->getId() === null
+            )
+        ){
+            echo Core::object($validate, Core::JSON) . PHP_EOL;
+            throw new Exception('User not created');
+        }
+        elseif($user === null && $error !== null){
+            return $error;
+        }
+        echo 'User ('. $email .') created' . PHP_EOL;
+        $request = (object) [
+            'id' => $user->getId(),
+            'isActive' => 1,
+        ];
+        $user = Entity::patch($object, $connection, $node->role_system(), $entity, $request, $error);
+    }
+
+     
+}
