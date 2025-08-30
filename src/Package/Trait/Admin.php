@@ -17,18 +17,19 @@ trait Admin {
      * @throws DirectoryCreateException
      * @throws ObjectException
      * @throws FileWriteException
+     * @throws Exception
      */
     public function admin_create(object $flags, object $options): void
     {
         $object = $this->object();
         if(!property_exists($options, 'email')) {
-            throw new ObjectException('Email is required');
+            throw new Exception('Email is required');
         }
         if(!property_exists($options, 'password')) {
-            throw new ObjectException('Password is required');
+            throw new Exception('Password is required');
         }
         if(!property_exists($options, 'connection')) {
-            throw new ObjectException('Connection is required');
+            throw new Exception('Connection is required');
         }
         $object = $this->object();
         $node = new Node($object);
