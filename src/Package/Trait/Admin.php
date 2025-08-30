@@ -5,6 +5,8 @@ use DateTime;
 use Exception;
 use Raxon\App;
 use Raxon\Config;
+use Raxon\Doctrine\Module\Database;
+use Raxon\Doctrine\Module\Entity;
 use Raxon\Exception\DirectoryCreateException;
 use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
