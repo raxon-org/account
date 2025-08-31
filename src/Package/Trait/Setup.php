@@ -87,9 +87,20 @@ trait Setup {
     {
         $object = $this->object();
         $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.User.json';        
-        $options->url = $url;
-        unset($options->wildcard);
-        $this->role_import($flags, $options);
+        $options_import = clone $options;
+        $options_import->url = $url;
+        unset($options_import->wildcard);
+        $this->role_import($flags, $options_import);
+    }
+
+    public function role_system_create(object $flags, object $options): void
+    {
+        $object = $this->object();
+        $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.System.json';
+        $options_import = clone $options;
+        $options_import->url = $url;
+        $options_import->wildcard = '*';
+        $this->role_import($flags, $options_import);
     }
 
     /**
