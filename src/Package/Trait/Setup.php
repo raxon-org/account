@@ -83,12 +83,107 @@ trait Setup {
         return $status;
     }
 
+    public function role_user_create(object $flags, object $options): void
+    {
+        $object = $this->object();
+        $url = $object->config('project.dir.vendor') . 'raxon/account/Data/Role.User.json';        
+        $options->url = $url;
+        unset($options->wildcard);
+        $this->role_import($flags, $options);
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public function role_import($flags, $options)
+    {
+        $object = $this->object();
+        if(!property_exists($options, 'url')){
+            throw new Exception('Option url required');
+        }
+        $url = $options->url;
+        $data = $object->data_read($url);
+        $permission_array = [];
+        if($data){
+            foreach($data->get('permission') as $permission){
+                $node = new Node($object);
+                $response = $node->record('Account.Permission', $node->role_system(), [
+                    'filter' => [
+                        'name' => $permission->name
+                    ]
+                ]);
+                if(
+                    is_array($response) &&
+                    array_key_exists('node', $response) &&
+                    property_exists($response['node'], 'uuid')
+                ){
+                    $permission_array[] = $response['node']->uuid;
+                }
+                else{
+                    //create permission
+                    $response = $node->create(
+                        'Account.Permission',
+                        $node->role_system(),
+                        [
+                            'name' => $permission->name
+                        ]
+                    );
+                    $permission_array[] = $response['node']->uuid;
+                }
+            }
+        }
+        $response = $node->record('Account.Role', $node->role_system(), [
+            'filter' => [
+                'name' => $data->get('name')
+            ]
+        ]);
+        if(property_exists($options, 'wildcard')){
+            $permission_array = '*';
+        }
+        if(
+            is_array($response) &&
+            array_key_exists('node', $response) &&
+            property_exists($response['node'], 'uuid')
+        ){
+            $role = $response['node'];
+            $response = $node->put(
+                'Account.Role',
+                $node->role_system(),
+                [
+                    'uuid' => $role->uuid,
+                    'name' => $data->get('name'),
+                    'rank' => $data->get('rank'),
+                    'permission' => $permission_array
+                ]
+            );
+            $role = $response['node'] ?? (object) [];
+            if(property_exists($role, 'uuid')){
+                echo $role->name . ' reset...' . PHP_EOL;
+            }
+        } else{
+            $response = $node->create(
+                'Account.Role',
+                $node->role_system(),
+                [
+                    'name' => $data->get('name'),
+                    'rank' => $data->get('rank'),
+                    'permission' => $permission_array
+                ]
+            );
+            $role = $response['node'] ?? (object) [];
+            if(property_exists($role, 'uuid')){
+                echo $role->name . ' created...' . PHP_EOL;
+            }
+        }
+    }
+
     /**
      * @throws ObjectException
      * @throws FileWriteException
      * @throws Exception
      */
-    public function default_create($flags, $options): bool|array
+    public function default_create(object $flags, object $options): bool|array
     {
         /*
          * - create role ROLE_SYSTEM with rank 1
