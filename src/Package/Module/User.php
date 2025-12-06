@@ -324,6 +324,7 @@ class User
     public static function current(App $object): array
     {
         $user = User::get_by_authorization($object);
+        ddd($user);
         $node = User::expose($object, $user, __FUNCTION__);
         $data = [];
         $data['node'] = $node;
