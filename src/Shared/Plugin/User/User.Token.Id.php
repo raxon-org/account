@@ -18,10 +18,9 @@ trait User_Token_Id {
     {
         $object = $this->object();
         //too much, we need a better way...
-        $user = User::get_by_key($object);
-        if(!$user){
-            $user = User::get_by_authorization($object);
-        }
+
+        ddd($object->config('user'));
+        $user = User::get_by_authorization($object);
         if($user){
             return $user->getId();
         }
