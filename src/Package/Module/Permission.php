@@ -148,8 +148,6 @@ class Permission
         $has_permission = false;
         try {
             $user = User::get_by_key($object);
-            $user = User::expose($object, $user, 'current');
-            ddd($user);
             if(!$user){
                 $user = User::get_by_authorization($object);
             }
@@ -177,7 +175,6 @@ class Permission
                 }
             }
         } catch (Exception $exception){
-            d($exception);
             if(!$user){
                 $class = 'Account.Role';
                 $node = new Node($object);
