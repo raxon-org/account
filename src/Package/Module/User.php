@@ -325,6 +325,7 @@ class User
     {
         $user = User::get_by_authorization($object);
         $node = User::expose($object, $user, __FUNCTION__);
+        ddd($node);
         $data = [];
         $data['node'] = $node;
         return $data;
@@ -561,7 +562,6 @@ class User
                     throw new AuthorizationException('Account has no roles.');
                 }
                 $item->setIsLoggedIn(new DateTime());
-                ddd($item);
                 $em->persist($item);
                 $em->flush();
                 $object->config('user', $item);
