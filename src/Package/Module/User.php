@@ -505,6 +505,7 @@ class User
     public static function get_by_authorization(App $object): mixed
     {
         $item = $object->config('user');
+        $item = null; //@2025-12-06 bug found, no roles and might be wrong role id, we don't get relations...
         if($item){
             return $item;
         }
