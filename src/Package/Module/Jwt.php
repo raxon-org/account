@@ -174,7 +174,6 @@ class Jwt {
         $options = [];
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
-        ddd($token);
         $configuration = Jwt::configuration($object, $options);        
         $token_unencrypted = $configuration->parser()->parse($token);        
         $clock = SystemClock::fromUTC(); // use the clock for issuing and validation
@@ -195,7 +194,6 @@ class Jwt {
             $validator->assert($token_unencrypted, new StrictValidAt($clock));
             $validator->assert($token_unencrypted, new LooseValidAt($clock));            
         } catch (RequiredConstraintsViolated $e) {
-            d($e);
             // list of constraints violation exceptions:            
             throw new AuthorizationException('Expired or invalid token...');
         }
