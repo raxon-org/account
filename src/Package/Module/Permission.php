@@ -148,13 +148,11 @@ class Permission
         $has_permission = false;
         try {
             $user = User::get_by_key($object);
+            $user = User::expose($object, $user, 'current');
+            ddd($user);
             if(!$user){
                 $user = User::get_by_authorization($object);
-            } else {
-                $user = User::expose($object, $user, 'current');
-                ddd($user);
             }
-            ddd($user);
             $user = User::expose($object, $user, 'current');
             $roles = $user->role ?? [];
             foreach($roles as $role){
