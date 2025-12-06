@@ -194,6 +194,7 @@ class Jwt {
             $validator->assert($token_unencrypted, new StrictValidAt($clock));
             $validator->assert($token_unencrypted, new LooseValidAt($clock));            
         } catch (RequiredConstraintsViolated $e) {
+            d($e);
             // list of constraints violation exceptions:            
             throw new AuthorizationException('Expired or invalid token...');
         }
