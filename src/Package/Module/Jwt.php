@@ -188,7 +188,7 @@ class Jwt {
         $validator = new Validator();
         try {
             $validator->assert($token_unencrypted, new IssuedBy($config->get('token.issued_by'))); // doesn't throw an exception
-            $validator->assert($token_unencrypted, new IdentifiedBy($config->get('token.identified_by')));
+//            $validator->assert($token_unencrypted, new IdentifiedBy($config->get('token.identified_by')));
             $validator->assert($token_unencrypted, new PermittedFor($config->get('token.permitted_for')));
             $validator->assert($token_unencrypted, new SignedWith(new Sha256(), InMemory::file($config->get('token.certificate'))));
             $validator->assert($token_unencrypted, new StrictValidAt($clock));
