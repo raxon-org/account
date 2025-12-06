@@ -324,7 +324,6 @@ class User
     public static function current(App $object): array
     {
         $user = User::get_by_authorization($object);
-        ddd($user);
         $node = User::expose($object, $user, __FUNCTION__);
         $data = [];
         $data['node'] = $node;
@@ -561,6 +560,7 @@ class User
                     throw new AuthorizationException('Account has no roles.');
                 }
                 $item->setIsLoggedIn(new DateTime());
+                ddd($item);
                 $em->persist($item);
                 $em->flush();
                 $object->config('user', $item);
