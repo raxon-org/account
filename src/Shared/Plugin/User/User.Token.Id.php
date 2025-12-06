@@ -17,7 +17,11 @@ trait User_Token_Id {
     public function user_token_id(): null | int | string
     {
         $object = $this->object();
-        $user = User::get_by_authorization($object);
+        //too much, we need a better way...
+        $user = User::get_by_key($object);
+        if(!$user){
+            $user = User::get_by_authorization($object);
+        }
         if($user){
             return $user->getId();
         }
