@@ -154,6 +154,7 @@ class Permission
                 $user = User::expose($object, $user, 'current');
                 ddd($user);
             }
+            ddd('endtest');
             $user = User::expose($object, $user, 'current');
             $roles = $user->role ?? [];
             foreach($roles as $role){
