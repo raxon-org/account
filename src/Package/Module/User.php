@@ -144,6 +144,11 @@ class User
         );
         $node = $record;
         $record = [];
+        d($node);
+        d($expose);
+        d($entity);
+        d($function);
+        ddd($role);
         $record = \Raxon\Doctrine\Module\Entity::output(
             $object,
             $node,
