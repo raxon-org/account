@@ -153,6 +153,7 @@ class Permission
             }
             $user = User::expose($object, $user, 'current');
             $roles = $user->role ?? [];
+            ddd($roles);
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
                     continue;
