@@ -325,7 +325,6 @@ class User
     {
         $user = User::get_by_authorization($object);
         $node = User::expose($object, $user, __FUNCTION__);
-        ddd($node);
         $data = [];
         $data['node'] = $node;
         return $data;
