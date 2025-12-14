@@ -429,7 +429,6 @@ class User
             $repository = $em->getRepository(Entity::class);
             $item = $repository->findOneBy(['key' => $key]);
         }
-        d($item);
         if($item){
             if(empty($item->getIsActive())){
                 $status = 401;
