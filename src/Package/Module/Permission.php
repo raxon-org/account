@@ -150,6 +150,7 @@ class Permission
             $key = $object->request('key');
             if($key){
                 $user = User::get_by_key($object);
+                $object->config('user', $user);
                 $user = User::expose($object, $user, 'current');
                 d($user);
             }
