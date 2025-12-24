@@ -14,13 +14,8 @@ trait User_Token_Id {
      * @throws FileWriteException
      * @throws ObjectException
      */
-    public function user_token_id(): null | int | string
+    public function user_token_id($user=null): null | int | string
     {
-        $object = $this->object();
-        $user = $object->config('user');
-        if(!$user){
-            $user = User::get_by_authorization($object);
-        }
         if($user){
             return $user->getId();
         }

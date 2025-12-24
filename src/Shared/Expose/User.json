@@ -177,7 +177,7 @@
         {
           "role" : "ROLE_USER",
           "property" : [
-            "id:{{user.token.id()}}",
+            "id:{{user.token.id(config('user'))}}",
             "uuid",
             "email",
             "key",
@@ -210,7 +210,7 @@
                   "role" : "ROLE_USER",
                   "property" : [
                     "id",
-                    "user_id:{{user.token.id()}}",
+                    "user_id:{{user.token.id(config('user'))}}",
                     "firstname",
                     "surname"
                   ]
@@ -353,7 +353,7 @@
         {
           "role" : "ROLE_USER",
           "property" : [
-            "id:{{user.token.id()}}",
+            "id:{{user.token.id(config('user'))}}",
             "uuid",
             "email",
             "isActive",
@@ -385,7 +385,7 @@
                   "role" : "ROLE_USER",
                   "property" : [
                     "id",
-                    "user_id:{{user.token.id()}}",
+                    "user_id:{{user.token.id(config('user'))}}",
                     "firstname",
                     "surname"
                   ]
@@ -471,7 +471,7 @@
         {
           "role" : "ROLE_USER",
           "property" : [
-            "id:{{user.token.id()}}",
+            "id:{{user.token.id(config('user')}}",
             "uuid",
             "email",
             "isActive",
@@ -503,7 +503,7 @@
                   "role" : "ROLE_USER",
                   "property" : [
                     "id",
-                    "user_id:{{user.token.id()}}",
+                    "user_id:{{user.token.id(config('user'))}}",
                     "firstname",
                     "surname"
                   ]
@@ -588,7 +588,7 @@
         {
           "role" : "ROLE_USER",
           "property" : [
-            "id:{{user.token.id()}}",
+            "id:{{user.token.id(config('user'))}}",
             "uuid",
             "email",
             "isActive",
@@ -620,7 +620,7 @@
                   "role" : "ROLE_USER",
                   "property" : [
                     "id",
-                    "user_id:{{user.token.id()}}",
+                    "user_id:{{user.token.id(config('user'))}}",
                     "firstname",
                     "surname"
                   ]
@@ -754,7 +754,7 @@
         {
           "role" : "ROLE_USER",
           "property" : [
-            "id:{{user.token.id()}}",
+            "id:{{user.token.id(config('user'))}}",
             "uuid",
             "email",
             "key",
@@ -787,7 +787,7 @@
                   "role" : "ROLE_USER",
                   "property" : [
                     "id",
-                    "user_id:{{user.token.id()}}",
+                    "user_id:{{user.token.id(config('user'))}}",
                     "firstname",
                     "surname"
                   ]
@@ -878,7 +878,7 @@
         {
           "role" : "ROLE_USER",
           "property" : [
-            "id:{{user.token.id()}}",
+            "id:{{user.token.id(config('user'))}}",
             "uuid",
             "email",
             "key",
