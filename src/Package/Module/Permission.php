@@ -149,7 +149,10 @@ class Permission
         try {
             $user = User::get_by_key($object);
             d($object->get('key'));
-            ddd($object->Header('Authorization'));
+            if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+                $token = $_SERVER['HTTP_AUTHORIZATION'];
+                ddd($token);
+            }
             if(!$user){
                 $user = User::get_by_authorization($object);
             }
