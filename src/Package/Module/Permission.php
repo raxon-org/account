@@ -176,6 +176,7 @@ class Permission
                 }
             }
         } catch (Exception $exception){
+            ddd($exception);
             if(!$user){
                 $class = 'Account.Role';
                 $node = new Node($object);
