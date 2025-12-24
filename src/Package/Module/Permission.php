@@ -149,7 +149,7 @@ class Permission
         try {
             $user = User::get_by_key($object);
             d($object->get('key'));
-            ddd($object->Headers());
+            ddd($object->Header('Authorization'));
             if(!$user){
                 $user = User::get_by_authorization($object);
             }
