@@ -147,7 +147,8 @@ class Permission
         $has_role = false;
         $has_permission = false;
         try {
-            if($object->get('key')){
+            $key = $object->request('key');
+            if($key){
                 $user = User::get_by_key($object);
                 ddd($user);
                 $user = User::expose($object, $user, 'current');
