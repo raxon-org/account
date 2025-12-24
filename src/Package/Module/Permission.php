@@ -152,11 +152,11 @@ class Permission
                 $user = User::get_by_key($object);
                 $object->config('user', $user);
                 $user = User::expose($object, $user, 'current');
-                d($user);
             }
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
                     $user = User::get_by_authorization($object);
+                    $object->config('user', $user);
                     $user = User::expose($object, $user, 'current');
                 }
             }
