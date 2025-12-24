@@ -152,7 +152,6 @@ class Permission
                 $user = User::get_by_authorization($object);
             }
             $user = User::expose($object, $user, 'current');
-            ddd($user);
             $roles = $user->role ?? [];
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
