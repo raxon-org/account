@@ -147,16 +147,16 @@ class Permission
         $has_role = false;
         $has_permission = false;
         try {
-            $user = User::get_by_key($object);
-            d($object->get('key'));
+            if($object->get('key')){
+                $user = User::get_by_key($object);
+                $user = User::expose($object, $user, 'current');
+            }
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
-                $token = $_SERVER['HTTP_AUTHORIZATION'];
-                ddd($token);
+                if(!$user){
+                    $user = User::get_by_authorization($object);
+                    $user = User::expose($object, $user, 'current');
+                }
             }
-            if(!$user){
-                $user = User::get_by_authorization($object);
-            }
-            $user = User::expose($object, $user, 'current');
             $roles = $user->role ?? [];
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
