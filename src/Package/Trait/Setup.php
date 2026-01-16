@@ -607,6 +607,11 @@ trait Setup {
         $dir_schema = $object->config('project.dir.package') . 'Raxon/Account/Schema/';
         $dir = new Dir();
         $read = $dir->read($dir_schema);
+        if($read){
+            foreach($read as $file){
+                $command = Core::binary($object) . ' raxon/schema' . ' import' . ' -file=' . $file;
+            }
+        }
         ddd($read);
     }
 }
