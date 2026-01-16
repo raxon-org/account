@@ -9,6 +9,7 @@ use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
 use Raxon\Module\Core;
 use Raxon\Module\File;
+use Raxon\Module\Dir;
 use Raxon\Node\Module\Node;
 
 trait Setup {
