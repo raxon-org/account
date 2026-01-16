@@ -5,6 +5,7 @@
 {{$response = Package.Raxon.Account:Setup:role.system.create(flags(), options())}}
 {{$response = Package.Raxon.Account:Setup:role.user.create(flags(), options())}}
 {{$response = Package.Raxon.Account:Setup:jwt.create(flags(), options())}}
+{{$response = Package.Raxon.Account:Setup:schema.import(flags(), options())}}
 /*
 {{$response = Package.Raxon.Account:Main:account.create.default(flags(), options())}}
 {{$response = Package.Raxon.Account:Main:account.create.jwt(flags(), options())}}

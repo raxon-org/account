@@ -107,7 +107,7 @@ trait Setup {
      * @throws ObjectException
      * @throws Exception
      */
-    public function role_import($flags, $options)
+    public function role_import($flags, $options): void
     {
         $object = $this->object();
         if(!property_exists($options, 'url')){
@@ -448,7 +448,7 @@ trait Setup {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function jwt_create($flags, $options)
+    public function jwt_create($flags, $options): void
     {
         $object = $this->object();
         $url_jwt = $object->config('project.dir.data') . 'Account/Jwt.json';
@@ -596,7 +596,15 @@ trait Setup {
             $options_jwt->refresh->token->issued_by = $options->refresh->token->issued_by;
         }    
         $bytes = File::write($url_jwt, Core::object($options_jwt, Core::OBJECT_JSON));
-        d($bytes);
         echo 'Written: ' . $url_jwt . ' size:  ' . File::size_format($bytes) . PHP_EOL;
+    }
+
+    public function schema_import($flags, $options): void
+    {
+        $object = $this->object();
+        $dir_schema = $object->config('project.dir.package') . 'Raxon/Acount/Schema/';
+        $dir = new Dir();
+        $read = $dir->read($dir_schema);
+        ddd($read);
     }
 }
