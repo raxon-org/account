@@ -604,7 +604,7 @@ trait Setup {
     public function schema_import($flags, $options): void
     {
         $object = $this->object();
-        $dir_schema = $object->config('project.dir.package') . 'Raxon/Acount/Schema/';
+        $dir_schema = $object->config('project.dir.package') . 'Raxon/Account/Schema/';
         $dir = new Dir();
         $read = $dir->read($dir_schema);
         ddd($read);
