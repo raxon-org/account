@@ -607,6 +607,27 @@ trait Setup {
         $dir_schema = $object->config('project.dir.package') . 'Raxon/Account/Schema/';
         $dir = new Dir();
         $read = $dir->read($dir_schema);
+
+        $dir_node_data = $object->config('project.dir.node') . 'Data/';
+        $url_doctrine = $dir_node_data . 'System.Doctrine.json';
+        if(!File::exist($url_doctrine)){
+            $system_doctrine = [
+                'uuid' => Core::uuid(),
+                '#class' => 'System.Doctrine',
+                'environment' => '*',
+                'proxy' => (object) [
+                    'dir' => '/tmp/doctrine/'
+                ],
+                'paths' => [
+                    "{{config('project.dir.source')}}Entity\/"
+                ],
+                'entity'  => (object) [
+                    'prefix'  => '\\Entity\\'
+                ]
+            ];
+        }
+
+
         if($read){
             foreach($read as $file){
                 $command = Core::binary($object) . ' raxon/schema' . ' import' . ' -file=' . $file;
