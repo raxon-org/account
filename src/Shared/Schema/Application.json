@@ -1,0 +1,86 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema" : [
+        {
+          "table": "application",
+          "entity": "Application",
+          "column": [
+            {
+              "name": "id",
+              "type": "integer",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "uuid",
+              "type": "string",
+              "options": {
+                "length": 36
+              }
+            },
+            {
+              "name": "extensions",
+              "type": "many-to-many",
+              "options": {
+                "target": {
+                  "entity": "Extension"
+                },
+                "inversed": {
+                  "by": "applications"
+                },
+                "cascade": ["persist"],
+                "join": {
+                  "table": "application_extension",
+                  "column": [
+                      {
+                        "name": "application_id",
+                        "type": "integer",
+                        "reference": "id",
+                        "nullable": false
+                      },
+                      {
+                        "name": "extension_id",
+                        "type": "integer",
+                        "reference": "id",
+                        "nullable": false
+                      }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "options": {
+              }
+            },
+            {
+              "name": "url",
+              "type": "string",
+              "options": {
+              }
+            },
+            {
+              "name": "icon_url",
+              "type": "string",
+              "options": {
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+          ],
+          "unique": [
+            "uuid"
+          ]
+        }
+      ]
+    }
+  }
+}

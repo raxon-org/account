@@ -1,0 +1,60 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema": [
+        {
+          "table": "user_logger",
+          "entity": "UserLogger",
+          "column": [
+            {
+              "name": "id",
+              "type": "integer",
+              "options": {
+                "id": true,
+                "unsigned": true,
+                "autoincrement": true
+              }
+            },
+            {
+              "name": "userId",
+              "type": "integer",
+              "options": {
+                "unsigned": true,
+                "nullable": true,
+                "default": null
+              }
+            },
+            {
+              "name": "ipAddress",
+              "type": "string",
+              "options": {
+              }
+            },
+            {
+              "name": "dateTime",
+              "type": "datetime",
+              "options": {
+                "default": "CURRENT_TIMESTAMP"
+              }
+            },
+            {
+              "name": "status",
+              "type": "string",
+              "options": {
+              }
+            }
+          ],
+          "primary_key": [
+            "id"
+          ],
+          "index": [
+            "userId",
+            "ipAddress",
+            "dateTime",
+            "status"
+          ]
+        }
+      ]
+    }
+  }
+}
