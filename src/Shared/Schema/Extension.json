@@ -5,6 +5,7 @@
         {
           "table": "extension",
           "entity": "Extension",
+          "version": "2026-01-21",
           "column": [
             {
               "name": "id",

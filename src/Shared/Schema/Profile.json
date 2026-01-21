@@ -5,6 +5,7 @@
         {
           "table": "profile",
           "entity": "Profile",
+          "version": "2026-01-21",
           "column": [
             {
               "name": "id",
