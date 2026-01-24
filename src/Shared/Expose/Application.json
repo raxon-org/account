@@ -3,6 +3,16 @@
     "create": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "id",
@@ -16,6 +26,31 @@
     },
     "read": {
       "output": [
+        {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url",
+            "extensions"
+          ],
+          "object": {
+            "extensions": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_ADMIN",
+                  "property": [
+                    "id",
+                    "name"
+                  ]
+                }
+              ]
+            }
+          }
+        },
         {
           "role": "ROLE_ADMIN",
           "property": [
@@ -46,6 +81,16 @@
     "put": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "id",
@@ -59,6 +104,16 @@
     },
     "patch": {
       "output": [
+        {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        },
         {
           "role": "ROLE_ADMIN",
           "property": [
@@ -74,6 +129,15 @@
     "delete": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "uuid",
+            "name",
+            "url",
+            "icon_url"
+          ]
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "uuid",
@@ -86,6 +150,31 @@
     },
     "list": {
       "output": [
+        {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "uuid",
+            "name",
+            "url",
+            "icon_url",
+            "extensions"
+          ],
+          "object": {
+            "extensions": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_ADMIN",
+                  "property": [
+                    "id",
+                    "name"
+                  ]
+                }
+              ]
+            }
+          }
+        },
         {
           "role": "ROLE_ADMIN",
           "property": [
