@@ -5,7 +5,7 @@
         {
           "table": "application",
           "entity": "Application",
-          "version": "2026-01-53",
+          "version": "2026-01-54",
           "column": [
             {
               "name": "id",
