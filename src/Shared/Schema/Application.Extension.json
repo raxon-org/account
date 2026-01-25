@@ -11,7 +11,7 @@
               "name": "application_id",
               "type": "integer",
               "options": {
-                "id": true,
+                "reference": "id",
                 "nullable": false
               }
             },
@@ -19,7 +19,7 @@
               "name": "extension_id",
               "type": "integer",
               "options": {
-                "id": true,
+                "reference": "id",
                 "nullable": false
               }
             }
