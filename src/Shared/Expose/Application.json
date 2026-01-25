@@ -41,7 +41,7 @@
               "multiple": true,
               "output": [
                 {
-                  "role": "ROLE_ADMIN",
+                  "role": "ROLE_SYSTEM",
                   "property": [
                     "id",
                     "name"

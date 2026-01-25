@@ -14,6 +14,31 @@
     "read": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "name",
+            "applications"
+          ],
+          "object": {
+            "applications": {
+              "multiple": true,
+              "output": [
+                {
+                  "role": "ROLE_SYSTEM",
+                  "property": [
+                    "id",
+                    "uuid",
+                    "name",
+                    "url",
+                    "icon_url"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "id",
