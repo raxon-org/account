@@ -3,6 +3,13 @@
     "create": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "name"
+          ]
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "id",
@@ -68,6 +75,13 @@
     "patch": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "name"
+          ]
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "id",
@@ -79,6 +93,13 @@
     "put": {
       "output": [
         {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "id",
+            "name"
+          ]
+        },
+        {
           "role": "ROLE_ADMIN",
           "property": [
             "id",
@@ -89,6 +110,12 @@
     },
     "delete": {
       "output": [
+        {
+          "role": "ROLE_SYSTEM",
+          "property": [
+            "name"
+          ]
+        },
         {
           "role": "ROLE_ADMIN",
           "property": [
