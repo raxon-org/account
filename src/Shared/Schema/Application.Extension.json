@@ -5,7 +5,7 @@
         {
           "table": "application_extension",
           "entity": "ApplicationExtension",
-          "version": "2026-01-25",
+          "version": "2026-01-26",
           "column": [
             {
               "name": "application_id",
