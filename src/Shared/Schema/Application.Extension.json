@@ -13,8 +13,7 @@
               "options": {
                 "id": true,
                 "nullable": false,
-                "unsigned": true,
-                "autoincrement": true
+                "unsigned": true
               }
             },
             {
@@ -23,8 +22,7 @@
               "options": {
                 "id": true,
                 "nullable": false,
-                "unsigned": true,
-                "autoincrement": true
+                "unsigned": true
               }
             }
           ],
