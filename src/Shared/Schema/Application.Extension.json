@@ -11,16 +11,20 @@
               "name": "application_id",
               "type": "integer",
               "options": {
-                "reference": "id",
-                "nullable": false
+                "id": true,
+                "nullable": false,
+                "unsigned": true,
+                "autoincrement": true
               }
             },
             {
               "name": "extension_id",
               "type": "integer",
               "options": {
-                "reference": "id",
-                "nullable": false
+                "id": true,
+                "nullable": false,
+                "unsigned": true,
+                "autoincrement": true
               }
             }
           ],
