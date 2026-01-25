@@ -1,0 +1,37 @@
+{
+  "System": {
+    "Doctrine": {
+      "Schema" : [
+        {
+          "table": "application_extension",
+          "entity": "ApplicationExtension",
+          "version": "2026-01-25",
+          "column": [
+            {
+              "name": "application_id",
+              "type": "integer",
+              "options": {
+                "nullable": false
+              }
+            },
+            {
+              "name": "extension_id",
+              "type": "integer",
+              "options": {
+                "nullable": false
+              }
+            }
+          ],
+          "primary_key": [
+            "application_id",
+            "extension_id"
+          ],
+          "index": [
+          ],
+          "unique": [
+          ]
+        }
+      ]
+    }
+  }
+}
