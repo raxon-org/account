@@ -688,6 +688,49 @@
               ]
             }
           }
+        },
+        {
+          "role" : "ROLE_SYSTEM",
+          "property" : [
+            "id",
+            "uuid",
+            "email",
+            "isActive",
+            "isLoggedIn",
+            "isCreated",
+            "isUpdated",
+            "isDeleted",
+            "profile",
+            "role"
+          ],
+          "object" : {
+            "profile" : {
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "user_id",
+                    "firstname",
+                    "surname"
+                  ]
+                }
+              ]
+            },
+            "role" : {
+              "multiple" : true,
+              "output" : [
+                {
+                  "role" : "ROLE_SYSTEM",
+                  "property" : [
+                    "id",
+                    "name",
+                    "rank"
+                  ]
+                }
+              ]
+            }
+          }
         }
       ]
     },
