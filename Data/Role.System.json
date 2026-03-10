@@ -12,14 +12,6 @@
       "#class": "Account.Permission"
     },
     {
-      "#class": "Account.Permission",
-      "name": "Account:Role:list"
-    },
-    {
-      "#class": "Account.Permission",
-      "name": "Account:Role:list.relation"
-    },
-    {
       "name": "Account:Permission:create",
       "#class": "Account.Permission"
     },
