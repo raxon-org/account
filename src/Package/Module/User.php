@@ -142,7 +142,6 @@ class User
             $entity,
             $entity . '.' . $function . '.output'
         );
-        ddd($expose);
         $node = $record;
         $record = [];
         $record = \Raxon\Doctrine\Module\Entity::output(
