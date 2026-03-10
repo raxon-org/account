@@ -13,6 +13,18 @@
     },
     {
       "#class": "Account.Permission",
+      "name": "User:list"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "User:list.relation"
+    },
+    {
+      "#class": "Account.Permission",
+      "name": "User:login"
+    },
+    {
+      "#class": "Account.Permission",
       "name": "Account:Role:list"
     },
     {
@@ -42,10 +54,6 @@
     {
       "#class": "Account.Permission",
       "name": "Raxon:Ollama:generate"
-    },
-    {
-      "#class": "Account.Permission",
-      "name": "User:login"
     },
     {
       "#class": "Account.Permission",
