@@ -4,6 +4,14 @@
   "#class": "Account.Role",
   "permission": [
     {
+      "name": "User:list",
+      "#class": "Account.Permission"
+    },
+    {
+      "name": "User:list.relation",
+      "#class": "Account.Permission"
+    },
+    {
       "name": "Account:Permission:create",
       "#class": "Account.Permission"
     },

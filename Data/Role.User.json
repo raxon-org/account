@@ -9,18 +9,6 @@
     },
     {
       "#class": "Account.Permission",
-      "name": "User:current"
-    },
-    {
-      "#class": "Account.Permission",
-      "name": "User:list"
-    },
-    {
-      "#class": "Account.Permission",
-      "name": "User:list.relation"
-    },
-    {
-      "#class": "Account.Permission",
       "name": "User:login"
     },
     {
