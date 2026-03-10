@@ -153,7 +153,6 @@ class User
             $record,
             $role
         );
-        d($record);
         return (object) $record;
     }
 
