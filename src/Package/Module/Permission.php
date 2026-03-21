@@ -215,7 +215,6 @@ class Permission
         if($has_permission && $has_role){
             return $has_role;
         }
-        ddd('endtest');
         throw new AuthorizationException('You don\'t have permission to access this resource. (' . $controller . ':' . $action . ')');
     }
 
