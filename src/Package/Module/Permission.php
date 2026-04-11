@@ -150,14 +150,18 @@ class Permission
             $key = $object->request('key');
             if($key){
                 $user = User::get_by_key($object);
-                $object->config('user', $user);
-                $user = User::expose($object, $user, 'current');
+                if($user){
+                    $object->config('user', $user);
+                    $user = User::expose($object, $user, 'current');
+                }
             }
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
                     $user = User::get_by_authorization($object);
-                    $object->config('user', $user);
-                    $user = User::expose($object, $user, 'current');
+                    if($user){
+                        $object->config('user', $user);
+                        $user = User::expose($object, $user, 'current');
+                    }
                 }
             }
             $roles = $user->role ?? [];
