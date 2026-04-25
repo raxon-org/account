@@ -78,7 +78,8 @@
           "index": [
           ],
           "unique": [
-            "uuid"
+            "uuid",
+            "url"
           ]
         }
       ]

@@ -51,7 +51,8 @@
           "index": [
           ],
           "unique": [
-            "uuid"
+            "uuid",
+            "name"
           ]
         }
       ]
