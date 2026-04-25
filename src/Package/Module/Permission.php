@@ -164,7 +164,8 @@ class Permission
                     }
                 }
             }
-            d($user);
+            $uuid = $object->request('user.uuid');
+            ddd($uuid);
             $roles = $user->role ?? [];
             d($roles);
             foreach($roles as $role){
