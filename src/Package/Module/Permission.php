@@ -170,6 +170,7 @@ class Permission
                     continue;
                 }
                 foreach($role->permission as $permission){
+                    d($permission);
                     if(
                         $has_role === false &&
                         property_exists($permission, 'name') &&
@@ -187,7 +188,6 @@ class Permission
                 }
             }
         } catch (Exception $exception){
-            ddd($exception);
             if(!$user){
                 $class = 'Account.Role';
                 $node = new Node($object);
