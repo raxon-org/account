@@ -164,6 +164,7 @@ class Permission
                     }
                 }
             }
+            d($user);
             $roles = $user->role ?? [];
             d($roles);
             foreach($roles as $role){
