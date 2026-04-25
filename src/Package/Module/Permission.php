@@ -165,6 +165,7 @@ class Permission
                 }
             }
             $roles = $user->role ?? [];
+            d($roles);
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
                     continue;
