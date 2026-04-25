@@ -165,7 +165,16 @@ class Permission
                 }
             }
             $uuid = $object->request('user.uuid');
-            ddd($uuid);
+            if(Core::is_uuid($uuid)){
+                if(!$user){
+                    $user = User::get_by_uuid($uuid);
+                    if($user){
+                        $object->config('user', $user);
+                        $user = User::expose($object, $user, 'current');
+                    }
+                }
+            }
+            ddd($user);
             $roles = $user->role ?? [];
             d($roles);
             foreach($roles as $role){

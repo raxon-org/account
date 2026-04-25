@@ -456,6 +456,55 @@ class User
 
     /**
      * @throws AuthorizationException
+     * @throws Exception
+     */
+    public static function get_by_uuid(App $object){
+        $item = $object->config('user');
+        if($item){
+            return $item;
+        } else {
+            $uuid = $object->request('user.uuid');
+            if(!$uuid){
+                return null;
+            }
+            $em = $object->config('doctrine.em');
+            if($em === null){
+                $config = Database::config($object);
+                $connection = $object->config('doctrine.environment.system.*');
+                $em = Database::entity_manager($object, $config, $connection);
+                $object->config('doctrine.em', $em);
+            }
+
+            $repository = $em->getRepository(Entity::class);
+            $item = $repository->findOneBy(['uuid' => $uuid]);
+        }
+        if($item){
+            if(empty($item->getIsActive())){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is not active.');
+            }
+            if(!empty($item->getIsDeleted())){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is deleted.');
+            }
+            if(empty($item->getRole())){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account has no roles.');
+            }
+            $item->setIsLoggedIn(new DateTime());
+            $em->persist($item);
+            $em->flush();
+            $object->config('user', $item);
+            return $item;
+        }
+        return null;
+    }
+
+    /**
+     * @throws AuthorizationException
      * @throws ObjectException
      * @throws FileWriteException
      * @throws ORMException
