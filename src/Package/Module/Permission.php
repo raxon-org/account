@@ -167,7 +167,7 @@ class Permission
             $uuid = $object->request('user.uuid');
             if(Core::is_uuid($uuid)){
                 if(!$user){
-                    $user = User::get_by_uuid($uuid);
+                    $user = User::get_by_uuid($object);
                     if($user){
                         $object->config('user', $user);
                         $user = User::expose($object, $user, 'current');
