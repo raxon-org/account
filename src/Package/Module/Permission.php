@@ -174,15 +174,12 @@ class Permission
                     }
                 }
             }
-            ddd($user);
             $roles = $user->role ?? [];
-            d($roles);
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
                     continue;
                 }
                 foreach($role->permission as $permission){
-                    d($permission);
                     if(
                         $has_role === false &&
                         property_exists($permission, 'name') &&
