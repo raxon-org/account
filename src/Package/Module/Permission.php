@@ -165,6 +165,7 @@ class Permission
                 }
             }
             $uuid = $object->request('user.uuid');
+            ddd($uuid);
             if(Core::is_uuid($uuid)){
                 if(!$user){
                     $user = User::get_by_uuid($object);
