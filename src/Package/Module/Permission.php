@@ -165,7 +165,6 @@ class Permission
                 }
             }
             $uuid = $object->request('user.uuid');
-            ddd($uuid);
             if(Core::is_uuid($uuid)){
                 if(!$user){
                     $user = User::get_by_uuid($object);
@@ -174,6 +173,9 @@ class Permission
                         $user = User::expose($object, $user, 'current');
                     }
                 }
+            }
+            if(!$user){
+                throw new AuthorizationException('User needs to be present in request.');
             }
             $roles = $user->role ?? [];
             foreach($roles as $role){
