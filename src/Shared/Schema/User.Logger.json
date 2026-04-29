@@ -5,7 +5,7 @@
         {
           "table": "user_logger",
           "entity": "UserLogger",
-          "version": "2026-01-21",
+          "version": "2026-04-29",
           "column": [
             {
               "name": "id",
