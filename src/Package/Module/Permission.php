@@ -175,7 +175,7 @@ class Permission
                 }
             }
             if(!$user){
-                throw new AuthorizationException('User needs to be present in request.');
+                throw new AuthorizationException('User needs to be present in request or header.');
             }
             $roles = $user->role ?? [];
             foreach($roles as $role){
