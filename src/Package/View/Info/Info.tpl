@@ -3,5 +3,5 @@ Package: {{$request.package}}
 
 Module: {{$request.module|>string.uppercase.first}}
 
-{{binary()}} {{$package}} admin create:
-{{binary()}} {{$package}} setup:
+{{binary()}} {{$request.package}} admin create:
+{{binary()}} {{$request.package}} setup:
