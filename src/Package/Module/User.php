@@ -71,9 +71,7 @@ class User
                 }
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
-                ddd('expose broken ?');
                 $user = User::expose($object, $node, __FUNCTION__);
-                ddd($user);
                 $user->token = User::get_token($object, $node);
                 $user->refreshToken = User::get_refresh_token($object, $node);
                 $encrypted_refreshToken = sha1($user->refreshToken);
