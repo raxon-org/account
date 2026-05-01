@@ -153,7 +153,6 @@ class Permission
                 if($user){
                     $object->config('user', $user);
                     $user = User::expose($object, $user, 'current');
-                    ddd($user);
                 }
             }
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
