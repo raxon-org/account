@@ -53,7 +53,6 @@ class User
             throw new ErrorException('Connection not configured.');
         }
         $connection->manager = Database::entity_manager($object, $config, $connection);
-        dd(User::is_blocked($object, $input, $connection));
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
@@ -63,6 +62,7 @@ class User
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
+                ddd($verify);
                 if($verify === false){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
