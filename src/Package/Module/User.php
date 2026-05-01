@@ -409,7 +409,7 @@ class User
      * @throws FileWriteException
      * @throws Exception
      */
-    public static function get_by_key(App $object){
+    public static function get_by_key(App $object): null|Entity{
         $item = $object->config('user');
         if($item){
             return $item;
@@ -458,7 +458,8 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_uuid(App $object){
+    public static function get_by_uuid(App $object): null|Entity
+    {
         $item = $object->config('user');
         if($item){
             return $item;
@@ -551,7 +552,7 @@ class User
         return $item;
     }
 
-    public static function get_by_authorization(App $object): mixed
+    public static function get_by_authorization(App $object): null|Entity
     {
         $item = $object->config('user');
         if($item){
