@@ -62,7 +62,6 @@ class User
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
-                ddd($verify);
                 if($verify === false){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
@@ -73,6 +72,7 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node, __FUNCTION__);
+                ddd($user);
                 $user->token = User::get_token($object, $node);
                 $user->refreshToken = User::get_refresh_token($object, $node);
                 $encrypted_refreshToken = sha1($user->refreshToken);
