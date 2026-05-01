@@ -74,8 +74,8 @@ class UserLogger
             $logger->setUserid($user->getId());
         }
         $logger->setStatus($input->status);
-//        $connection->manager->persist($logger);
-//        $connection->manager->flush();
+        $connection->manager->persist($logger);
+        $connection->manager->flush();
         return $logger;
     }
 
