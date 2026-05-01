@@ -2,6 +2,7 @@
 namespace Package\Raxon\Account\Trait;
 
 use DateTime;
+use Entity\User;
 use Exception;
 use Raxon\App;
 use Raxon\Config;
@@ -23,7 +24,7 @@ trait Admin {
      * @throws FileWriteException
      * @throws Exception
      */
-    public function admin_create(object $flags, object $options): array
+    public function admin_create(object $flags, object $options): User
     {
         $object = $this->object();
         if(!property_exists($options, 'email')) {
