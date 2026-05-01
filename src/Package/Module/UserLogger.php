@@ -60,6 +60,7 @@ class UserLogger
             $connection->manager = Database::entity_manager($object, $config, $connection);
         }
         $options = [];
+        ddd('bloody');
         $logger = new Entity();
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
             $logger->setIpAddress($_SERVER['REMOTE_ADDR']);
