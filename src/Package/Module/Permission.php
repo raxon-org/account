@@ -150,10 +150,10 @@ class Permission
             $key = $object->request('key');
             if($key){
                 $user = User::get_by_key($object);
-                ddd($user);
                 if($user){
                     $object->config('user', $user);
                     $user = User::expose($object, $user, 'current');
+                    ddd($user);
                 }
             }
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
