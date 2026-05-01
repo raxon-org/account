@@ -149,10 +149,8 @@ class Permission
         try {
             $key = $object->request('key');
             if($key){
-                ddd($key);
-            }
-            if($key){
                 $user = User::get_by_key($object);
+                ddd($user);
                 if($user){
                     $object->config('user', $user);
                     $user = User::expose($object, $user, 'current');
