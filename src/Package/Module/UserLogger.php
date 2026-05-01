@@ -69,13 +69,11 @@ class UserLogger
         $logger->setDateTime(new dateTime());
         if(
             $user !== null &&
-            get_class($user) === '\Entity\User'
+            get_class($user) === 'Entity\User'
         ){
             $logger->setUserid($user->getId());
         }
         $logger->setStatus($input->status);
-        ddd(get_class($user));
-        ddd($logger);
         $connection->manager->persist($logger);
         $connection->manager->flush();
         return $logger;
