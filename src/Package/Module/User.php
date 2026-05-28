@@ -15,7 +15,6 @@ use Raxon\App;
 
 use Raxon\Module\Core;
 use Raxon\Module\Handler;
-use Raxon\Module\Time;
 
 use Raxon\Doctrine\Module\Database;
 
@@ -108,7 +107,8 @@ class User
             Handler::header('Status: ' . $status, $status, true);
             $input->status = UserLogger::STATUS_BLOCKED;
             UserLogger::log($object, $input, null, $connection);
-            throw new ErrorException('User blocked.');
+
+            throw new ErrorException('User blocked for:.');
         }
     }
 
