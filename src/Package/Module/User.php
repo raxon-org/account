@@ -106,20 +106,26 @@ class User
                 setcookie(
                     'user_token',
                     $user->token,
-                    $expires,
-                    '/',
-                    Host::domain() . '.' . Host::extension(),
-                    true,
-                    true
+                    [
+                        'expires' => $expires,
+                        'path' => '/',
+                        'secure' => true,
+                        'httponly' => true,
+                        'samesite' => 'Strict',
+                        'domain' => Host::domain() . '.' . Host::extension(),
+                    ]
                 );
                 setcookie(
                     'user_active',
                     microtime(true),
-                    $expires,
-                    '/',
-                    Host::domain() . '.' . Host::extension(),
-                    true,
-                    false
+                    [
+                        'expires' => $expires,
+                        'path' => '/',
+                        'secure' => true,
+                        'httponly' => false,
+                        'samesite' => 'Strict',
+                        'domain' => Host::domain() . '.' . Host::extension(),
+                    ]
                 );
 /*
                 Handler::cookie([
