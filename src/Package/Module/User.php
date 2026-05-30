@@ -182,8 +182,8 @@ class User
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
             $crypt_string = Crypto::encrypt($string, $key); //around: 1800 chars fits in the 4KB cookie
-            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars
-            return $crypt_compressed;
+//            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
+            return $crypt_string;
             //return steps
             /*
             $crypt_decompressed = gzdecode($crypt_compressed);
@@ -599,10 +599,10 @@ class User
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
         if($crypt_url) {
-            $crypt_decompressed = gzdecode($token);
+//            $crypt_decompressed = gzdecode($token);
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            $token = Crypto::decrypt($crypt_decompressed, $key); //around: 1800 chars fits in the 4KB cookie
+            $token = Crypto::decrypt($token, $key); //around: 1800 chars fits in the 4KB cookie
             ddd($token);
         }
         if(!$token){
