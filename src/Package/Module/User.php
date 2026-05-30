@@ -101,13 +101,16 @@ class User
                 $user->key = $node->getKey();
 //                $data = [];
 //                $data['node'] = $user;
-                Handler::cookie('token', [
+                Handler::cookie([
                     'value' => $user->token,
-                    'expire' => strtotime('+3 minute'),
-                    'path' => '/',
-                    'secure' => true,
-                    'httponly' => true,
-                    'samesite' => 'Strict'
+                    'parameters' => [
+                        'expires' => strtotime('+3 minute'),
+                        'path' => '/',
+                        'secure' => true,
+                        'httponly' => true,
+                        'samesite' => 'Strict',
+                        'domain' => $_SERVER['HTTP_HOST'],
+                    ]
                 ]);
 //                return $data;
             } else {
