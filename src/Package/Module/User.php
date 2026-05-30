@@ -175,7 +175,6 @@ class User
         $options['user'] = $node;
         $token = Jwt::get($object, $configuration, $options);
         $string = $token->toString();
-        d(strlen($string));
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
         $config = $cache->get(sha1($url));
@@ -184,18 +183,17 @@ class User
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
             $crypt_string = Crypto::encrypt($string, $key); //around: 1800 chars fits in the 4KB cookie
-            $crypt_compressed = gzencode($crypt_string, 9);
+            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars
+            return $crypt_compressed;
+            //return steps
+            /*
             $crypt_decompressed = gzdecode($crypt_compressed);
             $decrypt_string = Crypto::decrypt($crypt_decompressed, $key); //around: 1800 chars fits in the 4KB cookie
-            d('############## LENGTH encrypt: ' . strlen($crypt_string));
-            d('############## LENGTH gzencode: ' . strlen($crypt_compressed));
-            d('############## LENGTH gzdecode: ' . strlen($crypt_decompressed));
-            d($crypt_compressed);
             d($decrypt_string);
-            dd($crypt_string);
+            */
+        } else {
+            throw new Exception('property token.crypt_url not set in data/Account/Jwt.json.');
         }
-
-        return $string;
     }
 
     /**
@@ -600,7 +598,18 @@ class User
         elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
             $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
+        $url = $object->config('project.dir.data') . 'Account/Jwt.json';
+        $cache = $object->data(App::CACHE);
+        $config = $cache->get(sha1($url));
+        $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
+        if($crypt_url) {
+            $crypt_decompressed = gzdecode($token);
+            //if you want you can logout everyone from the system by changing the content of crypt_url
+            $key = Core::key($crypt_url);
+            $token = Crypto::decrypt($crypt_decompressed, $key); //around: 1800 chars fits in the 4KB cookie
+            ddd($token);
+        }
         if(!$token){
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
