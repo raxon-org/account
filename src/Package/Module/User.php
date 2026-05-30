@@ -1,6 +1,12 @@
 <?php
 namespace Package\Raxon\Account\Module;
 
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Exception\BadFormatException;
+use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
+use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
+use Defuse\Crypto\Key;
+
 use DateTime;
 
 use Doctrine\ORM\Exception\ORMException;
@@ -172,8 +178,14 @@ class User
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
         $config = $cache->get(sha1($url));
-        d($config->get('token.crypt_url'));
-//        $key = Core::key();
+        $crypt_url = $config->get('token.crypt_url') ?? null;
+        if($crypt_url){
+            $key = Core::key($crypt_url);
+            $crypt_string = Crypto::encrypt($string, $key);
+            d('############## LENGTH: ' . strlen($crypt_string));
+            ddd($crypt_string);
+        }
+
         return $string;
     }
 
