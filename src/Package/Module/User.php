@@ -167,7 +167,9 @@ class User
         $options['user'] = $node;
         $token = Jwt::get($object, $configuration, $options);
         $string = $token->toString();
-        dd(strlen($string));
+        d(strlen($string));
+        dd($configuration);
+//        $key = Core::key();
         return $string;
     }
 
