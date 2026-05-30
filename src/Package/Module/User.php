@@ -79,7 +79,6 @@ class User
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node, __FUNCTION__);
                 $user->token = User::get_token($object, $node);
-                dd($user);
                 $user->refreshToken = User::get_refresh_token($object, $node);
                 $encrypted_refreshToken = sha1($user->refreshToken);
                 $repository = $connection->manager->getRepository(Entity::class);
@@ -102,6 +101,7 @@ class User
                 $user->key = $node->getKey();
                 $data = [];
                 $data['node'] = $user;
+                ddd($data);
                 return $data;
             } else {
                 $status = 401;
@@ -115,7 +115,6 @@ class User
             Handler::header('Status: ' . $status, $status, true);
             $input->status = UserLogger::STATUS_BLOCKED;
             UserLogger::log($object, $input, null, $connection);
-
             throw new ErrorException('User blocked for:.');
         }
     }
@@ -225,14 +224,9 @@ class User
         $configuration = Jwt::configuration($object, $options);
         $refreshToken = Jwt::refresh_get($object, $configuration, $options);
         $refreshToken = $refreshToken->toString();
-
-        d($token);
-        d($refreshToken);
-
-
-        $record->token = $token;
-        $record->refresh_token = $refreshToken;
-
+        ddd('fix refresh after the general javascript function which handles the refresh token ');
+//        $record->token = $token;
+//        $record->refresh_token = $refreshToken;
         /*
         $node = new Node($object);
         $node->patch(
@@ -244,7 +238,8 @@ class User
             ]
         );
         */
-        return $record;
+//        return $record;
+        return [];
     }
 
     /**
