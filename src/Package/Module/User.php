@@ -181,7 +181,8 @@ class User
         $crypt_url = $config->get('token.crypt_url') ?? null;
         if($crypt_url){
             $key = Core::key($crypt_url);
-            $crypt_string = Crypto::encrypt($string, $key);
+            $crypt_string = Crypto::encrypt($string, $key); //around: 1800 chars fits in the 4KB cookie
+            $unecrypt_string = Crypto::decrypt($crypt_string, $key); //around: 1800 chars fits in the 4KB cookie
             d('############## LENGTH: ' . strlen($crypt_string));
             ddd($crypt_string);
         }
