@@ -159,6 +159,7 @@ class User
     /**
      * @throws FileWriteException
      * @throws ObjectException
+     * @throws Exception
      */
     private static function get_token(App $object, Entity $node): string
     {
@@ -170,8 +171,8 @@ class User
         d(strlen($string));
 
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
-        $config  = $object->data(sha1($url));
-        dd($config);
+        d(sha1($url));
+        ddd($object);
 
 
 
