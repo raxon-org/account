@@ -170,7 +170,7 @@ class User
         d(strlen($string));
 
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
-        $config  = $object->config(sha1($url));
+        $config  = $object->data(sha1($url));
         dd($config);
 
 
