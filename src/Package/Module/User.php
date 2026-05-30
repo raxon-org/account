@@ -102,14 +102,24 @@ class User
                 $user->key = $node->getKey();
 //                $data = [];
 //                $data['node'] = $user;
+                $expires = time() + (3 * 60);
                 setcookie(
                     'user_token',
                     $user->token,
-                    time() + (3 * 60),
+                    $expires,
                     '/',
                     Host::domain() . '.' . Host::extension(),
                     true,
                     true
+                );
+                setcookie(
+                    'user_active',
+                    microtime(true),
+                    $expires,
+                    '/',
+                    Host::domain() . '.' . Host::extension(),
+                    true,
+                    false
                 );
 /*
                 Handler::cookie([
