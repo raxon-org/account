@@ -79,6 +79,7 @@ class User
                 UserLogger::log($object, $input, $node, $connection);
                 $user = User::expose($object, $node, __FUNCTION__);
                 $user->token = User::get_token($object, $node);
+                dd($user);
                 $user->refreshToken = User::get_refresh_token($object, $node);
                 $encrypted_refreshToken = sha1($user->refreshToken);
                 $repository = $connection->manager->getRepository(Entity::class);
