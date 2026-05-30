@@ -171,7 +171,8 @@ class User
         d(strlen($string));
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
-        dd($cache->get(sha1($url)));
+        $config = $cache->get(sha1($url));
+        d($config->get('token.crypt_url'));
 //        $key = Core::key();
         return $string;
     }
