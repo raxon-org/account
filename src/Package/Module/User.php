@@ -101,7 +101,6 @@ class User
                 $user->key = $node->getKey();
                 $data = [];
                 $data['node'] = $user;
-                ddd($data);
                 return $data;
             } else {
                 $status = 401;
