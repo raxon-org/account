@@ -598,11 +598,11 @@ class User
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
         if($crypt_url) {
+            ddd(strlen($token));
 //            $crypt_decompressed = gzdecode($token);
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
             $token = Crypto::decrypt($token, $key); //around: 1800 chars fits in the 4KB cookie
-            ddd($token);
         }
         if(!$token){
             $status = 401;
