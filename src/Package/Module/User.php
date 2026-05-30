@@ -45,7 +45,7 @@ class User
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public static function login(App $object, object $input): array
+    public static function login(App $object, object $input): void
     {
         if(!property_exists($input, 'email')){
             throw new ErrorException('E-mail is required.');
@@ -99,9 +99,17 @@ class User
                 $user->isLoggedIn = $node->getIsLoggedIn();
                 $user->isUpdated = $node->getIsUpdated();
                 $user->key = $node->getKey();
-                $data = [];
-                $data['node'] = $user;
-                return $data;
+//                $data = [];
+//                $data['node'] = $user;
+                Handler::cookie('token', [
+                    'value' => $user->token,
+                    'expire' => strtotime('+3 minute'),
+                    'path' => '/',
+                    'secure' => true,
+                    'httponly' => true,
+                    'samesite' => 'Strict'
+                ]);
+//                return $data;
             } else {
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
@@ -597,7 +605,7 @@ class User
         $config = $object->parse_read($url, sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
-        if($crypt_url) {    
+        if($crypt_url) {
 //            $crypt_decompressed = gzdecode($token);
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
