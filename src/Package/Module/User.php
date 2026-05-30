@@ -20,6 +20,7 @@ use Exception;
 use Raxon\App;
 
 use Raxon\Module\Core;
+use Raxon\Module\File;
 use Raxon\Module\Handler;
 
 use Raxon\Doctrine\Module\Database;
@@ -180,10 +181,16 @@ class User
         $config = $cache->get(sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null;
         if($crypt_url){
+            //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
             $crypt_string = Crypto::encrypt($string, $key); //around: 1800 chars fits in the 4KB cookie
-            $decrypt_string = Crypto::decrypt($crypt_string, $key); //around: 1800 chars fits in the 4KB cookie
-            d('############## LENGTH: ' . strlen($crypt_string));
+            $crypt_compressed = gzencode($crypt_string, 9);
+            $crypt_decompressed = gzdecode($crypt_compressed);
+            $decrypt_string = Crypto::decrypt($crypt_decompressed, $key); //around: 1800 chars fits in the 4KB cookie
+            d('############## LENGTH encrypt: ' . strlen($crypt_string));
+            d('############## LENGTH gzencode: ' . strlen($crypt_compressed));
+            d('############## LENGTH gzdecode: ' . strlen($crypt_decompressed));
+            d($crypt_compressed);
             d($decrypt_string);
             dd($crypt_string);
         }
