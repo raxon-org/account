@@ -46,7 +46,7 @@ class User
      * @throws Exception
      * @throws \Doctrine\DBAL\Exception
      */
-    public static function login(App $object, object $input): void
+    public static function login(App $object, object $input): array
     {
         if(!property_exists($input, 'email')){
             throw new ErrorException('E-mail is required.');
@@ -115,9 +115,10 @@ class User
                         'domain' => Host::domain() . '.' . Host::extension(),
                     ]
                 );
+                $microtime = microtime(true);
                 setcookie(
                     'user_active',
-                    microtime(true),
+                    $microtime,
                     [
                         'expires' => $expires,
                         'path' => '/',
@@ -127,7 +128,12 @@ class User
                         'domain' => Host::domain() . '.' . Host::extension(),
                     ]
                 );
-                Core::redirect('/');
+                $data = [
+                    'user_active' => $microtime,
+                    'expires' => $expires,
+                ];
+                return $data;
+//                Core::redirect('/');
 /*
                 Handler::cookie([
                     'value' => $user->token,
