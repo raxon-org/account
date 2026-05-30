@@ -166,7 +166,9 @@ class User
         $options = [];
         $options['user'] = $node;
         $token = Jwt::get($object, $configuration, $options);
-        return $token->toString();
+        $string = $token->toString();
+        dd(strlen($string));
+        return $string;
     }
 
     /**
@@ -312,11 +314,6 @@ class User
         $options['user'] = $record['node'];
         $token = Jwt::get($object, $configuration, $options);
         $token = $token->toString();
-
-        dd(strlen($token));
-
-
-
         return $token;
     }
 
