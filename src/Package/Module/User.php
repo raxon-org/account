@@ -168,7 +168,13 @@ class User
         $token = Jwt::get($object, $configuration, $options);
         $string = $token->toString();
         d(strlen($string));
+
+        $url = $object->config('project.dir.data') . 'Account/Jwt.json';
+        $config  = $object->config(sha1($url));
         dd($configuration);
+
+
+
 //        $key = Core::key();
         return $string;
     }
