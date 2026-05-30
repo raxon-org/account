@@ -594,8 +594,7 @@ class User
             $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
-        $cache = $object->data(App::CACHE);
-        $config = $cache->get(sha1($url));
+        $config = $object->parse_read($url, sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
         if($crypt_url) {
