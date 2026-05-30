@@ -25,6 +25,7 @@ use Raxon\Module\Handler;
 
 use Raxon\Doctrine\Module\Database;
 
+use Raxon\Module\Host;
 use Raxon\Node\Module\Node;
 
 use Raxon\Exception\FileWriteException;
@@ -101,6 +102,16 @@ class User
                 $user->key = $node->getKey();
 //                $data = [];
 //                $data['node'] = $user;
+                setcookie(
+                    'user_token',
+                    $user->token,
+                    time() + (3 * 60),
+                    '/',
+                    Host::domain() . '.' . Host::extension(),
+                    true,
+                    true
+                );
+/*
                 Handler::cookie([
                     'value' => $user->token,
                     'parameters' => [
@@ -112,6 +123,7 @@ class User
                         'domain' => $_SERVER['HTTP_HOST'],
                     ]
                 ]);
+*/
 //                return $data;
             } else {
                 $status = 401;
