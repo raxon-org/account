@@ -100,8 +100,9 @@ class User
                 $user->isLoggedIn = $node->getIsLoggedIn();
                 $user->isUpdated = $node->getIsUpdated();
                 $user->key = $node->getKey();
-//                $data = [];
-//                $data['node'] = $user;
+                $data = [];
+                $data['node'] = $user;
+                /*
                 $expires = time() + (3 * 60);
                 setcookie(
                     'user_token',
@@ -132,6 +133,7 @@ class User
                     'user_active' => $microtime,
                     'expires' => $expires,
                 ];
+                */
                 return $data;
 //                Core::redirect('/');
 /*
