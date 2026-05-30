@@ -182,9 +182,10 @@ class User
         if($crypt_url){
             $key = Core::key($crypt_url);
             $crypt_string = Crypto::encrypt($string, $key); //around: 1800 chars fits in the 4KB cookie
-            $unecrypt_string = Crypto::decrypt($crypt_string, $key); //around: 1800 chars fits in the 4KB cookie
+            $decrypt_string = Crypto::decrypt($crypt_string, $key); //around: 1800 chars fits in the 4KB cookie
             d('############## LENGTH: ' . strlen($crypt_string));
-            ddd($crypt_string);
+            d($decrypt_string);
+            dd($crypt_string);
         }
 
         return $string;
