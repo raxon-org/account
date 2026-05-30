@@ -127,6 +127,7 @@ class User
                         'domain' => Host::domain() . '.' . Host::extension(),
                     ]
                 );
+                Core::redirect('/');
 /*
                 Handler::cookie([
                     'value' => $user->token,
