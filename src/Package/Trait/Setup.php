@@ -598,7 +598,6 @@ trait Setup {
         }
         // add $options_jwt->token->crypt_url = '{{config(\'project.dir.data\')}}Ssl/Defuse.key';
         $bytes = File::write($url_jwt, Core::object($options_jwt, Core::OBJECT_JSON));
-        ddd($bytes);
         echo 'Written: ' . $url_jwt . ' size:  ' . File::size_format($bytes) . PHP_EOL;
         return true;
     }
