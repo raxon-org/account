@@ -60,6 +60,7 @@ class User
             throw new ErrorException('Connection not configured.');
         }
         $connection->manager = Database::entity_manager($object, $config, $connection);
+        dd($connection);
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
