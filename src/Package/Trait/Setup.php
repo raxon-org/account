@@ -84,6 +84,9 @@ trait Setup {
         return $status;
     }
 
+    /**
+     * @throws Exception
+     */
     public function role_user_create(object $flags, object $options): void
     {
         $object = $this->object();
@@ -94,6 +97,9 @@ trait Setup {
         $this->role_import($flags, $options_import);
     }
 
+    /**
+     * @throws Exception
+     */
     public function role_system_create(object $flags, object $options): void
     {
         $object = $this->object();
@@ -529,6 +535,14 @@ trait Setup {
         } else {
             $options_jwt->token->issued_by = $options->token->issued_by;
         }
+        if(!property_exists($options->token, 'crypt_url')) {
+            $options_jwt->token->crypt_url = '{{config(\'project.dir.data\')}}Ssl/Defuse.key';
+        } else {
+            $options_jwt->token->crypt_url = $options->token->crypt_url;
+        }
+        if (!property_exists($options->token, 'subject')) {
+            $options_jwt->token->subject = 'raxon.org';
+        }
         if (!property_exists($options, 'refresh')) {
             $options_jwt->refresh = (object)[];
             $options_jwt->refresh->token = (object)[];
@@ -595,6 +609,11 @@ trait Setup {
             $options_jwt->refresh->token->issued_by = 'raxon.org';
         } else {
             $options_jwt->refresh->token->issued_by = $options->refresh->token->issued_by;
+        }
+        if(!property_exists($options->refresh->token, 'crypt_url')) {
+            $options_jwt->refresh->token->crypt_url = '{{config(\'project.dir.data\')}}Ssl/Defuse.key';
+        } else {
+            $options_jwt->refresh->token->crypt_url = $options->refresh->token->crypt_url;
         }
         // add $options_jwt->token->crypt_url = '{{config(\'project.dir.data\')}}Ssl/Defuse.key';
         $bytes = File::write($url_jwt, Core::object($options_jwt, Core::OBJECT_JSON));
