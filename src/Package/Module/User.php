@@ -232,6 +232,9 @@ class User
             for($i = 0; $i < 3; $i++){
                 $string = Crypto::encrypt($string, $key);
             }
+            $string = gzencode($string, 9);
+            $string = base64_encode($string);
+            d(mb_strlen($string));
              //around: 1800 chars fits in the 4KB cookie
 //            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
             return $string;
@@ -603,6 +606,8 @@ class User
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
+            $token = base64_encode($token);
+            $token = gzdecode($token);
             for($i = 0; $i < 3; $i++){
                 $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
             }
