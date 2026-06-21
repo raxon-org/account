@@ -229,9 +229,13 @@ class User
         if($crypt_url){
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            $crypt_string = Crypto::encrypt($string, $key); //around: 1800 chars fits in the 4KB cookie
+            for($i = 0; $i < 1000; $i++){
+                $string = Crypto::encrypt($string, $key);
+            }
+            ddd($string);
+             //around: 1800 chars fits in the 4KB cookie
 //            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
-            return $crypt_string;
+            return $string;
             //return steps
             /*
             $crypt_decompressed = gzdecode($crypt_compressed);
@@ -574,54 +578,6 @@ class User
         return null;
     }
 
-    /**
-     * @throws AuthorizationException
-     * @throws ObjectException
-     * @throws FileWriteException
-     * @throws ORMException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws Exception
-     */
-    public static function get_by_authorization_old(App $object): mixed
-    {
-        $item = User::token_id($object);
-        ddd($item);
-        $node = new Node($object);
-        $class = 'Account.Role';
-        $response = $node->record(
-            $class,
-            $node->role_system(),
-            [
-                'filter' => [
-                    'name' => 'ROLE_USER'
-                ],
-                'relation' => true
-            ]
-        );
-        $role = $response['node'] ?? null;
-        $entity = 'User';
-        $function = 'current';
-
-        $toArray = \Raxon\Doctrine\Module\Entity::expose_get(
-            $object,
-            $entity,
-            $entity . '.' . $function . '.output'
-        );
-        $record = [];
-        $record = \Raxon\Doctrine\Module\Entity::output(
-            $object,
-            $item,
-            $toArray,
-            $entity,
-            $function,
-            $record,
-            $role
-        );
-        $item->setRole($record['role']);
-        $object->set('user', $item);
-        return $item;
-    }
-
     public static function get_by_authorization(App $object): null|Entity
     {
         $item = $object->config('user');
@@ -646,10 +602,13 @@ class User
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
         if($crypt_url) {
-//            $crypt_decompressed = gzdecode($token);
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            $token = Crypto::decrypt($token, $key); //around: 1800 chars fits in the 4KB cookie
+            while($i = 0; $i < 1000; $i++){
+                $token = Crypto::decrypt($token, $key); //around: 1800 chars fits in the 4KB cookie
+            }
+            ddd($token);
+
         }
         if(!$token){
             $status = 401;
