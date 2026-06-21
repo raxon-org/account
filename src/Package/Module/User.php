@@ -605,7 +605,7 @@ class User
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            $token = base64_decode($token);
+            $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
             $token = gzdecode($token);
             for($i = 0; $i < 3; $i++){
                 $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
