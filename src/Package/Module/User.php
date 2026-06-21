@@ -605,7 +605,7 @@ class User
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            $token = base64_encode($token);
+            $token = base64_decode($token);
             $token = gzdecode($token);
             for($i = 0; $i < 3; $i++){
                 $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
