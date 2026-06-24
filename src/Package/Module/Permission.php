@@ -243,7 +243,7 @@ class Permission
      */
     public static function request(App $object, $entity=null, $action='', object|null &$role=null, object|null &$user=null, &$fetchJoinCollection=null): array
     {
-        $roles = Permission::getAccessControl($object, $entity, $action);
+//        $roles = Permission::getAccessControl($object, $entity, $action);
         $response = User::current($object);
         $user = $response['node'] ?? null;
         if($user){
@@ -252,9 +252,7 @@ class Permission
                 $roles = $object->session('user.roles');
             }
         }
-        if(empty($roles)){
-            $roles = $user['role'] ?? [];
-        }
+        $roles = $user['role'] ?? [];
         $has_permission = false;
         $request = [];
         $required_attribute = [];
@@ -275,6 +273,7 @@ class Permission
                 $permissions = $role->permission;
             }
             foreach($permissions as $permission){
+                $name = false;
                 if(
                     is_array($permission) &&
                     array_key_exists('name', $permission)
@@ -392,8 +391,6 @@ class Permission
                     $object->logger($logger)->info('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
                 }
             }
-            d($entity);
-            ddd($action);
             throw new AuthorizationException('You don\'t have permission to access this resource. (' . $entity . ':' . $action . ')');
         }
         $missing_attribute = [];
