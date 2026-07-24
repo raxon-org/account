@@ -58,7 +58,6 @@ class User
         if($connection === null){
             throw new ErrorException('Connection not configured.');
         }
-        ddd($connection);
         $connection->manager = Database::entity_manager($object, $config, $connection);
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
@@ -100,56 +99,10 @@ class User
                 $user->isLoggedIn = $node->getIsLoggedIn();
                 $user->isUpdated = $node->getIsUpdated();
                 $user->key = $node->getKey();
+                ddd($user);
                 $data = [];
-                $data['node'] = $user;
-                /*
-                $expires = time() + (3 * 60);
-                setcookie(
-                    'user_token',
-                    $user->token,
-                    [
-                        'expires' => $expires,
-                        'path' => '/',
-                        'secure' => true,
-                        'httponly' => true,
-                        'samesite' => 'Strict',
-                        'domain' => Host::domain() . '.' . Host::extension(),
-                    ]
-                );
-                $microtime = microtime(true);
-                setcookie(
-                    'user_active',
-                    $microtime,
-                    [
-                        'expires' => $expires,
-                        'path' => '/',
-                        'secure' => true,
-                        'httponly' => false,
-                        'samesite' => 'Strict',
-                        'domain' => Host::domain() . '.' . Host::extension(),
-                    ]
-                );
-                $data = [
-                    'user_active' => $microtime,
-                    'expires' => $expires,
-                ];
-                */
+                $data['node'] = $user;;
                 return $data;
-//                Core::redirect('/');
-/*
-                Handler::cookie([
-                    'value' => $user->token,
-                    'parameters' => [
-                        'expires' => strtotime('+3 minute'),
-                        'path' => '/',
-                        'secure' => true,
-                        'httponly' => true,
-                        'samesite' => 'Strict',
-                        'domain' => $_SERVER['HTTP_HOST'],
-                    ]
-                ]);
-*/
-//                return $data;
             } else {
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
