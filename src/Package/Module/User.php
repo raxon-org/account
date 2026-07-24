@@ -47,7 +47,6 @@ class User
      */
     public static function login(App $object, object $input): array
     {
-        ddd($input);
         if(!property_exists($input, 'email')){
             throw new ErrorException('E-mail is required.');
         }
@@ -59,6 +58,7 @@ class User
         if($connection === null){
             throw new ErrorException('Connection not configured.');
         }
+        ddd($connection);
         $connection->manager = Database::entity_manager($object, $config, $connection);
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
