@@ -48,6 +48,7 @@ class User
      */
     public static function login(App $object, object $input): array
     {
+        ddd($input);
         if(!property_exists($input, 'email')){
             throw new ErrorException('E-mail is required.');
         }
