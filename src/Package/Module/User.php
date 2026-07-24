@@ -68,7 +68,6 @@ class User
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
-                ddd($verify);
                 if($verify === false){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
