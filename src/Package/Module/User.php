@@ -16,7 +16,6 @@ use Doctrine\ORM\OptimisticLockException;
 use Entity\User as Entity;
 
 use Exception;
-
 use Raxon\App;
 
 use Raxon\Module\Core;
