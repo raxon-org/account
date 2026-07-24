@@ -99,7 +99,6 @@ class User
                 $user->isLoggedIn = $node->getIsLoggedIn();
                 $user->isUpdated = $node->getIsUpdated();
                 $user->key = $node->getKey();
-                ddd($user);
                 $data = [];
                 $data['node'] = $user;;
                 return $data;
