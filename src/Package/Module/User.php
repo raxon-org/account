@@ -560,8 +560,10 @@ class User
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
             $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
+            $logger = false;
             if(strlen($token) >= 1){
                 try {
+                    $logger = $object->config('project.log.security');
                     $token = gzdecode($token);
                     for($i = 0; $i < 3; $i++){
                         $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
@@ -569,7 +571,11 @@ class User
                 }
                 catch (Throwable $e) {
                     //we need the user login
+                    if($logger) {
+                        $object->logger($logger)->info('You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')');
+                    }
                     Core::redirect('/User/Login');
+                    exit(0);
                 }
             }
         }
