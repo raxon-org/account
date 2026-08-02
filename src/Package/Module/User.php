@@ -16,6 +16,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Entity\User as Entity;
 
 use Exception;
+use Throwable;
 use Raxon\App;
 
 use Raxon\Module\Core;
@@ -560,9 +561,15 @@ class User
             $key = Core::key($crypt_url);
             $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
             if(strlen($token) >= 1){
-                $token = gzdecode($token);
-                for($i = 0; $i < 3; $i++){
-                    $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
+                try {
+                    $token = gzdecode($token);
+                    for($i = 0; $i < 3; $i++){
+                        $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
+                    }
+                }
+                catch (Throwable $e) {
+                    //we need the user login
+                    Core::redirect('/User/Login');
                 }
             }
         }
