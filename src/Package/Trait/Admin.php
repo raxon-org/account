@@ -131,19 +131,24 @@ trait Admin {
         }
         if(!property_exists($options, 'connection')) {
             $options->connection = 'system';
+            $options->environment = '*';
+        }
+        if(!property_exists($options, 'environment')) {
+            throw new Exception('Environment is required');
         }
         $object = $this->object();
         $node = new Node($object);
         $entity = 'User';
         $config = Database::config($object);
         $environments = $object->config('doctrine.environment');
-        d($options->connection);
         $connection = false;
         if(!property_exists($environments, $options->connection)){
-            $connection = $environments->{$options->connection};
+            throw new Exception('Connection not found: ' . $options->connection);
         }
-//        d($connection);
-        ddd($environments);
+
+        $connection = $environments->{$options->connection}->{$options->environment};
+        d($connection);
+        breakpoint('*');
 
 
         $entity = 'User';
