@@ -66,8 +66,7 @@ class User
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
-                'email' => $input->email,
-                'isActive' => true
+                'email' => $input->email
             ]);
             ddd($node);
 
