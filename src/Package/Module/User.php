@@ -63,13 +63,6 @@ class User
         }
         $flags = (object)[];
         $connection = Database::connection($object, $flags, $input);
-        ddd($connection);
-        $config = Database::config($object);
-        $connection = $object->config('doctrine.environment.system.*');
-        if($connection === null){
-            throw new ErrorException('Connection not configured.');
-        }
-        $connection->manager = Database::entity_manager($object, $config, $connection);
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
@@ -274,9 +267,7 @@ class User
             throw new ErrorException('E-mail is required.');
         }
         if($connection === null){
-            $config = Database::config($object);
-            $connection = $object->config('doctrine.environment.system.*');
-            $connection->manager = Database::entity_manager($object, $config, $connection);
+            throw new ErrorException('Connection is required.');
         }
         $repository = $connection->manager->getRepository(Entity::class);
         $node = $repository->findOneBy(['email' => $input->email]);
