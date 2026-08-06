@@ -10,6 +10,7 @@ use Raxon\Doctrine\Module\Database;
 use Raxon\Doctrine\Module\Entity;
 use Raxon\Exception\DirectoryCreateException;
 use Raxon\Exception\FileWriteException;
+use Raxon\Exception\LocateException;
 use Raxon\Exception\ObjectException;
 use Raxon\Module\Core;
 use Raxon\Module\File;
@@ -113,6 +114,12 @@ trait Admin {
         return $user;
     }
 
+    /**
+     * @throws ObjectException
+     * @throws LocateException
+     * @throws FileWriteException
+     * @throws Exception
+     */
     public function admin_password_change(object $flags, object $options): User
     {
         $object = $this->object();
@@ -130,6 +137,10 @@ trait Admin {
         $entity = 'User';
         $config = Database::config($object);
         $environments = $object->config('doctrine.environment');
+        if(!property_exists($environments, $options->connection)){
+            $connection = $environments->{$options->connection};
+        }
+        d($connection);
         ddd($environments);
 
 
