@@ -54,6 +54,13 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
+        if(!property_exists($input, 'connection')){
+            $input->connection = 'system';
+            $input->environment = '*';
+        }
+        if(!property_exists($input, 'environment')){
+            throw new Exception('Environment is required.');
+        }
         $flags = (object)[];
         $connection = Database::connection($object, $flags, $input);
         ddd($connection);
