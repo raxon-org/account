@@ -147,23 +147,17 @@ trait Admin {
         }
 
         $connection = $environments->{$options->connection}->{$options->environment};
-        d($connection);
-        breakpoint('*');
-
-
-        $entity = 'User';
-        $config = Database::config($object);
-        $environments = $object->config('doctrine.environment');
-        $framework_environment = $object->config('framework.enviroment');
         $connection->manager = Database::entity_manager($object, $config, $connection);
+        d($connection);
         $validate_url = Entity::get_validate_url($object, $entity);
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
         $object->config('doctrine.entity.manager', $connection->manager);
         $options_entity = [
             'filter' => [
-                'email' => $email
+                'email' => $options->email
             ]
         ];
+        ddd($options_entity);
         $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
 
 
