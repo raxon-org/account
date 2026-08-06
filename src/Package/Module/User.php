@@ -65,11 +65,12 @@ class User
         $connection = Database::connection($object, $flags, $input);
         if(User::is_blocked($object, $input, $connection) === false){
             $repository = $connection->manager->getRepository(Entity::class);
-            ddd($input);
             $node = $repository->findOneBy([
                 'email' => $input->email,
                 'isActive' => 1
             ]);
+            ddd($node);
+
             if($node) {
                 $password = $input->password;
                 $verify = password_verify($password, $node->getPassword());
