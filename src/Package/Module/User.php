@@ -54,6 +54,9 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
+        $flags = (object)[];
+        $connection = Database::connection($object, $flags, $input);
+        ddd($connection);
         $config = Database::config($object);
         $connection = $object->config('doctrine.environment.system.*');
         if($connection === null){
