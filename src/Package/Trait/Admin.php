@@ -147,7 +147,8 @@ trait Admin {
                 'email' => $options->email
             ]
         ];
-        $response = Entity::record($object, $connection, $node->role_system(), $entity, $options_entity);
+        $object->request('entity', $entity);
+        $response = Entity::record($object, $connection, $node->role_system(), $options_entity);
         dd($response);
 
 
