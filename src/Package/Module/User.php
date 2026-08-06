@@ -67,7 +67,7 @@ class User
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
                 'email' => $input->email,
-                'isActive' => 1
+                'isActive' => true
             ]);
             ddd($node);
 
