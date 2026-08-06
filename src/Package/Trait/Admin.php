@@ -137,10 +137,11 @@ trait Admin {
         $entity = 'User';
         $config = Database::config($object);
         $environments = $object->config('doctrine.environment');
+        $connection = false;
         if(!property_exists($environments, $options->connection)){
             $connection = $environments->{$options->connection};
         }
-        d($connection);
+//        d($connection);
         ddd($environments);
 
 
