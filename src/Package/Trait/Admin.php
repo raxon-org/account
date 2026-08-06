@@ -136,18 +136,7 @@ trait Admin {
         if(!property_exists($options, 'environment')) {
             throw new Exception('Environment is required');
         }
-        $object = $this->object();
-
-
-        $config = Database::config($object);
-        $environments = $object->config('doctrine.environment');
-        $connection = false;
-        if(!property_exists($environments, $options->connection)){
-            throw new Exception('Connection not found: ' . $options->connection);
-        }
-        $connection = $environments->{$options->connection}->{$options->environment};
-        $connection->manager = Database::entity_manager($object, $config, $connection);
-
+        $connection = Database::connection($object, $flags, $options);
         $node = new Node($object);
         $entity = 'User';
         $validate_url = Entity::get_validate_url($object, $entity);
@@ -158,8 +147,19 @@ trait Admin {
                 'email' => $options->email
             ]
         ];
-        ddd($options_entity);
-        $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
+        $response = Entity::record($object, $connection, $node->role_system(), $entity, $options_entity);
+        dd($response);
+
+
+//        public static function patch(App $object, object $connection, object $role, object $request, object|null &$error=null): ?object
+
+
+//        ddd($options_entity);
+//        public static function record(App $object, EntityManager $entityManager, $role, $options=[]): array
+
+
+
+        $response = Entity::record($object, $coonnection, $node->role_system(), $entity, $options_entity);
 
 
 

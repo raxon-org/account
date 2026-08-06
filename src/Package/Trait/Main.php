@@ -6,12 +6,12 @@ use Raxon\Config;
 
 use Raxon\Module\Cli;
 use Raxon\Module\Core;
-use Raxon\Module\Database;
 use Raxon\Module\File;
 use Raxon\Module\Handler;
 use Raxon\Module\Response;
 
 use Raxon\Node\Module\Node;
+use Raxon\Doctrine\Module\Database;
 use Raxon\Doctrine\Module\Entity;
 
 use Package\Raxon\Account\Service\User as Service;
@@ -337,7 +337,7 @@ trait Main
             ]
         ]);
         $time = time();
-        $request = [
+        $request = (object) [
             'email' => $email,
             'password' => password_hash($password, PASSWORD_BCRYPT, [
                 'cost' => 13
@@ -349,28 +349,15 @@ trait Main
             'isCreated' => new DateTime('@' . $time),
         ];
         $entity = 'User';
-        $config = Database::config($object);
-        $connection = $object->config('doctrine.environment.' . $options->connection . '.' . $options->environment);
-        if($connection === null){
-            $connection = $object->config('doctrine.environment.' . $options->connection . '.' . '*');
-        }
-        $em = Database::entity_manager($object, $config, $connection);
-        $user = Entity::create($object, $em, $node->role_system(), $entity, $request);
-
-
-
-
+        $connection = Database::connection($object, $flags, $options);
+        $user = Entity::create($object, $connection, $node->role_system(), $entity, $request);
         ddd($user);
-
-
-        Database::instance($object, Database::SYSTEM);
-        $entityManager = Database::entityManager($object, ['name' => Database::SYSTEM]);
         $options_entity = [
             'filter' => [
                 'email' => $email
             ]
         ];
-        $response = Entity::record($object, $entityManager, $node->role_system(), $entity, $options_entity);
+        $response = Entity::record($object, $connection, $node->role_system(), $entity, $options_entity);
         if(
             array_key_exists('node', $response) &&
             is_object($response['node']) &&
@@ -380,7 +367,7 @@ trait Main
             Entity::updateByUuid($object, $entity, $response['node']->uuid);
         } else {
             $object->request('node', $user);
-            $create = Entity::create($object, $entityManager, $node->role_system(), $entity, $object->request('node'));
+            $create = Entity::create($object, $connection, $node->role_system(), $entity, $object->request('node'));
             ddd($create);
             //we can create a record and save it to the database
         }
