@@ -137,18 +137,19 @@ trait Admin {
             throw new Exception('Environment is required');
         }
         $object = $this->object();
-        $node = new Node($object);
-        $entity = 'User';
+
+
         $config = Database::config($object);
         $environments = $object->config('doctrine.environment');
         $connection = false;
         if(!property_exists($environments, $options->connection)){
             throw new Exception('Connection not found: ' . $options->connection);
         }
-
         $connection = $environments->{$options->connection}->{$options->environment};
         $connection->manager = Database::entity_manager($object, $config, $connection);
-        d($connection);
+
+        $node = new Node($object);
+        $entity = 'User';
         $validate_url = Entity::get_validate_url($object, $entity);
         $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
         $object->config('doctrine.entity.manager', $connection->manager);
