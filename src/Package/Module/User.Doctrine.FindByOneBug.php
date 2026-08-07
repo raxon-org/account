@@ -54,9 +54,15 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
-        if(User::is_blocked($object, $input) === false){
-
+        if(!property_exists($input, 'connection')){
+            $input->connection = 'system';
+            $input->environment = '*';
         }
+        if(!property_exists($input, 'environment')){
+            throw new Exception('Environment is required.');
+        }
+        $flags = (object)[];
+        $connection = Database::connection($object, $flags, $input);
         if(User::is_blocked($object, $input, $connection) === false){
             /** bilions of users $repository */
             /* not working (findOneBy, findAll is fine)
@@ -264,26 +270,14 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    public static function is_blocked(App $object, object $options): bool
+    public static function is_blocked(App $object, object $input, object|null $connection=null): bool
     {
-        if(!property_exists($options, 'email')){
-            throw new ErrorException('Option email is required.');
+        if(!property_exists($input, 'email')){
+            throw new ErrorException('E-mail is required.');
         }
-        $status = false;
-        $options = App::options($object);
-        $node = new Node($object);
-        $record_options = (object) [
-            'where' => [
-                [
-                    'value' => $options->email ?? $object->request('package'),
-                    'attribute' => 'email',
-                    'operator' => '===',
-                ]
-            ]
-        ];
-        $class = 'Account.User';
-        $response = $node->record($class, $node->role_system(), $record_options);
-
+        if($connection === null){
+            throw new ErrorException('Connection is required.');
+        }
         $repository = $connection->manager->getRepository(Entity::class);
         $node = $repository->findOneBy(['email' => $input->email]);
         if($node){

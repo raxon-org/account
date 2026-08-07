@@ -34,13 +34,16 @@ trait Admin {
         if(!property_exists($options, 'password')) {
             throw new Exception('-option password is required');
         }
-        $object = $this->object();
         $node = new Node($object);
-        $result = $node->record('Account.Role', $node->role_system(), [
-            'filter' => [
-                'name' => 'ROLE_ADMIN'
+        $class = 'Account.Role';
+        $result = $node->record($class,
+            $node->role_system(),
+            [
+                'filter' => [
+                    'name' => 'ROLE_ADMIN'
+                ]
             ]
-        ]);
+        );
         $class = 'Account.User';
         $record = $node->record(
             $class,
