@@ -278,12 +278,14 @@ class User
                     'value' => $options->email ?? $object->request('package'),
                     'attribute' => 'email',
                     'operator' => '===',
-                ]
+                ],
             ]
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options);
-
+//        UserLogger::log($object, $input, $node, $connection);
+        ddd($response);
+        /*
         $repository = $connection->manager->getRepository(Entity::class);
         $node = $repository->findOneBy(['email' => $input->email]);
         if($node){
