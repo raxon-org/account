@@ -283,8 +283,8 @@ class User
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options);
-//        UserLogger::log($object, $input, $node, $connection);
-        ddd($response);
+
+        dd($response);
         /*
         $repository = $connection->manager->getRepository(Entity::class);
         $node = $repository->findOneBy(['email' => $input->email]);
