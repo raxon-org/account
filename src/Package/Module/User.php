@@ -64,11 +64,18 @@ class User
         $flags = (object)[];
         $connection = Database::connection($object, $flags, $input);
         if(User::is_blocked($object, $input, $connection) === false){
+            /** bilions of users $repository */
+            /* not working (findOneBy, findAll is fine)
             $repository = $connection->manager->getRepository(Entity::class);
             $node = $repository->findOneBy([
                 'email' => $input->email,
                 'isActive' => true
             ]);
+            */
+
+
+
+
             ddd($node);
 
             if($node) {
