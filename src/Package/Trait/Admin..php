@@ -29,10 +29,10 @@ trait Admin {
     {
         $object = $this->object();
         if(!property_exists($options, 'email')) {
-            throw new Exception('Email is required');
+            throw new Exception('-option email is required');
         }
         if(!property_exists($options, 'password')) {
-            throw new Exception('Password is required');
+            throw new Exception('-option password is required');
         }
         $object = $this->object();
         $node = new Node($object);
