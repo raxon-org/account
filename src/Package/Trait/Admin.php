@@ -80,13 +80,33 @@ trait Admin {
                 ]
             ];
             $response = $node->create($class, $node->role_system(), $request);
-
-
-
-
-            ddd($response);
+            if(
+                is_array($response) &&
+                array_key_exists('error', $response)
+            ){
+                echo Core::object($response, Core::JSON) . PHP_EOL;
+                throw new Exception('User not created');
+            }
+            else if(
+                is_array($response) &&
+                array_key_exists('node', $response) &&
+                property_exists($response['node'], 'uuid')
+            ) {
+                $patch = (object) [
+                    'uuid' => $response['node']->uuid,
+                    'is' => (object) [
+                        'active' => 1,
+                    ],
+                    'password' => password_hash($response['node']->password, PASSWORD_BCRYPT,
+                        [
+                            'cost' => 13
+                        ]
+                    )
+                ];
+                $response = $node->patch($class, $node->role_system(), $patch);
+                ddd($response);
+            }
         }
-        ddd($record);
 
 
 //        ddd($response);
