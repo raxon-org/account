@@ -210,7 +210,7 @@ class User
         $record_options = (object) [
             'where' => [
                 [
-                    'value' => $options->email ?? $object->request('package'),
+                    'value' => $options->email ?? $object->request('email'),
                     'attribute' => 'email',
                     'operator' => '===',
                 ],
@@ -218,8 +218,19 @@ class User
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options);
-
-        dd($response);
+        if($response === null){
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            $input = (object) [
+                'email' => $options->email ?? $object->request('email'),
+                'status' => UserLogger::STATUS_INVALID_EMAIL_PASSWORD,
+            ];
+            //@todo userloggger in json btree format (json lines sorted by email,status asc
+//            UserLogger::log($object, $input, null, $connection);
+            throw new ErrorException('Invalid e-mail-password.');
+        } else {
+            ddd($response);
+        }
         /*
         $repository = $connection->manager->getRepository(Entity::class);
         $node = $repository->findOneBy(['email' => $input->email]);
