@@ -135,6 +135,8 @@ trait Admin {
         ];
         $user = Entity::patch($object, $connection, $node->role_system(), $request, $error);
         return $user;
+        */
+        throw new Exception('User not created');
     }
 
     /**
