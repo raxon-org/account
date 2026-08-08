@@ -50,11 +50,13 @@ trait Admin {
             $node->role_system(),
             [
                 'where' => [
-                    'email' => [
+                    [
+                        'attribute' => 'email',
                         'value' => $options->email,
                         'operator' => '===',
                     ],
-                    'role' =>  [
+                    [
+                        'attribute' => 'role',
                         'value' => $result['node']->uuid,
                         'operator' => 'in.array',
                     ]
@@ -78,6 +80,10 @@ trait Admin {
                 ]
             ];
             $response = $node->create($class, $node->role_system(), $request);
+
+
+
+
             ddd($response);
         }
         ddd($record);
