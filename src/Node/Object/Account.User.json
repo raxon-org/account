@@ -52,6 +52,12 @@
                 "is_multiple": true
             },
             {
+              "name": "role",
+              "type": "array",
+              "relation": true,
+              "is_multiple": true
+            },
+            {
                 "name": "profile",
                 "type": "uuid",
                 "relation": true,
