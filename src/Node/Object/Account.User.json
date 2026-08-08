@@ -87,6 +87,22 @@
             "where": "",
             "filter": [],
             "limit": "*"
+        },
+        {
+          "type": "one-many",
+          "class": "Account.Permission",
+          "attribute": "permission",
+          "sort": {
+            "name": "ASC"
+          },
+          "output": {
+            "filter": [
+              "Package:Raxon:Account:Output:Filter:Role:permission"
+            ]
+          },
+          "where": "",
+          "filter": [],
+          "limit": "*"
         }
     ]
 }
