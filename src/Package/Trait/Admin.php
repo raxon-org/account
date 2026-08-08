@@ -69,10 +69,13 @@ trait Admin {
                 'role' => [
                     $result['node']->uuid
                 ],
-                'isActive' => 0, //cannot activate immediately
-                'isCreated' => new DateTime('@' . $time),
-                'IsDeleted' => null,
-                'isModified' => new DateTime('@' . $time)
+                'is' => (object) [
+                    'active' => 0, //cannot activate immediately
+                    'loggedIn' => null,
+                    'created' => new DateTime('@' . $time),
+                    'updated' => new DateTime('@' . $time),
+                    'deleted' => null
+                ]
             ];
             $response = $node->create($class, $node->role_system(), $request);
             ddd($response);
