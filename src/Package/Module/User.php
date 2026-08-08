@@ -57,72 +57,7 @@ class User
         if(User::is_blocked($object, $input) === false){
 
         }
-        if(User::is_blocked($object, $input, $connection) === false){
-            /** bilions of users $repository */
-            /* not working (findOneBy, findAll is fine)
-            $repository = $connection->manager->getRepository(Entity::class);
-            $node = $repository->findOneBy([
-                'email' => $input->email,
-                'isActive' => true
-            ]);
-            */
-
-
-
-
-            ddd($node);
-
-            if($node) {
-                $password = $input->password;
-                $verify = password_verify($password, $node->getPassword());
-                if($verify === false){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
-                    UserLogger::log($object, $input, $node, $connection);
-                    throw new ErrorException('Invalid e-mail-password.');
-                }
-                $input->status = UserLogger::STATUS_SUCCESS;
-                UserLogger::log($object, $input, $node, $connection);
-                $user = User::expose($object, $node, __FUNCTION__);
-                $user->token = User::get_token($object, $node);
-                $user->refreshToken = User::get_refresh_token($object, $node);
-                $encrypted_refreshToken = sha1($user->refreshToken);
-                $repository = $connection->manager->getRepository(Entity::class);
-                $cost = 13;
-                $node->setRefreshToken(
-                    password_hash(
-                        $encrypted_refreshToken,
-                        PASSWORD_BCRYPT,
-                        [
-                            'cost' => $cost
-                        ]
-                    )
-                );
-                $node->setIsLoggedIn(new DateTime());
-                $node->setKey(Core::uuid() . '-' . Core::uuid());
-                $connection->manager->persist($node);
-                $connection->manager->flush();
-                $user->isLoggedIn = $node->getIsLoggedIn();
-                $user->isUpdated = $node->getIsUpdated();
-                $user->key = $node->getKey();
-                $data = [];
-                $data['node'] = $user;;
-                return $data;
-            } else {
-                $status = 401;
-                Handler::header('Status: ' . $status, $status, true);
-                $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
-                UserLogger::log($object, $input, null, $connection);
-                throw new ErrorException('Invalid e-mail-password.');
-            }
-        } else {
-            $status = 401;
-            Handler::header('Status: ' . $status, $status, true);
-            $input->status = UserLogger::STATUS_BLOCKED;
-            UserLogger::log($object, $input, null, $connection);
-            throw new ErrorException('User blocked for:.');
-        }
+        return [];
     }
 
     /**
@@ -317,6 +252,7 @@ class User
                 unset($input->status);
             }
         }
+        */
         return false;
     }
 
