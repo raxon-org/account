@@ -101,7 +101,6 @@ trait Admin {
                     )
                 ];
                 $response = $node->patch($class, $node->role_system(), $patch);
-                ddd($response);
             }
         } else {
             if(array_key_exists('node', $record)){
