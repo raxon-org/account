@@ -84,6 +84,7 @@ class User
         if($role === false){
             throw new Exception('Role ROLE_USER not found.');
         }
+        ddd($role);
         $entity = 'User';
         $expose = \Raxon\Doctrine\Module\Entity::expose_get(
             $object,

@@ -52,7 +52,7 @@
                 "is_multiple": true
             },
             {
-              "name": "role",
+              "name": "permission",
               "type": "array",
               "relation": true,
               "is_multiple": true
