@@ -74,8 +74,8 @@ trait Admin {
                 'IsDeleted' => null,
                 'isModified' => new DateTime('@' . $time)
             ];
-//            $response = $node->create($class, $node->role_system(), $request);
-            ddd($request);
+            $response = $node->create($class, $node->role_system(), $request);
+            ddd($response);
         }
         ddd($record);
 
