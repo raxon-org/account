@@ -106,6 +106,8 @@ trait Admin {
                 $response = $node->patch($class, $node->role_system(), $patch);
                 ddd($response);
             }
+        } else {
+            ddd($record);
         }
 
 
