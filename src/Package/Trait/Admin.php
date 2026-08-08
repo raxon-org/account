@@ -61,21 +61,26 @@ trait Admin {
                 ]
             ]
         );
+        if($record === null) {
+            $time = time();
+            $request = (object) [
+                'email' => escapeshellarg($options->email),
+                'password' => escapeshellarg($options->password),
+                'role' => [
+                    $result['node']->uuid
+                ],
+                'isActive' => 0, //cannot activate immediately
+                'isCreated' => new DateTime('@' . $time),
+                'IsDeleted' => null,
+                'isModified' => new DateTime('@' . $time)
+            ];
+//            $response = $node->create($class, $node->role_system(), $request);
+            ddd($request);
+        }
         ddd($record);
-        $time = time();
-        $request = (object) [
-            'email' => escapeshellarg($options->email),
-            'password' => escapeshellarg($options->password),
-            'role' => [
-                $result['node']->uuid
-            ],
-            'isActive' => 0, //cannot activate immediately
-            'isCreated' => new DateTime('@' . $time),
-            'IsDeleted' => null,
-            'isModified' => new DateTime('@' . $time)
-        ];
-        $response = $node->create($class, $node->role_system(), $request);
-        ddd($response);
+
+
+//        ddd($response);
         /*
         $entity = 'User';
         $config = Database::config($object);
