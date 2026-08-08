@@ -225,6 +225,7 @@ class User
                 'email' => $options->email ?? $object->request('email'),
                 'status' => UserLogger::STATUS_INVALID_EMAIL_PASSWORD,
             ];
+            d($input);
             //@todo userloggger in json btree format (json lines sorted by email,status asc
 //            UserLogger::log($object, $input, null, $connection);
             throw new ErrorException('Invalid e-mail-password.');
