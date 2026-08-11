@@ -5,15 +5,10 @@ use DateTime;
 
 use Exception;
 
-use Entity\User;
-use Entity\UserLogger as Entity;
-
 use Raxon\App;
-
-use Raxon\Doctrine\Module\Database;
-
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\Exception\ORMException;
+use Raxon\Module\Core;
+use Raxon\Module\Dir;
+use Raxon\Module\File;
 
 use Raxon\Exception\ErrorException;
 
@@ -22,23 +17,6 @@ class UserLogger
     const STATUS_BLOCKED = 'blocked';
     const STATUS_SUCCESS = 'success';
     const STATUS_INVALID_EMAIL_PASSWORD = 'invalid-email-password';
-
-    const QUERY_FIND_LOG = '
-        SELECT l
-        FROM ' . Entity::class .' l 
-        WHERE l.userId LIKE :userId  
-        AND l.status = :status 
-        AND l.dateTime >= :dateTime 
-        ';
-
-    const QUERY_FIND_LOG_IP= '
-        SELECT l 
-        FROM ' . Entity::class . ' l 
-        WHERE l.userId IS NULL 
-        AND l.status = :status 
-        AND l.ipAddress = :ipAddress  
-        AND l.dateTime >= :dateTime        
-        ';
 
     /**
      * @throws OptimisticLockException
@@ -63,9 +41,13 @@ class UserLogger
         $logger->is = (object) [
             'created' => new DateTime('@' . $time)
         ];
+        $dir = $object->config('project.dir.log');
+        Dir::create($dir, Dir::CHMOD);
         $url = $object->config('project.dir.log') . 'user_logger' . $object->config('extension.jsonl');
-        d($url);
-        ddd($logger);
+        File::append($url, Core::object($logger, Core::JSON_LINE) . "\n");
+        File::permission($object, [
+            'url' => $url
+        ]);
         return $logger;
     }
 
@@ -86,6 +68,8 @@ class UserLogger
         $status = $input->status;
         $time = $object->config('server.default.user.block.period') ?? '15 minutes';
         $time = '- ' . $time;
+        return 0;
+        /*
         if(
             $user !== null &&
             get_class($user) === '\Entity\User'
@@ -119,5 +103,7 @@ class UserLogger
                 return count($result);
             }
         }
+        */
     }
+
 }
