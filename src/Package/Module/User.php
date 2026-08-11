@@ -208,7 +208,8 @@ class User
         $status = false;
         $options = App::options($object);
         $node = new Node($object);
-        dd($options->email);
+        dd($options);
+        d($object->request());
         $record_options = (object) [
             'where' => [
                 [
