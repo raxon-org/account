@@ -58,7 +58,7 @@ class UserLogger
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
             $logger->ipAddress = $_SERVER['REMOTE_ADDR'];
         } else {
-            $logger->ipAddress '0.0.0.0';
+            $logger->ipAddress = '0.0.0.0';
         }
         $logger->is = (object) [
             'created' => new DateTime('@' . $time)
