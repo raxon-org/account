@@ -269,7 +269,15 @@ trait Admin {
             ]
         ];
         $object->request('entity', $entity);
+        ddd($object->request());
         $response = Entity::record($object, $connection, $node->role_system(), $options_entity);
+        $patch = (object) [
+            'uuid' => $response['node']->uuid,
+            'email' => $options->email,
+            'is' => (object) [
+                'update' => new DateTime('@' . time()),
+            ]
+        ]
         dd($response);
     }
 
