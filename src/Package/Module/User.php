@@ -224,11 +224,10 @@ class User
             'where' => [
                 [
                     'value' => $object->request('email') ?? null,
-                    'attribute' => 'email',
+                    'property' => 'email',
                     'operator' => 'partial',
                 ],
-            ],
-            'relation' => $options->relation ?? true,
+            ]
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options_2);
