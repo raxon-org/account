@@ -208,6 +208,23 @@ class User
         $status = false;
         $options = App::options($object);
         $node = new Node($object);
+        $class = 'Account.User';
+        $record = $node->record(
+            $class,
+            $node->role_system(),
+            [
+                'where' => [
+                    [
+                        'attribute' => 'email',
+                        'value' => $object->request('email'),
+                        'operator' => '===',
+                    ]
+                ]
+            ]
+        );
+        ddd($record);
+
+
         $record_options = (object) [
             'where' => [
                 [
