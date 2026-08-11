@@ -269,7 +269,6 @@ trait Admin {
             ]
         ];
         $object->request('entity', $entity);
-        ddd($object->request());
         $response = Entity::record($object, $connection, $node->role_system(), $options_entity);
         $patch = (object) [
             'uuid' => $response['node']->uuid,
@@ -278,8 +277,7 @@ trait Admin {
                 'update' => new DateTime('@' . time()),
             ]
         ];
-        dd($patch);
+        return Entity::patch($object, $connection, $node->role_system(), $patch, $error);
     }
-
      
 }
