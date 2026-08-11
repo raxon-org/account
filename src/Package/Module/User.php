@@ -223,7 +223,7 @@ class User
                 'relation' => true
             ]
         );
-        dd($record);
+        ddd($record);
         /*
         $response = $node->record($class, $node->role_system(), $record_options);
 
