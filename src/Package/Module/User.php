@@ -220,6 +220,19 @@ class User
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options);
+        $record_options_2 = (object) [
+            'where' => [
+                [
+                    'value' => $options->email ?? $object->request('email'),
+                    'attribute' => 'email',
+                    'operator' => 'partial',
+                ],
+            ],
+            'relation' => $options->relation ?? true,
+        ];
+        $class = 'Account.User';
+        $response = $node->record($class, $node->role_system(), $record_options_2);
+        ddd($response);
         if($response === null){
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
