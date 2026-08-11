@@ -215,9 +215,12 @@ class User
                     'attribute' => 'email',
                     'operator' => 'partial',
                 ],
-            ]
+            ],
+            'relation' => $options->relation ?? true,
         ];
         $class = 'Account.User';
+        d($class);
+        d($options);
         d($record_options);
         $response = $node->record($class, $node->role_system(), $record_options);
         dd($response);
