@@ -223,6 +223,16 @@ class User
                 'relation' => true
             ]
         );
+        $record = null;
+        if($record === null){
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            $input = (object) [
+                'email' => $object->request('email'),
+                'status' => UserLogger::STATUS_INVALID_EMAIL_PASSWORD,
+            ];
+            UserLogger::log($object, $input);
+        }
         ddd($record);
         /*
         $response = $node->record($class, $node->role_system(), $record_options);

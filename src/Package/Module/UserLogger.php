@@ -45,33 +45,27 @@ class UserLogger
      * @throws ORMException
      * @throws Exception
      */
-    public static function log(App $object, object $input, User|null $user=null, object|null $connection=null): Entity
+    public static function log(App $object, object $input) : object
     {
+        $time = time();
         if(!property_exists($input, 'status')){
             throw new ErrorException('Status is required.');
         }
-        if($connection === null){
-            $config = Database::config($object);
-            $connection = $object->config('doctrine.environment.system.*');
-            $connection->manager = Database::entity_manager($object, $config, $connection);
+        if(!property_exists($input, 'email')){
+            throw new ErrorException('Email is required.');
         }
-        $options = [];
-        $logger = new Entity();
+        $logger = (object) [];
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
-            $logger->setIpAddress($_SERVER['REMOTE_ADDR']);
+            $logger->ipAddress($_SERVER['REMOTE_ADDR']);
         } else {
-            $logger->setIpAddress('0.0.0.0');
+            $logger->ipAddress('0.0.0.0');
         }
-        $logger->setDateTime(new dateTime());
-        if(
-            $user !== null &&
-            get_class($user) === 'Entity\User'
-        ){
-            $logger->setUserid($user->getId());
-        }
-        $logger->setStatus($input->status);
-        $connection->manager->persist($logger);
-        $connection->manager->flush();
+        $logger->is = (object) [
+            'created' => new DateTime('@' . $time)
+        ];
+        $url = $object->config('project.dir.log') . 'user_logger' . $object->config('extension.jsonl');
+        d($url);
+        ddd($logger);
         return $logger;
     }
 
