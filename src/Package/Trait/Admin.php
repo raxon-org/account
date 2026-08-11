@@ -284,8 +284,9 @@ trait Admin {
                 ]
             )
         ];
+        throw new Exception('User not modified');
         $response = $node->patch($class, $node->role_system(), $patch);
-        return
+//        return
 //        return Entity::patch($object, $connection, $node->role_system(), $patch, $error);
     }
      
