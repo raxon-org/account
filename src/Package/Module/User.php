@@ -208,8 +208,8 @@ class User
         $status = false;
         $options = App::options($object);
         $node = new Node($object);
-        dd($options);
-        d($object->request());
+        d($options);
+        dd($object->request());
         $record_options = (object) [
             'where' => [
                 [
