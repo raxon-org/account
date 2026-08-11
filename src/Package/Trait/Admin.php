@@ -270,6 +270,7 @@ trait Admin {
         ];
         $object->request('entity', $entity);
         $response = Entity::record($object, $connection, $node->role_system(), $options_entity);
+        ddd($response);
         $patch = (object) [
             'uuid' => $response['node']->uuid,
             'email' => $options->email,
