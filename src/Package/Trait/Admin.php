@@ -272,22 +272,15 @@ trait Admin {
                 ]
             ]
         );
-        ddd($record);
         $patch = (object) [
-            'uuid' => $response['node']->uuid,
-            'is' => (object) [
-                'active' => 1,
-            ],
-            'password' => password_hash($response['node']->password, PASSWORD_BCRYPT,
-                [
-                    'cost' => 13
-                ]
-            )
+            'uuid' =>$record['node']->uuid,
+            'email' => $options->email,
         ];
-        throw new Exception('User not modified');
         $response = $node->patch($class, $node->role_system(), $patch);
-//        return
-//        return Entity::patch($object, $connection, $node->role_system(), $patch, $error);
+        if(array_key_exists('node', $response)){
+            return $record['node'];
+        }
+        throw new Exception('User e-mail not changed: '. $options->email);
     }
      
 }
