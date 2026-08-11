@@ -242,6 +242,7 @@ trait Admin {
      */
     public function admin_email_change(object $flags, object $options): object
     {
+        $time = time();
         $object = $this->object();
         $node = new Node($object);
         $class = 'Account.Role';
@@ -275,6 +276,9 @@ trait Admin {
         $patch = (object) [
             'uuid' =>$record['node']->uuid,
             'email' => $options->email,
+            'is' => (object) [
+                'updated' => new DateTime('@' . $time),
+            ]
         ];
         $response = $node->patch($class, $node->role_system(), $patch);
         if(array_key_exists('node', $response)){
