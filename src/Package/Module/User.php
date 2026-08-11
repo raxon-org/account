@@ -219,7 +219,7 @@ class User
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options);
-        $response = null;
+        dd($response);
         if($response === null){
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
