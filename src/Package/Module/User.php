@@ -219,11 +219,11 @@ class User
         ];
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options);
-        ddd($response);
+        d($response);
         $record_options_2 = (object) [
             'where' => [
                 [
-                    'value' => $options->email ?? $object->request('email'),
+                    'value' => $object->request('email') ?? null,
                     'attribute' => 'email',
                     'operator' => 'partial',
                 ],
