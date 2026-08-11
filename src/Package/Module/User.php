@@ -219,24 +219,14 @@ class User
                         'value' => $object->request('email'),
                         'operator' => '===',
                     ]
-                ]
+                ],
+                'relation' => true
             ]
         );
-        ddd($record);
-
-
-        $record_options = (object) [
-            'where' => [
-                [
-                    'value' => $object->request('email') ?? null,
-                    'attribute' => 'email',
-                    'operator' => '===',
-                ],
-            ],
-        ];
-        $class = 'Account.User';
+        dd($record);
+        /*
         $response = $node->record($class, $node->role_system(), $record_options);
-        d($response);
+
         $record_options_2 = (object) [
             'where' => [
                 [
@@ -249,6 +239,7 @@ class User
         $class = 'Account.User';
         $response = $node->record($class, $node->role_system(), $record_options_2);
         ddd($response);
+        */
         if($response === null){
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
