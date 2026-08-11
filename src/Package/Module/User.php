@@ -213,7 +213,7 @@ class User
                 [
                     'value' => $options->email ?? $object->request('email'),
                     'attribute' => 'email',
-                    'operator' => '===',
+                    'operator' => 'partial',
                 ],
             ]
         ];
