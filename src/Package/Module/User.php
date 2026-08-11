@@ -218,6 +218,7 @@ class User
             ]
         ];
         $class = 'Account.User';
+        d($record_options);
         $response = $node->record($class, $node->role_system(), $record_options);
         dd($response);
         if($response === null){
