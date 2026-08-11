@@ -237,5 +237,41 @@ trait Admin {
         return $user;
     }
 
+    /**
+     * @throws FileWriteException
+     * @throws ObjectException
+     */
+    public function admin_email_change(object $flags, object $options): object
+    {
+        $object = $this->object();
+        if(!property_exists($options, 'email')) {
+            throw new Exception('Email is required');
+        }
+        if(!property_exists($options, 'password')) {
+            throw new Exception('Current password is required');
+        }
+        if(!property_exists($options, 'connection')) {
+            $options->connection = 'system';
+            $options->environment = '*';
+        }
+        if(!property_exists($options, 'environment')) {
+            throw new Exception('Environment is required');
+        }
+        $connection = Database::connection($object, $flags, $options);
+        $node = new Node($object);
+        $entity = 'User';
+        $validate_url = Entity::get_validate_url($object, $entity);
+        $validation = Entity::get_validation($object, $validate_url, $entity . '.patch');
+        $object->config('doctrine.entity.manager', $connection->manager);
+        $options_entity = [
+            'filter' => [
+                'email' => $options->email,
+            ]
+        ];
+        $object->request('entity', $entity);
+        $response = Entity::record($object, $connection, $node->role_system(), $options_entity);
+        dd($response);
+    }
+
      
 }
