@@ -38,6 +38,7 @@ class UserLogger
         } else {
             $logger->ipAddress = '0.0.0.0';
         }
+        $logger->status = $input->status;
         $logger->is = (object) [
             'created' => new DateTime('@' . $time)
         ];
