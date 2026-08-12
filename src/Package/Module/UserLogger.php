@@ -25,7 +25,7 @@ class UserLogger
      */
     public static function log(App $object, object $input) : object
     {
-        $time = time();
+        $time = microtime(true);
         if(!property_exists($input, 'status')){
             throw new ErrorException('Status is required.');
         }
@@ -42,7 +42,7 @@ class UserLogger
         }
         $logger->status = $input->status;
         $logger->is = (object) [
-            'created' => new DateTime('@' . $time)
+            'created' => $time
         ];
         $dir = $object->config('project.dir.log');
         Dir::create($dir, Dir::CHMOD);
