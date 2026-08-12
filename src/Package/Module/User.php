@@ -52,8 +52,9 @@ class User
             //maybe add an outputfilter
             //password should become [redacted]
             d($input);
-            d($user->password);
+            dd($user->password);
             $verify = password_verify($input->password, $user->password);
+            ddd($verify);
             if($verify === false){
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
