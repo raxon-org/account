@@ -242,6 +242,12 @@ trait Admin {
      */
     public function admin_email_change(object $flags, object $options): object
     {
+        if(!property_exists($options, 'email')) {
+            throw new Exception('-email is required');
+        }
+        if(!property_exists($options, 'password')) {
+            throw new Exception('-option password is required');
+        }
         $time = time();
         $object = $this->object();
         $node = new Node($object);
