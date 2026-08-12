@@ -66,6 +66,7 @@ class User
             ]);
             */
         }
+        d($user);
         return [];
     }
 
