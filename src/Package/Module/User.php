@@ -230,7 +230,6 @@ class User
                 'relation' => true
             ]
         );
-        d($record);
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
             $ip = $_SERVER['REMOTE_ADDR'];
         } else {
