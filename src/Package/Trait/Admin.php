@@ -260,7 +260,6 @@ trait Admin {
                 ]
             ]
         );
-        dd($options);
         $class = 'Account.User';
         $record = $node->record(
             $class,
@@ -291,6 +290,7 @@ trait Admin {
         if(array_key_exists('node', $response)){
             return $record['node'];
         }
+        d('this');
         throw new Exception('User e-mail not changed: '. $options->email);
     }
      
