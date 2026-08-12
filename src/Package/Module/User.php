@@ -38,6 +38,8 @@ class User
     const BLOCK_EMAIL_COUNT = 5;
     const BLOCK_PASSWORD_COUNT = 5;
 
+    const BLOCK_DURATION = 60 * 15;
+
     /**
      * @throws NonUniqueResultException
      * @throws ErrorException
@@ -243,7 +245,6 @@ class User
             $count = 6;
             if($count >= User::BLOCK_PASSWORD_COUNT){
             $input->status = UserLogger::STATUS_BLOCKED;
-            dd($input);
             UserLogger::log($object, $input);
             return true;
         }

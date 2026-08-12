@@ -35,11 +35,20 @@ class UserLogger
         $logger = (object) [
             'uuid' => Core::uuid(),
         ];
-
         $logger->status = $input->status;
-        $logger->is = (object) [
-            'created' => $time
-        ];
+        if($logger->status === self::STATUS_BLOCKED){
+            $logger->is = (object) [
+                'created' => $time,
+                'blocked' => (object) [
+                    'since' => $time,
+                    'until' => $time + User::BLOCK_DURATION,
+                ]
+            ];
+        } else {
+            $logger->is = (object) [
+                'created' => $time,
+            ];
+        }
         $dir = $object->config('project.dir.log');
         Dir::create($dir, Dir::CHMOD);
         $url = $object->config('project.dir.log') . 'user_logger' . $object->config('extension.jsonl');
