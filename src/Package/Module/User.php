@@ -51,6 +51,8 @@ class User
         if(User::is_blocked($object, $input, $user, $logger) === false){
             //maybe add an outputfilter
             //password should become [redacted]
+            d($input);
+            d($user->password);
             $verify = password_verify($input->password, $user->password);
             if($verify === false){
                 $status = 401;
