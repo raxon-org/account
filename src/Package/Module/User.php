@@ -56,7 +56,7 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
-        
+
         if(User::is_blocked($object, $input, $user) === false){
             /*
             $repository = $connection->manager->getRepository(Entity::class);
@@ -209,7 +209,7 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    public static function is_blocked(App $object, object $options, &$user=null): bool
+    public static function is_blocked(App $object, object $options, null | object &$user=null): bool
     {
         if(!property_exists($options, 'email')){
             throw new ErrorException('Option email is required.');
@@ -253,6 +253,9 @@ class User
                 $input->status = UserLogger::STATUS_BLOCKED;
                 UserLogger::log($object, $input);
                 return true;
+            }
+            if(is_array($record) && is_object($record['node'])){
+                $user = $record['node'];
             }
             return false;
         }
