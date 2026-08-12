@@ -52,7 +52,7 @@ class User
             //maybe add an outputfilter
             //password should become [redacted]
             d($input);
-            dd($user->password);
+            d($user->password);
             $verify = password_verify($input->password, $user->password);
             ddd($verify);
             if($verify === false){
