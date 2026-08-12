@@ -288,7 +288,7 @@ trait Admin {
         ];
         $response = $node->patch($class, $node->role_system(), $patch);
         if(array_key_exists('node', $response)){
-            return $record['node'];
+            return $response['node'];
         }
         throw new Exception('User e-mail not changed: '. $options->email);
     }
