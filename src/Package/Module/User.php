@@ -56,8 +56,15 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
-        if(User::is_blocked($object, $input) === false){
-
+        
+        if(User::is_blocked($object, $input, $user) === false){
+            /*
+            $repository = $connection->manager->getRepository(Entity::class);
+            $node = $repository->findOneBy([
+                'email' => $input->email,
+                'isActive' => true
+            ]);
+            */
         }
         return [];
     }
@@ -202,13 +209,11 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    public static function is_blocked(App $object, object $options): bool
+    public static function is_blocked(App $object, object $options, &$user=null): bool
     {
         if(!property_exists($options, 'email')){
             throw new ErrorException('Option email is required.');
         }
-        $status = false;
-        $options = App::options($object);
         $node = new Node($object);
         $class = 'Account.User';
         $record = $node->record(
@@ -225,6 +230,7 @@ class User
                 'relation' => true
             ]
         );
+        d($record);
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
             $ip = $_SERVER['REMOTE_ADDR'];
         } else {
@@ -239,16 +245,16 @@ class User
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
             UserLogger::log($object, $input);
+            return false;
         } else {
             //sorted by e-mail ip / status
             $count = UserLogger::count($object, $input);
-            $count = 6;
             if($count >= User::BLOCK_PASSWORD_COUNT){
-            $input->status = UserLogger::STATUS_BLOCKED;
-            UserLogger::log($object, $input);
-            return true;
-        }
-            ddd($count);
+                $input->status = UserLogger::STATUS_BLOCKED;
+                UserLogger::log($object, $input);
+                return true;
+            }
+            return false;
         }
         /*
         $repository = $connection->manager->getRepository(Entity::class);
