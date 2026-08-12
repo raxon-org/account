@@ -49,6 +49,12 @@ class UserLogger
                 'created' => $time,
             ];
         }
+        UserLogger::write($object, $logger);
+        return $logger;
+    }
+
+    public static function write(App $object, object|null $logger=null): ?object
+    {
         $dir = $object->config('project.dir.log');
         Dir::create($dir, Dir::CHMOD);
         $url = $object->config('project.dir.log') . 'user_logger' . $object->config('extension.jsonl');
@@ -58,6 +64,7 @@ class UserLogger
         ]);
         return $logger;
     }
+
 
     /**
      * @throws ErrorException

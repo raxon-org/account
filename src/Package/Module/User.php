@@ -9,10 +9,6 @@ use Defuse\Crypto\Key;
 
 use DateTime;
 
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\OptimisticLockException;
-
 use Entity\User as Entity;
 
 use Exception;
@@ -22,8 +18,6 @@ use Raxon\App;
 use Raxon\Module\Core;
 use Raxon\Module\File;
 use Raxon\Module\Handler;
-
-use Raxon\Doctrine\Module\Database;
 
 use Raxon\Module\Host;
 use Raxon\Node\Module\Node;
@@ -41,14 +35,12 @@ class User
     const BLOCK_DURATION = 60 * 15;
 
     /**
-     * @throws NonUniqueResultException
      * @throws ErrorException
-     * @throws OptimisticLockException
-     * @throws ORMException
+     * @throws ObjectException
+     * @throws FileWriteException
      * @throws Exception
-     * @throws \Doctrine\DBAL\Exception
      */
-    public static function login(App $object, object $input): array
+    public static function login(App $object, object $input): object
     {
         if(!property_exists($input, 'email')){
             throw new ErrorException('E-mail is required.');
@@ -56,18 +48,25 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
-
-        if(User::is_blocked($object, $input, $user) === false){
-            /*
-            $repository = $connection->manager->getRepository(Entity::class);
-            $node = $repository->findOneBy([
-                'email' => $input->email,
-                'isActive' => true
-            ]);
-            */
+        if(User::is_blocked($object, $input, $user, $logger) === false){
+            //maybe add an outputfilter
+            //password should become [redacted]
+            $verify = password_verify($input->password, $user->password);
+            if($verify === false){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                $input->status = UserLogger::STATUS_INVALID_EMAIL_PASSWORD;
+                //write is in the log
+                $logger = UserLogger::log($object, $input);
+                throw new ErrorException('Invalid e-mail-password.');
+            }
+            $user->password = '[redacted]';
+            $user->token = User::get_token($object, $user);
+//            $user->refreshToken = User::get_refresh_token($object, $node);
+//            $encrypted_refreshToken = sha1($user->refreshToken);
+            return $user;
         }
-        d($user);
-        return [];
+        throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until);
     }
 
     /**
@@ -120,12 +119,13 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    private static function get_token(App $object, Entity $node): string
+    private static function get_token(App $object, object $user): string
     {
         $configuration = Jwt::configuration($object);
         $options = [];
-        $options['user'] = $node;
+        $options['user'] = $user;
         $token = Jwt::get($object, $configuration, $options);
+        ddd($token);
         $string = $token->toString();
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
@@ -210,7 +210,7 @@ class User
      * @throws ObjectException
      * @throws Exception
      */
-    public static function is_blocked(App $object, object $options, null | object &$user=null): bool
+    public static function is_blocked(App $object, object $options, null|object &$user=null, null|object &$logger=null): bool
     {
         if(!property_exists($options, 'email')){
             throw new ErrorException('Option email is required.');
@@ -244,17 +244,20 @@ class User
         if($record === null){
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
-            UserLogger::log($object, $input);
+            $log = UserLogger::log($object, $input);
             return false;
         } else {
             //sorted by e-mail ip / status
             $count = UserLogger::count($object, $input);
             if($count >= User::BLOCK_PASSWORD_COUNT){
                 $input->status = UserLogger::STATUS_BLOCKED;
-                UserLogger::log($object, $input);
+                $log = UserLogger::log($object, $input);
                 return true;
             }
-            if(is_array($record) && is_object($record['node'])){
+            if(
+                is_array($record) &&
+                is_object($record['node'])
+            ){
                 $user = $record['node'];
             }
             return false;
