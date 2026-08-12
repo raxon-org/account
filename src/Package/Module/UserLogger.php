@@ -32,7 +32,9 @@ class UserLogger
         if(!property_exists($input, 'email')){
             throw new ErrorException('Email is required.');
         }
-        $logger = (object) [];
+        $logger = (object) [
+            'uuid' => Core::uuid(),
+        ];
         if(array_key_exists('REMOTE_ADDR', $_SERVER)){
             $logger->ipAddress = $_SERVER['REMOTE_ADDR'];
         } else {
