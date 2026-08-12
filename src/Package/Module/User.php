@@ -223,46 +223,31 @@ class User
                 'relation' => true
             ]
         );
-        $record = null;
+        if(array_key_exists('REMOTE_ADDR', $_SERVER)){
+            $ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $ip = '0.0.0.0';
+        }
+        $input = (object) [
+            'email' => $object->request('email'),
+            'status' => UserLogger::STATUS_INVALID_EMAIL_PASSWORD,
+            'ip' => $ip,
+        ];
         if($record === null){
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
-            $input = (object) [
-                'email' => $object->request('email'),
-                'status' => UserLogger::STATUS_INVALID_EMAIL_PASSWORD,
-            ];
             UserLogger::log($object, $input);
-        }
-        ddd($record);
-        /*
-        $response = $node->record($class, $node->role_system(), $record_options);
-
-        $record_options_2 = (object) [
-            'where' => [
-                [
-                    'value' => $object->request('email') ?? null,
-                    'property' => 'email',
-                    'operator' => 'partial',
-                ],
-            ]
-        ];
-        $class = 'Account.User';
-        $response = $node->record($class, $node->role_system(), $record_options_2);
-        ddd($response);
-        */
-        if($response === null){
-            $status = 401;
-            Handler::header('Status: ' . $status, $status, true);
-            $input = (object) [
-                'email' => $options->email ?? $object->request('email'),
-                'status' => UserLogger::STATUS_INVALID_EMAIL_PASSWORD,
-            ];
-
-            //@todo userloggger in json btree format (json lines sorted by email,status asc
-//            UserLogger::log($object, $input, null, $connection);
-            throw new ErrorException('Invalid e-mail-password.');
         } else {
-            ddd($response);
+            //sorted by e-mail ip / status
+            $count = UserLogger::count($object, $input);
+            $count = 6;
+            if($count >= User::BLOCK_PASSWORD_COUNT){
+            $input->status = UserLogger::STATUS_BLOCKED;
+            dd($input->status);
+            UserLogger::log($object, $input);
+            return true;
+        }
+            ddd($count);
         }
         /*
         $repository = $connection->manager->getRepository(Entity::class);

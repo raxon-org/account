@@ -35,11 +35,7 @@ class UserLogger
         $logger = (object) [
             'uuid' => Core::uuid(),
         ];
-        if(array_key_exists('REMOTE_ADDR', $_SERVER)){
-            $logger->ipAddress = $_SERVER['REMOTE_ADDR'];
-        } else {
-            $logger->ipAddress = '0.0.0.0';
-        }
+
         $logger->status = $input->status;
         $logger->is = (object) [
             'created' => $time
@@ -58,55 +54,11 @@ class UserLogger
      * @throws ErrorException
      * @throws Exception
      */
-    public static function count(App $object, object $input, User|null $user=null, object|null $connection=null): int
+    public static function count(App $object, object $input, ): int
     {
-        if($connection === null){
-            $config = Database::config($object);
-            $connection = $object->config('doctrine.environment.system.*');
-            $connection->manager = Database::entity_manager($object, $config, $connection);
-        }
-        if(!property_exists($input, 'status')){
-            throw new ErrorException('Status is required.');
-        }
-        $status = $input->status;
-        $time = $object->config('server.default.user.block.period') ?? '15 minutes';
-        $time = '- ' . $time;
+        //need to implement this:
+        //read data and then in_array make binary trees and sort on e-mail / ip address and count
         return 0;
-        /*
-        if(
-            $user !== null &&
-            get_class($user) === '\Entity\User'
-        ){
-            $user_id = $user->getId();
-            $dateTime = date('Y-m-d H:i:s', strtotime($time));
-            $result = $connection->manager->createQuery(UserLogger::QUERY_FIND_LOG)
-                ->setParameter('userId', $user_id)
-                ->setParameter('status', $status)
-                ->setParameter('dateTime', $dateTime)
-                ->getResult();
-            return count($result);
-        } else {
-            if(array_key_exists('REMOTE_ADDR', $_SERVER)){
-                $ipAddress = $_SERVER['REMOTE_ADDR'];
-                $dateTime = date('Y-m-d H:i:s', strtotime($time));
-                $result = $connection->manager->createQuery(UserLogger::QUERY_FIND_LOG_IP)
-                    ->setParameter('ipAddress', $ipAddress)
-                    ->setParameter('status', $status)
-                    ->setParameter('dateTime', $dateTime)
-                    ->getResult();
-                return count($result);
-            } else {
-                $ipAddress = '0.0.0.0';
-                $dateTime = date('Y-m-d H:i:s', strtotime($time));
-                $result = $connection->manager->createQuery(UserLogger::QUERY_FIND_LOG_IP)
-                    ->setParameter('ipAddress', $ipAddress)
-                    ->setParameter('status', $status)
-                    ->setParameter('dateTime', $dateTime)
-                    ->getResult();
-                return count($result);
-            }
-        }
-        */
     }
 
 }
