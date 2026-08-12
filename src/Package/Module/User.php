@@ -243,7 +243,7 @@ class User
             $count = 6;
             if($count >= User::BLOCK_PASSWORD_COUNT){
             $input->status = UserLogger::STATUS_BLOCKED;
-            dd($input->status);
+            dd($input);
             UserLogger::log($object, $input);
             return true;
         }
