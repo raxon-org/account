@@ -113,7 +113,9 @@ trait Admin {
                 [
                     'uuid' => $record['node']->uuid,
                     'output' => [
-                        'filter' => 'Package:Raxon:Account:Output:Filter:Role:user'
+                        'filter' => [
+                            'Package:Raxon:Account:Output:Filter:Role:user'
+                        ]
                     ]
                 ]
             );
