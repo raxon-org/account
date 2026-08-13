@@ -40,6 +40,8 @@ trait Admin {
             ]
         );
         $class = 'Account.User';
+        $response = null;
+        $is_new = false;
         $record = $node->record(
             $class,
             $node->role_system(),
@@ -60,13 +62,13 @@ trait Admin {
         );
         if($record === null) {
             $time = microtime(true);
-            $request = (object) [
+            $request = (object)[
                 'email' => $options->email,
                 'password' => $options->password,
                 'role' => [
                     $result['node']->uuid
                 ],
-                'is' => (object) [
+                'is' => (object)[
                     'active' => 0, //cannot activate immediately
                     'loggedIn' => null,
                     'created' => $time,
@@ -75,39 +77,40 @@ trait Admin {
                 ]
             ];
             $response = $node->create($class, $node->role_system(), $request);
-            if(
-                is_array($response) &&
-                array_key_exists('error', $response)
-            ){
-                echo Core::object($response, Core::JSON) . PHP_EOL;
-                throw new Exception('User not created');
-            }
-            else if(
-                is_array($response) &&
-                array_key_exists('node', $response) &&
-                property_exists($response['node'], 'uuid') &&
-                property_exists($response['node'], '#class') &&
-                $response['node']->{'#class'} === $class &&
-                property_exists($response['node'], 'password')
-            ) {
-                $patch = (object) [
-                    'uuid' => $response['node']->uuid,
-                    'is' => (object) [
-                        'active' => 1,
-                    ],
-                    'password' => password_hash($response['node']->password, PASSWORD_BCRYPT,
-                        [
-                            'cost' => 13
-                        ]
-                    )
-                ];
-                $response = $node->patch($class, $node->role_system(), $patch);
-                ddd($response);
-            }
-        } else {
-            if(array_key_exists('node', $record)){
-                return $record['node'];
-            }
+            $is_new = true;
+        }
+        if(
+            is_array($response) &&
+            array_key_exists('error', $response)
+        ){
+            echo Core::object($response, Core::JSON) . PHP_EOL;
+            throw new Exception('User not created');
+        }
+        if(
+            $is_new &&
+            is_array($response) &&
+            array_key_exists('node', $response) &&
+            property_exists($response['node'], 'uuid') &&
+            property_exists($response['node'], '#class') &&
+            $response['node']->{'#class'} === $class &&
+            property_exists($response['node'], 'password')
+        ) {
+            $patch = (object) [
+                'uuid' => $response['node']->uuid,
+                'is' => (object) [
+                    'active' => 1,
+                ],
+                'password' => password_hash($response['node']->password, PASSWORD_BCRYPT,
+                    [
+                        'cost' => 13
+                    ]
+                )
+            ];
+            $response = $node->patch($class, $node->role_system(), $patch);
+            ddd($response);
+        }
+        if(array_key_exists('node', $response)){
+            return $record['node'];
         }
         throw new Exception('User not created');
     }
