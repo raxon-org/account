@@ -61,8 +61,8 @@ trait Admin {
         if($record === null) {
             $time = microtime(true);
             $request = (object) [
-                'email' => escapeshellarg($options->email),
-                'password' => escapeshellarg($options->password),
+                'email' => $options->email,
+                'password' => $options->password,
                 'role' => [
                     $result['node']->uuid
                 ],
