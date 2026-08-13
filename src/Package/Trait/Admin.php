@@ -85,9 +85,11 @@ trait Admin {
             else if(
                 is_array($response) &&
                 array_key_exists('node', $response) &&
-                property_exists($response['node'], 'uuid')
+                property_exists($response['node'], 'uuid') &&
+                property_exists($response['node'], '#class') &&
+                $response['node']->{'#class'} === $class &&
+                property_exists($response['node'], 'password')
             ) {
-                dd($response['node']);
                 $patch = (object) [
                     'uuid' => $response['node']->uuid,
                     'is' => (object) [
