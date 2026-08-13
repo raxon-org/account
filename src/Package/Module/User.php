@@ -134,7 +134,7 @@ class User
         if($crypt_url){
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            for($i = 0; $i < 5; $i++){
+            for($i = 0; $i < 4; $i++){
                 $string = Crypto::encrypt($string, $key);
             }
             $string = gzencode($string, 9);
