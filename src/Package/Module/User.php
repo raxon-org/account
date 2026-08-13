@@ -139,6 +139,7 @@ class User
             }
             $string = gzencode($string, 9);
             $string = base64_encode($string);
+            d(strlen($string));
              //around: 1800 chars fits in the 4KB cookie
 //            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
             return $string;
