@@ -112,7 +112,7 @@ trait Admin {
             is_array($response) &&
             array_key_exists('node', $response)
         ){
-            return $record['node'];
+            return $response['node'];
         }
         throw new Exception('User not created');
     }
