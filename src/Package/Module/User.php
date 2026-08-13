@@ -51,10 +51,7 @@ class User
         if(User::is_blocked($object, $input, $user, $logger) === false){
             //maybe add an outputfilter
             //password should become [redacted]
-            d($input);
-            d($user->password);
             $verify = password_verify($input->password, $user->password);
-            ddd($verify);
             if($verify === false){
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
@@ -65,6 +62,7 @@ class User
             }
             $user->password = '[redacted]';
             $user->token = User::get_token($object, $user);
+            dd($user);
 //            $user->refreshToken = User::get_refresh_token($object, $node);
 //            $encrypted_refreshToken = sha1($user->refreshToken);
             return $user;
