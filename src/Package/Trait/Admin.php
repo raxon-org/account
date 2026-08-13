@@ -74,6 +74,7 @@ trait Admin {
                     'deleted' => null
                 ]
             ];
+            ddd($request);
             $response = $node->create($class, $node->role_system(), $request);
             if(
                 is_array($response) &&
@@ -87,7 +88,7 @@ trait Admin {
                 array_key_exists('node', $response) &&
                 property_exists($response['node'], 'uuid')
             ) {
-                d(d($response['node']));
+                dd($response['node']);
                 $patch = (object) [
                     'uuid' => $response['node']->uuid,
                     'is' => (object) [
