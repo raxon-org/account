@@ -19,6 +19,7 @@ class Role extends Controller {
     public static function user(App $object, $response=null): array
     {
         //permission array should stay intact
+        breakpoint($response);
         return $response;
     }
 

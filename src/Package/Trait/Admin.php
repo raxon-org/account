@@ -111,7 +111,10 @@ trait Admin {
         elseif($response === null && is_array($record)){
             $response = $node->record($class, $node->role_system(),
                 [
-                    'uuid' => $record['node']->uuid
+                    'uuid' => $record['node']->uuid,
+                    'output' => [
+                        'filter' => 'Package:Raxon:Account:Output:Filter:Role:user'
+                    ]
                 ]
             );
             dd($response);
