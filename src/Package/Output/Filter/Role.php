@@ -21,14 +21,14 @@ class Role extends Controller {
         //permission array should stay intact
         if(is_array($response)){
             foreach ($response as $key => $value){
-                if(strtolower($key, 'password')){
+                if(strtolower($key) === 'password')){
                     $response[$key] = '[redacted]';
                 }
             }
         }
         elseif(is_object($response)){
             foreach ($response as $key => $value){
-                if(strtolower($key, 'password')){
+                if(strtolower($key) === 'password')){
                     $response->{$key} = '[redacted]';
                 }
             }
