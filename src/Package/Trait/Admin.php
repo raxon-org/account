@@ -109,7 +109,12 @@ trait Admin {
             $response = $node->patch($class, $node->role_system(), $patch);
         }
         elseif($response === null && is_array($record)){
-            dd($record);
+            $response = $node->record($class, $node->role_system(),
+                [
+                    'uuid' => $record['node']->uuid
+                ]
+            );
+            dd($response);
         }
         if(
             is_array($response) &&
