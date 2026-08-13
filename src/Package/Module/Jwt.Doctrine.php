@@ -72,9 +72,9 @@ class Jwt {
         if(array_key_exists('user', $options)){
             $user = $options['user'];
             $claim = (object) [
-                'uuid' => $user->uuid,
-                'email' => $user->email,
-                'role' => $user->role,
+                'uuid' => $user->getUuid(),
+                'email' => $user->getEmail(),
+                'role' => $user->getRole(),
             ];
         }
         $now = new DateTimeImmutable();
@@ -106,9 +106,9 @@ class Jwt {
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
         $claim = (object) [
-            'uuid' => $options['user']->uuid(),
-            'email' => $options['user']->email(),
-            'role' => $options['user']->role()
+            'uuid' => $options['user']->getUuid(),
+            'email' => $options['user']->getEmail(),
+            'role' => $options['user']->getRole()
         ];
         $now = new DateTimeImmutable();
         return $configuration->builder()
