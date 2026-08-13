@@ -74,7 +74,6 @@ trait Admin {
                     'deleted' => null
                 ]
             ];
-            ddd($request);
             $response = $node->create($class, $node->role_system(), $request);
             if(
                 is_array($response) &&
