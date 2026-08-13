@@ -21,6 +21,7 @@ class Role extends Controller {
         //permission array should stay intact
         if(is_array($response)){
             foreach ($response as $key => $value){
+                d($key);
                 if(strtolower($key) === 'password'){
                     $response[$key] = '[redacted]';
                 }
