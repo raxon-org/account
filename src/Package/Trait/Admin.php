@@ -108,12 +108,16 @@ trait Admin {
             ];
             $response = $node->patch($class, $node->role_system(), $patch);
         }
+        elseif($response === null && is_array($record)){
+            dd($record);
+        }
         if(
             is_array($response) &&
             array_key_exists('node', $response)
         ){
             return $response['node'];
         }
+
         throw new Exception('User not created');
     }
 
