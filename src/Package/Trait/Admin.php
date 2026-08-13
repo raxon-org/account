@@ -59,7 +59,7 @@ trait Admin {
             ]
         );
         if($record === null) {
-            $time = time();
+            $time = microtime(true);
             $request = (object) [
                 'email' => escapeshellarg($options->email),
                 'password' => escapeshellarg($options->password),
@@ -69,8 +69,8 @@ trait Admin {
                 'is' => (object) [
                     'active' => 0, //cannot activate immediately
                     'loggedIn' => null,
-                    'created' => new DateTime('@' . $time),
-                    'updated' => new DateTime('@' . $time),
+                    'created' => $time,
+                    'updated' => $time,
                     'deleted' => null
                 ]
             ];
@@ -87,6 +87,7 @@ trait Admin {
                 array_key_exists('node', $response) &&
                 property_exists($response['node'], 'uuid')
             ) {
+                d(d($response['node']));
                 $patch = (object) [
                     'uuid' => $response['node']->uuid,
                     'is' => (object) [
