@@ -19,7 +19,20 @@ class Role extends Controller {
     public static function user(App $object, $response=null): array
     {
         //permission array should stay intact
-        breakpoint($response);
+        if(is_array($response)){
+            foreach ($response as $key => $value){
+                if(strtolower($key, 'password')){
+                    $response[$key] = '[redacted]';
+                }
+            }
+        }
+        elseif(is_object($response)){
+            foreach ($response as $key => $value){
+                if(strtolower($key, 'password')){
+                    $response->{$key} = '[redacted]';
+                }
+            }
+        }
         return $response;
     }
 
