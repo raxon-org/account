@@ -20,17 +20,30 @@ class Role extends Controller {
     {
         //permission array should stay intact
         if(is_array($response)){
-            foreach ($response as $key => $value){
-                d($key);
-                if(strtolower($key) === 'password'){
-                    $response[$key] = '[redacted]';
+            foreach ($response as $nr => $object){
+                if(is_array($object)){
+                    if(array_key_exists('password', $object)){
+                        $response[$nr]['password'] = '[redacted]';
+                    }
+                }
+                elseif(is_object($object)){
+                    if(property_exists($object, 'password')){
+                        $object->password = '[redacted]';
+                    }
                 }
             }
         }
         elseif(is_object($response)){
-            foreach ($response as $key => $value){
-                if(strtolower($key) === 'password'){
-                    $response->{$key} = '[redacted]';
+            foreach ($response as $nr => $object){
+                if(is_array($object)){
+                    if(array_key_exists('password', $object)){
+                        $response[$nr]['password'] = '[redacted]';
+                    }
+                }
+                elseif(is_object($object)){
+                    if(property_exists($object, 'password')){
+                        $object->password = '[redacted]';
+                    }
                 }
             }
         }
