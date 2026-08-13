@@ -12,13 +12,11 @@ class Role extends Controller {
 
     public static function permission(App $object, $response=null): array
     {
-        //permission array should stay intact
         return $response;
     }
 
     public static function user(App $object, $response=null): array
     {
-        //permission array should stay intact
         if(is_array($response)){
             foreach ($response as $nr => $object){
                 if(is_array($object)){
@@ -47,7 +45,6 @@ class Role extends Controller {
                 }
             }
         }
-        ddd($response);
         return $response;
     }
 
