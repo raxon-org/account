@@ -119,11 +119,11 @@ trait Admin {
                     ]
                 ]
             );
-            dd($response);
         }
         if(
             is_array($response) &&
-            array_key_exists('node', $response)
+            array_key_exists('node', $response) &&
+            is_object($response['node'])
         ){
             return $response['node'];
         }
