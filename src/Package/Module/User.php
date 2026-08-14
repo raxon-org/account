@@ -48,10 +48,8 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
-        $input = (object) [
-            'ip' => (object) [
-                'address' => $_SERVER['REMOTE_ADDR']  ?? '0.0.0.0'
-            ]
+        $input->ip = (object)[
+            'address' => $_SERVER['REMOTE_ADDR']  ?? '0.0.0.0'
         ];
         //ad ip address
         if(User::is_blocked($object, $input, $user, $logger) === false){
