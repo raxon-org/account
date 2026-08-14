@@ -7,11 +7,13 @@ use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\Key;
 
+use Exception;
 use DateTime;
 
 use Entity\User as Entity;
 
-use Exception;
+
+use Raxon\Exception\UrlEmptyException;
 use Throwable;
 use Raxon\App;
 
@@ -33,6 +35,9 @@ class User
     const BLOCK_PASSWORD_COUNT = 5;
 
     const BLOCK_DURATION = 60 * 15;
+
+    const TOKEN_DEFUSE_ROUND = 4;
+    const REFRESH_TOKEN_DEFUSE_ROUND = 4;
 
     /**
      * @throws ErrorException
@@ -80,51 +85,6 @@ class User
     }
 
     /**
-     * @throws AuthorizationException
-     * @throws ObjectException
-     * @throws Exception
-     */
-    public static function expose(App $object, Entity $record, string $function): object
-    {
-        $node = new Node($object);
-        $class = 'Account.Role';
-        $role = $node->role_system();
-        $response = $node->list(
-            $class,
-            $role,
-            [
-                'filter' => [
-                    'name' => 'ROLE_USER'
-                ],
-                'relation' => true
-            ]
-        );
-        $role = $response['list'][0] ?? false;
-        if($role === false){
-            throw new Exception('Role ROLE_USER not found.');
-        }
-        ddd($role);
-        $entity = 'User';
-        $expose = \Raxon\Doctrine\Module\Entity::expose_get(
-            $object,
-            $entity,
-            $entity . '.' . $function . '.output'
-        );
-        $node = $record;
-        $record = [];
-        $record = \Raxon\Doctrine\Module\Entity::output(
-            $object,
-            $node,
-            $expose,
-            $entity,
-            $function,
-            $record,
-            $role
-        );
-        return (object) $record;
-    }
-
-    /**
      * @throws FileWriteException
      * @throws ObjectException
      * @throws Exception
@@ -143,7 +103,7 @@ class User
         if($crypt_url){
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            for($i = 0; $i < 4; $i++){
+            for($i = 0; $i < User::TOKEN_DEFUSE_ROUND; $i++){
                 $string = Crypto::encrypt($string, $key);
             }
             $string = gzencode($string, 9);
@@ -165,6 +125,7 @@ class User
     /**
      * @throws FileWriteException
      * @throws ObjectException
+     * @throws Exception
      */
     private static function get_refresh_token(App $object, object $user): string
     {
@@ -173,39 +134,26 @@ class User
         $options['user'] = $user;
         $options['refresh'] = true;
         $token = Jwt::refresh_get($object, $configuration, $options);
-        return $token->toString();
-    }
-
-    /**
-     * @throws Exception
-     */
-    private static function getTokens(App $object, object $input, Entity\User $node): array
-    {
-        $configuration = Jwt::configuration($object);
-        $options = [];
-        $options['user'] = $node;
-        $token = Jwt::get($object, $configuration, $options);
-        $token = $token->toString();
-        $options['refresh'] = true;
-        $configuration = Jwt::configuration($object, $options);
-        $refreshToken = Jwt::refresh_get($object, $configuration, $options);
-        $refreshToken = $refreshToken->toString();
-        ddd('fix refresh after the general javascript function which handles the refresh token ');
-//        $record->token = $token;
-//        $record->refresh_token = $refreshToken;
-        /*
-        $node = new Node($object);
-        $node->patch(
-            'Account.User',
-            $node->role_system(),
-            [
-                'uuid' => $record->uuid,
-                'refresh_token' => $encrypted_refreshToken
-            ]
-        );
-        */
-//        return $record;
-        return [];
+        $string = $token->toString();
+        $url = $object->config('project.dir.data') . 'Account/Jwt.json';
+        $cache = $object->data(App::CACHE);
+        $config = $cache->get(sha1($url));
+        $crypt_url = $config->get('token.crypt_url') ?? null;
+        if($crypt_url) {
+            //if you want you can logout everyone from the system by changing the content of crypt_url
+            $key = Core::key($crypt_url);
+            for ($i = 0; $i < User::REFRESH_TOKEN_DEFUSE_ROUND; $i++) {
+                $string = Crypto::encrypt($string, $key);
+            }
+            $string = gzencode($string, 9);
+            $string = base64_encode($string);
+            ddd(strlen($string));
+            //around: 1800 chars fits in the 4KB cookie
+//            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
+            return $string;
+        } else {
+            throw new Exception('property token.crypt_url not set in data/Account/Jwt.json on refresh.token.crypt_url not set in data/Account/Jwt.json.');;
+        }
     }
 
     /**
@@ -367,82 +315,8 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function refresh_token(App $object): array
+    public static function get_by_key(App $object): null|object
     {
-        $token = '';
-        if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
-            $token = $_SERVER['HTTP_AUTHORIZATION'];
-        }
-        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
-            $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-        }
-        $token = substr($token , 7);
-        if(!$token){
-            throw new AuthorizationException('Please provide a valid token...');
-        }
-        $token_unencrypted = Jwt::decryptRefreshToken($object, $token);
-        ddd($token_unencrypted);
-        $claims = $token_unencrypted->claims();
-        if($claims->has('user')){
-            $user =  $claims->get('user');
-            $uuid = false;
-            $email = false;
-            if(array_key_exists('uuid', $user)){
-                $uuid = $user['uuid'];
-            }
-            if(array_key_exists('email', $user)){
-                $email = $user['email'];
-            }
-            if($uuid && $email){
-                $config = Database::config($object);
-                $connection = $object->config('doctrine.environment.system.*');
-                $em = Database::entity_manager($object, $config, $connection);
-                $repository = $em->getRepository(Entity::class);
-                $item = $repository->findOneBy([
-                    'uuid' => $uuid,
-                    'email' => $email
-                ]);
-                if(empty($item->getIsActive())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('User is not active...');
-                }
-                if(!empty($item->getIsDeleted())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('User is deleted...');
-                }
-                if(empty($item->getRole())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('User has no roles...');
-                }
-                $refreshToken = sha1($token);
-                if(!password_verify($refreshToken, $item->getRefreshToken())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Refresh token not valid...');
-                }
-                $array = User::getTokens($object, $item);
-                $data = [];
-                $data['node'] = $array;
-                return $data;
-            }
-        }
-        $status = 401;
-        Handler::header('Status: ' . $status, $status, true);
-        throw new AuthorizationException('Authentication failure... (invalid claim)');
-    }
-
-    /**
-     * @throws ObjectException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws ORMException
-     * @throws \Doctrine\DBAL\Exception
-     * @throws FileWriteException
-     * @throws Exception
-     */
-    public static function get_by_key(App $object): null|Entity{
         $item = $object->config('user');
         if($item){
             return $item;
@@ -451,36 +325,26 @@ class User
             if(!$key){
                 return null;
             }
-            $em = $object->config('doctrine.em');
-            if($em === null){
-                $config = Database::config($object);
-                $connection = $object->config('doctrine.environment.system.*');
-                $em = Database::entity_manager($object, $config, $connection);
-                $object->config('doctrine.em', $em);
-            }
-
-            $repository = $em->getRepository(Entity::class);
-            $item = $repository->findOneBy(['key' => $key]);
         }
         if($item){
-            if(empty($item->getIsActive())){
+            if(empty($item->is->active)){
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
                 throw new AuthorizationException('Account is not active.');
             }
-            if(!empty($item->getIsDeleted())){
+            if(!empty($item->is->deleted)){
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
                 throw new AuthorizationException('Account is deleted.');
             }
-            if(empty($item->getRole())){
+            if(empty($item->role)){
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
                 throw new AuthorizationException('Account has no roles.');
             }
-            $item->setIsLoggedIn(new DateTime());
-            $em->persist($item);
-            $em->flush();
+            $item->is->logged_in = microtime(true);
+            $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
+
             $object->config('user', $item);
             return $item;
         }
@@ -537,6 +401,12 @@ class User
         return null;
     }
 
+    /**
+     * @throws ObjectException
+     * @throws AuthorizationException
+     * @throws FileWriteException
+     * @throws UrlEmptyException
+     */
     public static function get_by_authorization(App $object): null|Entity
     {
         $item = $object->config('user');
@@ -561,51 +431,48 @@ class User
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
         if($crypt_url) {
-//            dd($token);
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
             $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
-            $logger = false;
             if(strlen($token) >= 1){
                 try {
-                    $logger = $object->config('project.log.security');
                     $token = gzdecode($token);
-                    for($i = 0; $i < 3; $i++){
+                    for($i = 0; $i < User::TOKEN_DEFUSE_ROUND; $i++){
                         $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
                     }
                 }
                 catch (Throwable $e) {
-                    //we need the user login
-                    if($logger) {
-                        $object->logger($logger)->info('You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')');
-                    }
+                    $input = (object) [
+                        'ip' => (object)[
+                            'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
+                        ],
+                        'token' => $token,
+                        'status' => 'You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')'
+                    ];
+                    $logger = TokenLogger::log($object, $input);
                     Core::redirect('/User/Login');
                     exit(0);
                 }
             }
         }
         if(!$token){
-            $status = 401;
-            Handler::header('Status: ' . $status, $status, true);
+            $input = (object) [
+                'ip' => (object)[
+                    'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
+                ],
+                'token' => $token ?? null,
+                'status' => 'You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')'
+            ];
+            $logger = TokenLogger::log($object, $input);
             throw new AuthorizationException('Please provide a valid token...');
         }
         $token_unencrypted = Jwt::decryptToken($object, $token);
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
             $user = $claims->get('user');
-            $em = $object->config('doctrine.em');
-            if($em === null){
-                $config = Database::config($object);
-                $connection = $object->config('doctrine.environment.system.*');
-                $em = Database::entity_manager($object, $config, $connection);
-                $object->config('doctrine.em', $em);
-            }
-            $repository = $em->getRepository('\\Entity\\User');
-            $item = $repository->findOneBy([
-                'uuid' => $user['uuid'],
-                'email' => $user['email'],
-            ]);
-            if($item) {
+            dd($user);
+            /*
+
                 if(empty($item->getIsActive())){
                     $status = 401;
                     Handler::header('Status: ' . $status, $status, true);
@@ -627,6 +494,7 @@ class User
                 $object->config('user', $item);
                 return $item;
             }
+             */
         }
         return null;
     }
