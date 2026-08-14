@@ -49,8 +49,9 @@ class User
             throw new ErrorException('Password is required.');
         }
         $input->ip = (object)[
-            'address' => $_SERVER['REMOTE_ADDR']  ?? '0.0.0.0'
+            'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
         ];
+        d($input);
         //ad ip address
         if(User::is_blocked($object, $input, $user, $logger) === false){
             //maybe add an outputfilter
@@ -65,6 +66,7 @@ class User
                 throw new ErrorException('Invalid e-mail-password.');
             } else {
                 $input->status = UserLogger::STATUS_SUCCESS;
+                d($input);
                 $logger = UserLogger::log($object, $input);
             }
             //might need an outputfilter
