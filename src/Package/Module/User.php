@@ -63,9 +63,8 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 $logger = UserLogger::log($object, $input);
             }
-            $user->password = '[redacted]';
+            //$user->password = '[redacted]';
             $user->token = User::get_token($object, $user);
-            dd($user);
 //            $user->refreshToken = User::get_refresh_token($object, $node);
 //            $encrypted_refreshToken = sha1($user->refreshToken);
             return $user;
