@@ -35,6 +35,7 @@ class UserLogger
         $logger = (object) [
             'uuid' => Core::uuid(),
         ];
+        $logger->ip = $input->ip ?? null;
         $logger->status = $input->status;
         if($logger->status === self::STATUS_BLOCKED){
             $logger->is = (object) [
