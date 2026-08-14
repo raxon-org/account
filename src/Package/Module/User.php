@@ -70,6 +70,7 @@ class User
             $user->password = '[redacted]';
             $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
+            $user->refresh_token = User::get_refresh_token($object, $user);
             return (object) [
                 'node' => $user,
             ];
@@ -164,13 +165,14 @@ class User
      * @throws FileWriteException
      * @throws ObjectException
      */
-    private static function get_refresh_token(App $object, Entity $node): string
+    private static function get_refresh_token(App $object, object $user): string
     {
         $configuration = Jwt::configuration($object);
         $options = [];
-        $options['user'] = $node;
+        $options['user'] = $user;
         $options['refresh'] = true;
         $token = Jwt::refresh_get($object, $configuration, $options);
+        ddd($token);
         return $token->toString();
     }
 
