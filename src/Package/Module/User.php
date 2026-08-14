@@ -313,6 +313,39 @@ class User
 
     /**
      * @throws AuthorizationException
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public static function expose(App $object, object $user, string $function): object
+    {
+
+        $role = $user->role ?? false;
+        if($role === false){
+            throw new Exception('Role ROLE_USER not found.');
+        }
+        $entity = 'User';
+        $expose = \Raxon\Doctrine\Module\Entity::expose_get(
+            $object,
+            $entity,
+            $entity . '.' . $function . '.output'
+        );
+        $node = $record;
+        $record = [];
+        $record = \Raxon\Doctrine\Module\Entity::output(
+            $object,
+            $node,
+            $expose,
+            $entity,
+            $function,
+            $record,
+            $role
+        );
+        return (object) $record;
+    }
+
+
+    /**
+     * @throws AuthorizationException
      * @throws Exception
      */
     public static function get_by_key(App $object): null|object
@@ -325,28 +358,35 @@ class User
             if(!$key){
                 return null;
             }
+            ddd($key);
         }
         if($item){
-            if(empty($item->is->active)){
-                $status = 401;
-                Handler::header('Status: ' . $status, $status, true);
-                throw new AuthorizationException('Account is not active.');
+            if(property_exists($item, 'is')){
+                if(!property_exists($item->is, 'active')){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('Account is not active.');
+                }
+                elseif(
+                    property_exists($item->is, 'deleted')
+                    && !empty($item->is->deleted)
+                ){
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('Account is deleted.');
+                }
+                elseif(!property_exists($item, 'role') || empty($item->role)) {
+                    $status = 401;
+                    Handler::header('Status: ' . $status, $status, true);
+                    throw new AuthorizationException('Account has no roles.');
+                }
+                $item->is->logged_in = microtime(true);
+                $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
+                $object->config('user', $item);
+                return $item;
+            } else {
+                throw new AuthorizationException('Account has no is->active.');
             }
-            if(!empty($item->is->deleted)){
-                $status = 401;
-                Handler::header('Status: ' . $status, $status, true);
-                throw new AuthorizationException('Account is deleted.');
-            }
-            if(empty($item->role)){
-                $status = 401;
-                Handler::header('Status: ' . $status, $status, true);
-                throw new AuthorizationException('Account has no roles.');
-            }
-            $item->is->logged_in = microtime(true);
-            $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
-
-            $object->config('user', $item);
-            return $item;
         }
         return null;
     }
@@ -355,7 +395,7 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_uuid(App $object): null|Entity
+    public static function get_by_uuid(App $object): null|object
     {
         $item = $object->config('user');
         if($item){
@@ -365,17 +405,30 @@ class User
             if(!$uuid){
                 return null;
             }
-            $em = $object->config('doctrine.em');
-            if($em === null){
-                $config = Database::config($object);
-                $connection = $object->config('doctrine.environment.system.*');
-                $em = Database::entity_manager($object, $config, $connection);
-                $object->config('doctrine.em', $em);
-            }
-
-            $repository = $em->getRepository(Entity::class);
-            $item = $repository->findOneBy(['uuid' => $uuid]);
+            $class = 'Account.User';
+            $node = new Node($object);
+            $user = $node->record(
+                $class,
+                $node->role_system(),
+                ['where' =>
+                    [
+                        [
+                            'attribute' => 'uuid',
+                            'value' => $uuid,
+                            'operator' => '==='
+                        ],
+                        'and',
+                        [
+                            'attribute' => 'is.active',
+                            'value' => 1,
+                            'operator' => '>='
+                        ]
+                    ]
+                ]
+            );
+            dd($user);
         }
+        /*
         if($item){
             if(empty($item->getIsActive())){
                 $status = 401;
@@ -398,6 +451,7 @@ class User
             $object->config('user', $item);
             return $item;
         }
+        */
         return null;
     }
 
@@ -407,7 +461,7 @@ class User
      * @throws FileWriteException
      * @throws UrlEmptyException
      */
-    public static function get_by_authorization(App $object): null|Entity
+    public static function get_by_authorization(App $object): null|object
     {
         $item = $object->config('user');
         if($item){
