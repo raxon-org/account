@@ -74,7 +74,7 @@ class User
                 'node' => $user,
             ];
         }
-        throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until) . ' with ip address: ' . $logger->ip->address;
+        throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until . ' with ip address: ' . $logger->ip->address);
     }
 
     /**
