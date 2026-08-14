@@ -63,10 +63,9 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 $logger = UserLogger::log($object, $input);
             }
-            //$user->password = '[redacted]';
+            //might need an outputfilter
+            $user->password = '[redacted]';
             $user->token = User::get_token($object, $user);
-//            $user->refreshToken = User::get_refresh_token($object, $node);
-//            $encrypted_refreshToken = sha1($user->refreshToken);
             return $user;
         }
         throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until);
