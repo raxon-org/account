@@ -11,8 +11,7 @@
                             "email",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -51,14 +50,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                              ]
                             }
                         }
                     }
@@ -75,7 +66,6 @@
                             "is",
                             "profile",
                             "role",
-                            "permission"
                         ],
                         "object": {
                             "is": {
@@ -114,14 +104,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                              ]
                             }
                         }
                     }
@@ -178,14 +160,6 @@
                                     ]
                                 }
                             }
-                        },
-                        "permission": {
-                          "multiple": true,
-                          "output": [
-                            "uuid",
-                            "#class",
-                            "name"
-                          ]
                         }
                       }
                     }
@@ -201,8 +175,7 @@
                             "email",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -256,8 +229,7 @@
                             "email",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
 
                         ],
                         "object": {
@@ -296,14 +268,6 @@
                                             "name"
                                         ]
                                     }
-                                },
-                                "permission": {
-                                  "multiple": true,
-                                  "output": [
-                                    "uuid",
-                                    "#class",
-                                    "name"
-                                  ]
                                 }
                             }
                         }
@@ -320,8 +284,7 @@
                             "email",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -360,14 +323,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                                "multiple": true,
-                                "output": [
-                                  "uuid",
-                                  "#class",
-                                  "name"
-                              ]
                             }
                         }
                     }
@@ -384,8 +339,7 @@
                             "password",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -424,14 +378,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                              ]
                             }
                         }
                     }
@@ -448,8 +394,7 @@
                             "password",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -488,14 +433,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                              ]
                             }
                         }
                     }
@@ -512,8 +449,7 @@
                             "password",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -552,15 +488,7 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                            "multiple": true,
-                            "output": [
-                              "uuid",
-                              "#class",
-                              "name"
-                            ]
-                          }
+                            }
                         }
                     }
                 ]
@@ -576,8 +504,7 @@
                             "password",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -616,14 +543,6 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                              ]
                             }
                         }
                     }
@@ -640,8 +559,7 @@
                             "password",
                             "is",
                             "profile",
-                            "role",
-                            "permission"
+                            "role"
                         ],
                         "object": {
                             "is": {
@@ -680,15 +598,7 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                            ]
-                          }
+                            }
                         }
                     }
                 ]
@@ -744,15 +654,7 @@
                                         ]
                                     }
                                 }
-                            },
-                            "permission": {
-                              "multiple": true,
-                              "output": [
-                                "uuid",
-                                "#class",
-                                "name"
-                              ]
-                          }
+                            }
                         }
                     }
                 ]

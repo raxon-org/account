@@ -59,6 +59,9 @@ class User
                 //write is in the log
                 $logger = UserLogger::log($object, $input);
                 throw new ErrorException('Invalid e-mail-password.');
+            } else {
+                $input->status = UserLogger::STATUS_SUCCESS;
+                $logger = UserLogger::log($object, $input);
             }
             $user->password = '[redacted]';
             $user->token = User::get_token($object, $user);
@@ -139,7 +142,6 @@ class User
             }
             $string = gzencode($string, 9);
             $string = base64_encode($string);
-            d(strlen($string));
              //around: 1800 chars fits in the 4KB cookie
 //            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
             return $string;
