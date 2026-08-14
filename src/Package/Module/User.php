@@ -147,7 +147,6 @@ class User
             }
             $string = gzencode($string, 9);
             $string = base64_encode($string);
-            ddd(strlen($string));
             //around: 1800 chars fits in the 4KB cookie
 //            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
             return $string;
@@ -157,13 +156,7 @@ class User
     }
 
     /**
-     * @throws NonUniqueResultException
-     * @throws OptimisticLockException
-     * @throws ORMException
      * @throws ErrorException
-     * @throws \Doctrine\DBAL\Exception
-     * @throws \Doctrine\ORM\ORMException
-     * @throws FileWriteException
      * @throws ObjectException
      * @throws Exception
      */
@@ -323,6 +316,9 @@ class User
         if($role === false){
             throw new Exception('Role ROLE_USER not found.');
         }
+        ddd($user);
+
+
         $entity = 'User';
         $expose = \Raxon\Doctrine\Module\Entity::expose_get(
             $object,
