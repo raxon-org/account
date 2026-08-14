@@ -51,8 +51,6 @@ class User
         $input->ip = (object)[
             'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
         ];
-        d($input);
-        //ad ip address
         if(User::is_blocked($object, $input, $user, $logger) === false){
             //maybe add an outputfilter
             //password should become [redacted]
@@ -66,18 +64,17 @@ class User
                 throw new ErrorException('Invalid e-mail-password.');
             } else {
                 $input->status = UserLogger::STATUS_SUCCESS;
-                d($input);
                 $logger = UserLogger::log($object, $input);
             }
             //might need an outputfilter
             $user->password = '[redacted]';
+            $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
-            $result = (object) [
+            return (object) [
                 'node' => $user,
             ];
-            return $result;
         }
-        throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until);
+        throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until) . ' with ip address: ' . $logger->ip->address;
     }
 
     /**
