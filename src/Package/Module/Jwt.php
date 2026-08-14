@@ -4,12 +4,8 @@
  */
 namespace Package\Raxon\Account\Module;
 
+use Exception;
 use DateTimeImmutable;
-
-use Raxon\App;
-
-use Raxon\Module\Data;
-
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -26,12 +22,11 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token\Plain;
-
-use Exception;
-
+use Raxon\App;
 use Raxon\Exception\AuthorizationException;
 use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
+use Raxon\Module\Data;
 
 class Jwt {
 
@@ -106,9 +101,9 @@ class Jwt {
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
         $claim = (object) [
-            'uuid' => $options['user']->uuid(),
-            'email' => $options['user']->email(),
-            'role' => $options['user']->role()
+            'uuid' => $options['user']->uuid,
+            'email' => $options['user']->email,
+            'role' => $options['user']->role
         ];
         $now = new DateTimeImmutable();
         return $configuration->builder()
@@ -133,7 +128,7 @@ class Jwt {
     /**
      * @throws ObjectException
      * @throws FileWriteException
-     * @throws \Exception
+     * @throws Exception
      */
     public static function configuration(App $object, $options=[]): Configuration
     {
