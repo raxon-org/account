@@ -71,6 +71,7 @@ class User
             $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
             $user->refresh_token = User::get_refresh_token($object, $user);
+            ddd(strlen($user->refresh_token));
             return (object) [
                 'node' => $user,
             ];
@@ -172,7 +173,6 @@ class User
         $options['user'] = $user;
         $options['refresh'] = true;
         $token = Jwt::refresh_get($object, $configuration, $options);
-        ddd($token);
         return $token->toString();
     }
 
