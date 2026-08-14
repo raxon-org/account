@@ -66,7 +66,10 @@ class User
             //might need an outputfilter
             $user->password = '[redacted]';
             $user->token = User::get_token($object, $user);
-            return $user;
+            $result = (object) [
+                'node' => $user,
+            ];
+            return $result;
         }
         throw new Exception('User Blocked is blocked until: ' . $logger->is->blocked->until);
     }
