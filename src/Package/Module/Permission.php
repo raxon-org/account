@@ -143,7 +143,7 @@ class Permission
         $has_permission = false;
         try {
             $key = $object->request('key');
-            d($key);
+            ddd($_SERVER['HTTP_AUTHORIZATION'] ?? null);
             if($key){
                 $user = User::get_by_key($object);
                 d('test1');
@@ -153,7 +153,7 @@ class Permission
                     $user = User::expose($object, $user, 'current');
                 }
             }
-            if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+            elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
 
                     $user = User::get_by_authorization($object);
