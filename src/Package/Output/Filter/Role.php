@@ -45,7 +45,6 @@ class Role extends Controller {
                 }
             }
         }
-        d($response);
         return $response;
     }
 
