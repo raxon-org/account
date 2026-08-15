@@ -30,10 +30,11 @@ class Permission
 
     const API = 'system';
 
-    public static function has(EntityUser $user, $name): bool
+    public static function has(object $user, $name): bool
     {
+        ddd($user);
         $user_permissions = [];
-        foreach($user->getRoles() as $role){
+        foreach($user->roles as $role){
             ddd($role);
             $permissions = $role->getPermissions();
             if(
@@ -129,19 +130,12 @@ class Permission
         return $roles;
     }
 
-    /**
-     * @throws ObjectException
-     * @throws ErrorException
-     * @throws \Doctrine\DBAL\Exception
-     * @throws ORMException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws FileWriteException
-     * @throws Exception
-     */
     public static function controller(App $object, $controller=null, $action='', &$user=null): ?object
     {
         $controller = str_replace('.', ':', Controller::name($controller));
+        d($controller);
         $action = strtolower(Controller::name($action));
+        d($action);
         $url = false;
         $role = false;
         $has_role = false;
@@ -150,6 +144,8 @@ class Permission
             $key = $object->request('key');
             if($key){
                 $user = User::get_by_key($object);
+                d('test1');
+                ddd($user);
                 if($user){
                     $object->config('user', $user);
                     $user = User::expose($object, $user, 'current');
@@ -158,25 +154,35 @@ class Permission
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
                     $user = User::get_by_authorization($object);
+                    d('test2');
+                    dd($user);
+                    /*
                     if($user){
                         $object->config('user', $user);
                         $user = User::expose($object, $user, 'current');
                     }
+                    */
                 }
             }
             $uuid = $object->request('user.uuid');
             if(Core::is_uuid($uuid)){
                 if(!$user){
                     $user = User::get_by_uuid($object);
+                    d('test3');
+                    dd($user);
+                    /*
                     if($user){
                         $object->config('user', $user);
                         $user = User::expose($object, $user, 'current');
                     }
+                    */
                 }
             }
             if(!$user){
                 throw new AuthorizationException('User needs to be present in request or header.');
             }
+            d('test4');
+            ddd($user);
             $roles = $user->role ?? [];
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
@@ -245,6 +251,7 @@ class Permission
     {
 //        $roles = Permission::getAccessControl($object, $entity, $action);
         $response = User::current($object);
+        ddd($response);
         $user = $response['node'] ?? null;
         if($user){
             $session = $object->session('user');
@@ -301,6 +308,7 @@ class Permission
 
                     $attributes = [];
                     //with-input
+                    /*
                     $expose = Module::expose_get(
                         $object,
                         $entity,
@@ -316,6 +324,7 @@ class Permission
                             break;
                         }
                     }
+                    */
                     if (
                         !empty($attributes) &&
                         is_array($attributes)
