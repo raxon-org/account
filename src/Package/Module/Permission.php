@@ -143,7 +143,7 @@ class Permission
         $has_permission = false;
         try {
             $key = $object->request('key');
-            dd($_SERVER);
+            ddd($_SERVER);
             if($key){
                 $user = User::get_by_key($object);
                 d('test1');
