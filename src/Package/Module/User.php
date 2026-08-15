@@ -480,6 +480,7 @@ class User
         $config = $object->parse_read($url, sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null;
         $token = substr($token , 7);
+        ddd($token);
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);

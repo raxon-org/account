@@ -138,10 +138,12 @@ class Permission
         d($action);
         $url = false;
         $role = false;
+        $user = null;
         $has_role = false;
         $has_permission = false;
         try {
             $key = $object->request('key');
+            d($key);
             if($key){
                 $user = User::get_by_key($object);
                 d('test1');
@@ -153,6 +155,7 @@ class Permission
             }
             if(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
+
                     $user = User::get_by_authorization($object);
                     d('test2');
                     dd($user);
