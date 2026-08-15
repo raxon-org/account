@@ -36,8 +36,8 @@ class User
 
     const BLOCK_DURATION = 60 * 15;
 
-    const TOKEN_DEFUSE_ROUND = 3;
-    const REFRESH_TOKEN_DEFUSE_ROUND = 3;
+    const TOKEN_DEFUSE_ROUND = 2;
+    const REFRESH_TOKEN_DEFUSE_ROUND = 2;
 
     /**
      * @throws ErrorException
@@ -53,6 +53,7 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
+        ddd($_SERVER);
         $input->ip = (object)[
             'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
         ];
