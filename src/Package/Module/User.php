@@ -66,7 +66,6 @@ class User
             $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
             $user->refresh_token = User::get_refresh_token($object, $user);
-            ddd($user);
             return (object) [
                 'node' => $user,
             ];

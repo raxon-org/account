@@ -12,7 +12,7 @@ trait User_Login
      * @throws Exception
      * @throws ORMException
      */
-    protected function user_login(string $email='', string $password=''): mixed
+    protected function user_login(string $email='', string $password=''): object
     {
         $object = $this->object();
         $object->request('email', $email);
