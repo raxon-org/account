@@ -6,29 +6,18 @@ use Defuse\Crypto\Exception\BadFormatException;
 use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\Key;
-
 use Exception;
 use DateTime;
-
-use Entity\User as Entity;
-
-
 use Raxon\Exception\UrlEmptyException;
-use Throwable;
 use Raxon\App;
-
-use Raxon\Module\Core;
-use Raxon\Module\File;
-use Raxon\Module\Handler;
-
-use Raxon\Module\Host;
-use Raxon\Node\Module\Node;
-
 use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
 use Raxon\Exception\AuthorizationException;
 use Raxon\Exception\ErrorException;
-
+use Raxon\Module\Core;
+use Raxon\Module\Handler;
+use Raxon\Node\Module\Node;
+use Throwable;
 class User
 {
     const BLOCK_EMAIL_COUNT = 5;
@@ -53,7 +42,7 @@ class User
         if(!property_exists($input, 'password')){
             throw new ErrorException('Password is required.');
         }
-        ddd($_SERVER);
+        //no server info available only in current
         $input->ip = (object)[
             'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
         ];
@@ -77,6 +66,7 @@ class User
             $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
             $user->refresh_token = User::get_refresh_token($object, $user);
+            d($user);
             return (object) [
                 'node' => $user,
             ];
@@ -253,6 +243,7 @@ class User
      * @throws ObjectException
      * @throws ErrorException
      */
+    /*
     public static function token(App $object, $email=''): string
     {
         //get the user from the node list System.User with email=email
@@ -288,6 +279,7 @@ class User
         $token = $token->toString();
         return $token;
     }
+    */
 
     /**
      * @throws ObjectException
