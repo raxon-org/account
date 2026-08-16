@@ -25,8 +25,8 @@ class User
 
     const BLOCK_DURATION = 60 * 15;
 
-    const TOKEN_DEFUSE_ROUND = 1;
-    const REFRESH_TOKEN_DEFUSE_ROUND = 1;
+    const TOKEN_DEFUSE_ROUND = 3;
+    const REFRESH_TOKEN_DEFUSE_ROUND = 3;
 
     /**
      * @throws ErrorException
@@ -89,7 +89,6 @@ class User
         $cache = $object->data(App::CACHE);
         $config = $cache->get(sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null; //future
-        $crypt_url = null;
         if($crypt_url !== null){
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
@@ -98,6 +97,7 @@ class User
             }
             $string = gzencode($string, 9);
             $string = base64_encode($string);
+            dd(strlen($string));
              //around: 1800 chars fits in the 4KB cookie
 //            $crypt_compressed = gzencode($crypt_string, 9); //around 1000 chars //json cant handle this data
             return $string;
