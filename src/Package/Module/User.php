@@ -288,7 +288,22 @@ class User
      */
     public static function current(App $object): array
     {
-        $user = User::get_by_authorization($object);
+        $options = (object) [
+            'token' => ''
+        ];
+        if($object->request('authorization')){
+            $options->token = $object->request('authorization');
+        }
+        elseif($object->data(App::REQUEST_HEADER . '.' . 'Authorization')){
+            $options->token = $object->data(App::REQUEST_HEADER . '.' . 'Authorization');
+        }
+        elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+            $options->token = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
+            $options->token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        $user = User::get_by_authorization($object, $options);;
         ddd($user);
         $node = User::expose($object, $user, __FUNCTION__);
         $data = [];
@@ -473,19 +488,6 @@ class User
         $item = $object->config('user');
         if($item){
             return $item;
-        }
-        $token = '';
-        if($object->request('authorization')){
-            $token = $object->request('authorization');
-        }
-        elseif($object->data(App::REQUEST_HEADER . '.' . 'Authorization')){
-            $token = $object->data(App::REQUEST_HEADER . '.' . 'Authorization');
-        }
-        elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
-            $token = $_SERVER['HTTP_AUTHORIZATION'];
-        }
-        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
-            $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
