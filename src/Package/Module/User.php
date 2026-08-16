@@ -444,7 +444,8 @@ class User
                             'value' => $active_value,
                             'operator' => $active_operator
                         ]
-                    ]
+                    ],
+                    'relation' => true
                 ]
             );
             dd($user);
@@ -575,7 +576,8 @@ class User
                             'value' => $active_value,
                             'operator' => $active_operator
                         ]
-                    ]
+                    ],
+                    'relation' => true
                 ]
             );
             dd($user);
