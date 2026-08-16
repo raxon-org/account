@@ -25,8 +25,8 @@ class User
 
     const BLOCK_DURATION = 60 * 15;
 
-    const TOKEN_DEFUSE_ROUND = 2;
-    const REFRESH_TOKEN_DEFUSE_ROUND = 2;
+    const TOKEN_DEFUSE_ROUND = 1;
+    const REFRESH_TOKEN_DEFUSE_ROUND = 1;
 
     /**
      * @throws ErrorException
