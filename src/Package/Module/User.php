@@ -466,8 +466,9 @@ class User
      * @throws AuthorizationException
      * @throws FileWriteException
      * @throws UrlEmptyException
+     * @throws Exception
      */
-    public static function get_by_authorization(App $object): null|object
+    public static function get_by_authorization(App $object, object $options=null): null|object
     {
         $item = $object->config('user');
         if($item){
@@ -530,9 +531,49 @@ class User
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
             $user = (object) $claims->get('user');
-            if(property_exists($user, 'uuid')){
-
+            if(!property_exists($options, 'uuid')){
+                return null;
             }
+            $active_value = 1;
+            if(
+                property_exists($options, 'active') &&
+                property_exists($options->active, 'value')
+            ){
+                $active_value = $options->active->value ?? 1;
+            }
+            $active_operator = '>=';
+            if(
+                property_exists($options, 'active') &&
+                property_exists($options->active, 'operator')
+            ){
+                $active_operator = $options->active->operator;
+            }
+            $uuid = $options->uuid;
+//            $uuid = $object->request('user.uuid');
+            if(!$uuid){
+                return null;
+            }
+            $class = 'Account.User';
+            $node = new Node($object);
+            $user = $node->record(
+                $class,
+                $node->role_system(),
+                [
+                    'where' => [
+                        [
+                            'attribute' => 'uuid',
+                            'value' => $uuid,
+                            'operator' => '==='
+                        ],
+                        'and',
+                        [
+                            'attribute' => 'is.active',
+                            'value' => $active_value,
+                            'operator' => $active_operator
+                        ]
+                    ]
+                ]
+            );
             dd($user);
             /*
 
