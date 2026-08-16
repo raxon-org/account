@@ -67,9 +67,9 @@ class Jwt {
         $role = [];
         if(array_key_exists('user', $options)){
             $user = $options['user'];
-            foreach($user->role as $role){
-                if(property_exists($role, 'uuid')){
-                    $role[] = $role->uuid;
+            foreach($user->role as $user_role){
+                if(property_exists($user_role, 'uuid')){
+                    $role[] = $user_role->uuid;
                 }
             }
             $claim = (object) [
@@ -108,9 +108,9 @@ class Jwt {
         $config  = $object->parse_read($url, sha1($url));
         $role = [];
         $user = $options['user'] ?? (object) ['role' => false];
-        foreach($user->role as $role){
-            if(property_exists($role, 'uuid')){
-                $role[] = $role->uuid;
+        foreach($user->role as $user_role){
+            if(property_exists($user_role, 'uuid')){
+                $role[] = $user_role->uuid;
             }
         }
         $claim = (object) [
