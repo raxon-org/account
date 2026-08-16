@@ -592,9 +592,25 @@ class User
                 throw new AuthorizationException('Account missing is statements.');
             }
             if(
-                property_exists($item->is, 'active') &&
-                $item->is->active >= $active_operator
+                property_exists($item->is, 'active')
             ) {
+                switch($active_operator){
+                    case '===' :
+                        if($item->is->active !== $active_value){
+                            $status = 401;
+                            Handler::header('Status: ' . $status, $status, true);
+                            throw new AuthorizationException('Account is not active.');
+                        }
+                    case '>=':
+                    case '>==':
+                        if($item->is->active < $active_value){
+                            $status = 401;
+                            Handler::header('Status: ' . $status, $status, true);
+                            throw new AuthorizationException('Account is not active.');
+                        }
+                    default:
+                        //nothing
+                }
                 //nothing
             } else {
                 $status = 401;
