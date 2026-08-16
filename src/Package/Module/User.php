@@ -489,10 +489,13 @@ class User
         if($item){
             return $item;
         }
+        if(!property_exists($options, 'token')){
+            return null;
+        }
+        $token = substr($options->token , 7);
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null;
-        $token = substr($token , 7);
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
@@ -533,9 +536,10 @@ class User
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
             $user = (object) $claims->get('user');
-            if(!property_exists($options, 'uuid')){
+            if(!property_exists($user, 'uuid')){
                 return null;
             }
+            $uuid = $user->uuid;
             $active_value = 1;
             if(
                 property_exists($options, 'active') &&
@@ -550,8 +554,6 @@ class User
             ){
                 $active_operator = $options->active->operator;
             }
-            $uuid = $options->uuid;
-//            $uuid = $object->request('user.uuid');
             if(!$uuid){
                 return null;
             }
