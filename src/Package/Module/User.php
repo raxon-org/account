@@ -383,13 +383,31 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_uuid(App $object): null|object
+    public static function get_by_uuid(App $object, object $options=null): null|object
     {
         $item = $object->config('user');
         if($item){
             return $item;
         } else {
-            $uuid = $object->request('user.uuid');
+            if(!property_exists($options, 'uuid')){
+                return null;
+            }
+            $active_value = 1;
+            if(
+                property_exists($options, 'active') &&
+                property_exists($options->active, 'value')
+            ){
+                $active_value = $options->active->value ?? 1;
+            }
+            $active_operator = '>=';
+            if(
+                property_exists($options, 'active') &&
+                property_exists($options->active, 'operator')
+            ){
+                $active_operator = $options->active->operator;
+            }
+            $uuid = $options->uuid;
+//            $uuid = $object->request('user.uuid');
             if(!$uuid){
                 return null;
             }
@@ -398,8 +416,8 @@ class User
             $user = $node->record(
                 $class,
                 $node->role_system(),
-                ['where' =>
-                    [
+                [
+                    'where' => [
                         [
                             'attribute' => 'uuid',
                             'value' => $uuid,
@@ -408,8 +426,8 @@ class User
                         'and',
                         [
                             'attribute' => 'is.active',
-                            'value' => 1,
-                            'operator' => '>='
+                            'value' => $active_value,
+                            'operator' => $active_operator
                         ]
                     ]
                 ]
@@ -511,7 +529,10 @@ class User
         $token_unencrypted = Jwt::decryptToken($object, $token);
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
-            $user = $claims->get('user');
+            $user = (object) $claims->get('user');
+            if(property_exists($user, 'uuid')){
+
+            }
             dd($user);
             /*
 
