@@ -66,6 +66,8 @@ class Jwt {
         $claim = false;
         if(array_key_exists('user', $options)){
             $user = $options['user'];
+            $role = $user->role;
+            ddd($role);
             $claim = (object) [
                 'uuid' => $user->uuid,
                 'email' => $user->email,
