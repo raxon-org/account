@@ -580,7 +580,62 @@ class User
                     'relation' => true
                 ]
             );
-            dd($user);
+            $item = $user['node'];
+            if(!property_exists($item, 'uuid')){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is not active.');
+            }
+            if(!property_exists($item, 'is')){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account missing is statements.');
+            }
+            if(
+                property_exists($item->is, 'active') &&
+                $item->is->active >= $active_operator
+            ) {
+                //nothing
+            } else {
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is not active.');
+            }
+            if(
+                !property_exists($item->is, 'deleted')
+            ){
+                //nothing
+            }
+            elseif(
+                property_exists($item->is, 'deleted') &&
+                $item->is->deleted !== null
+            ) {
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is deleted.');
+            }
+            if(
+                property_exists($item, 'role') &&
+                is_array($item->role) &&
+                array_key_exists(0, $item->role) &&
+                is_object($item->role[0]) &&
+                property_exists($item->role[0], '#class') &&
+                property_exists($item->role[0], 'permission') &&
+                is_array($item->role[0]->permission) &&
+                array_key_exists(0, $item->role[0]->permission)
+            ) {
+                //nothing
+            } else {
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account has no roles.');
+            }
+            $item->is->logged_in = microtime(true);
+            $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
+            $object->config('user', $item);
+            return $item;
+
+
             /*
 
                 if(empty($item->getIsActive())){
