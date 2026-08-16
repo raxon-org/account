@@ -88,7 +88,8 @@ class User
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
         $config = $cache->get(sha1($url));
-        $crypt_url = $config->get('token.crypt_url') ?? null;
+        $crypt_url = $config->get('token.crypt_url') ?? null; //future
+        $crypt_url = null;
         if($crypt_url){
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
@@ -107,6 +108,7 @@ class User
             d($decrypt_string);
             */
         } else {
+            ddd(strlen($string));
             throw new Exception('property token.crypt_url not set in data/Account/Jwt.json.');
         }
     }
