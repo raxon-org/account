@@ -64,14 +64,18 @@ class Jwt {
             return false;
         }
         $claim = false;
+        $role = [];
         if(array_key_exists('user', $options)){
             $user = $options['user'];
-            $role = $user->role;
-            ddd($role);
+            foreach($user->role as $role){
+                if(property_exists($role, 'uuid')){
+                    $role[] = $role->uuid;
+                }
+            }
             $claim = (object) [
                 'uuid' => $user->uuid,
                 'email' => $user->email,
-                'role' => $user->role,
+                'role' => $role,
             ];
         }
         $now = new DateTimeImmutable();
@@ -102,10 +106,17 @@ class Jwt {
     {
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config  = $object->parse_read($url, sha1($url));
+        $role = [];
+        $user = $options['user'] ?? (object) ['role' => false];
+        foreach($user->role as $role){
+            if(property_exists($role, 'uuid')){
+                $role[] = $role->uuid;
+            }
+        }
         $claim = (object) [
             'uuid' => $options['user']->uuid,
             'email' => $options['user']->email,
-            'role' => $options['user']->role
+            'role' => $role
         ];
         $now = new DateTimeImmutable();
         return $configuration->builder()
