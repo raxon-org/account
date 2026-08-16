@@ -304,10 +304,9 @@ class User
             $options->token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
         $user = User::get_by_authorization($object, $options);;
-        ddd($user);
-        $node = User::expose($object, $user, __FUNCTION__);
+        $user->password = '[redacted]';
         $data = [];
-        $data['node'] = $node;
+        $data['node'] = $user;
         return $data;
     }
 
