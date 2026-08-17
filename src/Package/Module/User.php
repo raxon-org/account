@@ -486,11 +486,15 @@ class User
         if($item){
             return $item;
         }
+        trace();
         d($options);
-        if(!property_exists($options, 'token')){
+        if(property_exists($options, 'token')){
+            $options->authorization = $options->token;
+        }
+        if(!property_exists($options, 'authorization')){
             return null;
         }
-        $token = substr($options->token , 7);
+        $token = substr($options->authorization , 7);
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
         $crypt_url = $config->get('token.crypt_url') ?? null;

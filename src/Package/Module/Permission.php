@@ -140,18 +140,22 @@ class Permission
         try {
             $key = $object->request('key');
             if($key){
-                $user = User::get_by_key($object);
+                $user = User::get_by_key($object, ['key' => $key]);
                 d('permission:controller:get.by.key');
                 ddd($user);
                 if($user){
+                    $user->password = '[redacted]';
                     $object->config('user', $user);
+
                     $user = User::expose($object, $user, 'current');
                 }
             }
             elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
 
-                    $user = User::get_by_authorization($object);
+                    $user = User::get_by_authorization($object, [
+                        'authorization' => $_SERVER['HTTP_AUTHORIZATION']
+                    ]);
                     d('permission:controller:get.by.authorization');
                     dd($user);
                     /*
@@ -165,7 +169,7 @@ class Permission
             $uuid = $object->request('user.uuid');
             if(Core::is_uuid($uuid)){
                 if(!$user){
-                    $user = User::get_by_uuid($object);
+                    $user = User::get_by_uuid($object, $uuid);
                     d('permission:controller:get.by.uuid');
                     dd($user);
                     /*
