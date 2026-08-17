@@ -133,20 +133,15 @@ class Permission
     public static function controller(App $object, $controller=null, $action='', &$user=null): ?object
     {
         $controller = str_replace('.', ':', Controller::name($controller));
-        d($controller);
         $action = strtolower(Controller::name($action));
-        d($action);
-        $url = false;
-        $role = false;
         $user = null;
         $has_role = false;
         $has_permission = false;
         try {
             $key = $object->request('key');
-            ddd($_SERVER);
             if($key){
                 $user = User::get_by_key($object);
-                d('test1');
+                d('permission:controller:get.by.key');
                 ddd($user);
                 if($user){
                     $object->config('user', $user);
@@ -157,7 +152,7 @@ class Permission
                 if(!$user){
 
                     $user = User::get_by_authorization($object);
-                    d('test2');
+                    d('permission:controller:get.by.authorization');
                     dd($user);
                     /*
                     if($user){
@@ -171,7 +166,7 @@ class Permission
             if(Core::is_uuid($uuid)){
                 if(!$user){
                     $user = User::get_by_uuid($object);
-                    d('test3');
+                    d('permission:controller:get.by.uuid');
                     dd($user);
                     /*
                     if($user){
@@ -184,7 +179,7 @@ class Permission
             if(!$user){
                 throw new AuthorizationException('User needs to be present in request or header.');
             }
-            d('test4');
+            d('permision.controller.continue');
             ddd($user);
             $roles = $user->role ?? [];
             foreach($roles as $role){

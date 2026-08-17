@@ -7,6 +7,7 @@ use Defuse\Crypto\Exception\EnvironmentIsBrokenException;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\Key;
 use Exception;
+use ErrorException as Ee;
 use DateTime;
 use Raxon\Exception\UrlEmptyException;
 use Raxon\App;
@@ -17,7 +18,6 @@ use Raxon\Exception\ErrorException;
 use Raxon\Module\Core;
 use Raxon\Module\Handler;
 use Raxon\Node\Module\Node;
-use Throwable;
 class User
 {
     const BLOCK_EMAIL_COUNT = 5;
@@ -507,7 +507,7 @@ class User
                         $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
                     }
                 }
-                catch (Throwable $e) {
+                catch (Exception | Ee $e) {
                     $input = (object) [
                         'ip' => (object)[
                             'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
