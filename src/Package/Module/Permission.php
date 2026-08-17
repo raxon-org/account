@@ -140,7 +140,7 @@ class Permission
         try {
             $key = $object->request('key');
             if($key){
-                $user = User::get_by_key($object, ['key' => $key]);
+                $user = User::get_by_key($object, (object) ['key' => $key]);
                 d('permission:controller:get.by.key');
                 ddd($user);
                 if($user){
@@ -153,7 +153,7 @@ class Permission
             elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
 
-                    $user = User::get_by_authorization($object, [
+                    $user = User::get_by_authorization($object, (object) [
                         'authorization' => $_SERVER['HTTP_AUTHORIZATION']
                     ]);
                     d('permission:controller:get.by.authorization');
@@ -169,7 +169,9 @@ class Permission
             $uuid = $object->request('user.uuid');
             if(Core::is_uuid($uuid)){
                 if(!$user){
-                    $user = User::get_by_uuid($object, $uuid);
+                    $user = User::get_by_uuid($object, (object) [
+                        'uuid' => $uuid]
+                    );
                     d('permission:controller:get.by.uuid');
                     dd($user);
                     /*
