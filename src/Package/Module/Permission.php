@@ -168,15 +168,12 @@ class Permission
                     if($user){
                         $user->password = '[redacted]';
                         $object->config('user', $user);
-                        $user = User::expose($object, $user, 'current');
                     }
                 }
             }
             if(!$user){
                 throw new AuthorizationException('User needs to be present in request or header.');
             }
-            d('permision.controller.continue');
-            ddd($user);
             $roles = $user->role ?? [];
             foreach($roles as $role){
                 if(!property_exists($role, 'permission')){
