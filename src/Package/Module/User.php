@@ -444,7 +444,6 @@ class User
                     'relation' => true
                 ]
             );
-            dd($user);
         }
         /*
         if($item){
@@ -486,8 +485,6 @@ class User
         if($item){
             return $item;
         }
-        trace();
-        d($options);
         if(property_exists($options, 'token')){
             $options->authorization = $options->token;
         }
