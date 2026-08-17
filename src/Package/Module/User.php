@@ -350,18 +350,15 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_key(App $object): null|object
+    public static function get_by_key(App $object, $key=null): null|object
     {
         $item = $object->config('user');
         if($item){
             return $item;
-        } else {
-            $key = $object->request('key');
-            if(!$key){
-                return null;
-            }
-            ddd($key);
+        } else if(!$key){
+            return null;
         }
+        ddd($key);
         if($item){
             if(property_exists($item, 'is')){
                 if(!property_exists($item->is, 'active')){
@@ -489,6 +486,7 @@ class User
         if($item){
             return $item;
         }
+        d($options);
         if(!property_exists($options, 'token')){
             return null;
         }
