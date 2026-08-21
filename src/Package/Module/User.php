@@ -537,7 +537,7 @@ class User
                     'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
                 ],
                 'token' => $token ?? null,
-                'status' => 'You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')'
+                'status' => 'You don\'t have permission to access this resource. (Error: Token is not provided.)'
             ];
             $logger = TokenLogger::log($object, $input);
             throw new AuthorizationException('Please provide a valid token...');
