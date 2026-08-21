@@ -14,6 +14,9 @@ use Raxon\Node\Module\Node;
 
 trait Admin {
 
+    const PASSWORD_HASH_TYPE = PASSWORD_BCRYPT;
+    const PASSWORD_HASH_COST = 13;
+
     /**
      * @throws DirectoryCreateException
      * @throws ObjectException
@@ -100,9 +103,9 @@ trait Admin {
                 'is' => (object) [
                     'active' => 1,
                 ],
-                'password' => password_hash($response['node']->password, PASSWORD_BCRYPT,
+                'password' => password_hash($response['node']->password, self::PASSWORD_HASH_TYPE,
                     [
-                        'cost' => 13
+                        'cost' => self::PASSWORD_HASH_COST
                     ]
                 )
             ];
@@ -125,6 +128,23 @@ trait Admin {
             array_key_exists('node', $response) &&
             is_object($response['node'])
         ){
+            if(
+                property_exists($response['node'], 'active') &&
+                empty($response['node']->active))
+            {
+                $patch = (object) [
+                    'uuid' => $response['node']->uuid,
+                    'is' => (object) [
+                        'active' => 1,
+                    ],
+                    'password' => password_hash($response['node']->password, self::PASSWORD_HASH_TYPE,
+                        [
+                            'cost' => self::PASSWORD_HASH_COST
+                        ]
+                    )
+                ];
+                $response = $node->patch($class, $node->role_system(), $patch);
+            }
             return $response['node'];
         }
 
