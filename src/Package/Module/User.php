@@ -303,7 +303,9 @@ class User
         elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
             $options->token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
-        dd($_SERVER);
+        if(array_key_exists('REFERER', $_SERVER)){
+            $options->{'frontend-host'} = $_SERVER['REFERER'];
+        }
         $user = User::get_by_authorization($object, $options);;
         $user->password = '[redacted]';
         $data = [];
