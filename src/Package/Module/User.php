@@ -17,6 +17,7 @@ use Raxon\Exception\AuthorizationException;
 use Raxon\Exception\ErrorException;
 use Raxon\Module\Core;
 use Raxon\Module\Handler;
+use Raxon\Module\Server;
 use Raxon\Node\Module\Node;
 class User
 {
@@ -522,6 +523,7 @@ class User
                     ];
                     $logger = TokenLogger::log($object, $input);
                     //need frontend-host as header
+                    Server::cors($object);
                     Core::redirect($options->{'frontend-host'} . 'User/Login', 200);
                     exit(0);
                 }
