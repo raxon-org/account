@@ -523,7 +523,6 @@ class User
                     ];
                     $logger = TokenLogger::log($object, $input);
                     //need frontend-host as header
-                    Server::cors($object);
                     Core::redirect($options->{'frontend-host'} . 'User/Login');
                     exit(0);
                 }
