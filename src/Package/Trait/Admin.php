@@ -133,7 +133,7 @@ trait Admin {
             property_exists($response['node'], '#class') &&
             $response['node']->{'#class'} === $class
         ){
-            ddd('yes');
+            ddd($response['node']);
             if(
                 property_exists($response['node'], 'active') &&
                 empty($response['node']->active))
