@@ -505,8 +505,7 @@ class User
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
-            ddd($token);
-            if(strlen($token) >= 1){
+            if(strlen($token) >= 1 && $token !== 'null'){
                 try {
                     $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
                     $token = gzdecode($token);
@@ -529,7 +528,10 @@ class User
                 }
             }
         }
-        if(!$token){
+        if(
+            !$token ||
+            $token === 'null'
+        ){
             $input = (object) [
                 'ip' => (object)[
                     'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
