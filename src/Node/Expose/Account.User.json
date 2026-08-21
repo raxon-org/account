@@ -65,7 +65,7 @@
                             "email",
                             "is",
                             "profile",
-                            "role",
+                            "role"
                         ],
                         "object": {
                             "is": {
