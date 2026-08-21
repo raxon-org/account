@@ -495,6 +495,7 @@ class User
             return null;
         }
         if(!property_exists($options, 'frontend-host')){
+            trace();
             throw new Exception('-option frontend-host is required.');
         }
         $token = substr($options->authorization , 7);
