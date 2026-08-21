@@ -495,7 +495,6 @@ class User
             return null;
         }
         if(!property_exists($options, 'frontend-host')){
-            trace();
             throw new Exception('-option frontend-host is required.');
         }
         $token = substr($options->authorization , 7);
@@ -523,7 +522,7 @@ class User
                     ];
                     $logger = TokenLogger::log($object, $input);
                     //need frontend-host as header
-                    Core::redirect('/User/Login');
+                    Core::redirect($options->{'frontend-host'} . '/User/Login');
                     exit(0);
                 }
             }
