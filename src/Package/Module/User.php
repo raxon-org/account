@@ -522,7 +522,7 @@ class User
                     ];
                     $logger = TokenLogger::log($object, $input);
                     //need frontend-host as header
-                    Core::redirect($options->{'frontend-host'} . 'User/Login');
+                    Core::redirect($options->{'frontend-host'} . 'User/Login', 200);
                     exit(0);
                 }
             }
