@@ -523,8 +523,8 @@ class User
                     ];
                     $logger = TokenLogger::log($object, $input);
                     //need frontend-host as header
-                    Core::redirect($options->{'frontend-host'} . 'User/Login');
-                    exit(0);
+                    throw new AuthorizationException($input->status);
+//                    Core::redirect($options->{'frontend-host'} . 'User/Login');
                 }
             }
         }
