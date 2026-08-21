@@ -303,6 +303,7 @@ class User
         elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
             $options->token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
         }
+        dd($_SERVER);
         $user = User::get_by_authorization($object, $options);;
         $user->password = '[redacted]';
         $data = [];
@@ -491,6 +492,9 @@ class User
         if(!property_exists($options, 'authorization')){
             return null;
         }
+        if(!property_exists($options, 'frontend-host')){
+            throw new Exception('-option frontend-host is required.');
+        }
         $token = substr($options->authorization , 7);
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
@@ -515,6 +519,7 @@ class User
                         'status' => 'You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')'
                     ];
                     $logger = TokenLogger::log($object, $input);
+                    //need frontend-host as header
                     Core::redirect('/User/Login');
                     exit(0);
                 }
