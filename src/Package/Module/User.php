@@ -482,6 +482,7 @@ class User
      */
     public static function get_by_authorization(App $object, object $options=null): null|object
     {
+        dd($_SERVER);
         $item = $object->config('user');
         if($item){
             return $item;
