@@ -133,10 +133,10 @@ trait Admin {
             property_exists($response['node'], '#class') &&
             $response['node']->{'#class'} === $class
         ){
-            ddd($response['node']);
             if(
-                property_exists($response['node'], 'active') &&
-                empty($response['node']->active))
+                property_exists($response['node'], 'is') &&
+                property_exists($response['node']->is, 'active') &&
+                empty($response['node']->is->active))
             {
                 $patch = (object) [
                     'uuid' => $response['node']->uuid,
