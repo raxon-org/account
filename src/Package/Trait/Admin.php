@@ -76,10 +76,7 @@ trait Admin {
                     'deleted' => null
                 ]
             ];
-            d($class);
-            d($request);
             $response = $node->create($class, $node->role_system(), $request);
-            dd($response);
             $is_new = true;
         }
         if(
