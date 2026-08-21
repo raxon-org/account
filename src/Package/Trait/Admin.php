@@ -111,7 +111,10 @@ trait Admin {
             ];
             $response = $node->patch($class, $node->role_system(), $patch);
         }
-        elseif($response === null && is_array($record)){
+        elseif(
+            $response === null &&
+            is_array($record)
+        ){
             $response = $node->record($class, $node->role_system(),
                 [
                     'uuid' => $record['node']->uuid,
@@ -126,8 +129,11 @@ trait Admin {
         if(
             is_array($response) &&
             array_key_exists('node', $response) &&
-            is_object($response['node'])
+            is_object($response['node']) &&
+            property_exists($response['node'], '#class') &&
+            $response['node']->{'#class'} === $class
         ){
+            ddd('yes');
             if(
                 property_exists($response['node'], 'active') &&
                 empty($response['node']->active))
