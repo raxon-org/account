@@ -148,10 +148,9 @@ class Permission
             }
             elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
                 if(!$user){
-                    ddd($_SERVER);
                     $user = User::get_by_authorization($object, (object) [
                         'authorization' => $_SERVER['HTTP_AUTHORIZATION'],
-                        'frontend-host' => $_SERVER['HTTP_HOST']
+                        'frontend-host' => $_SERVER['HTTP_REFERER']
                     ]);
                     if($user){
                         $user->password = '[redacted]';
