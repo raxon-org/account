@@ -215,10 +215,6 @@ class User
                 $record['node']->is->logged_in = $time;
                 $record['node']->is->logged_in_date = new DateTime('@' . $time);
                 $record['node']->key = $key;
-                d($record);
-                d($response);
-                dd($patch);
-
                 $user = $record['node'];
             }
             return false;
