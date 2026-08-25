@@ -210,10 +210,8 @@ class Jwt {
             $is_expired = false;
             if(array_key_exists(1, $explode)){
                 $expired = $explode[1];
-                d($expired);
                 if(stristr($expired, 'expired') !== false){
                     $is_expired = true;
-                    ddd($is_expired);
                     unset($expired);
                 }
             }
