@@ -402,8 +402,6 @@ class User
                 'debug' => true
             ]
         );
-        d($response);
-        ddd($key);
         /*
         if($item){
             if(property_exists($item, 'is')){
