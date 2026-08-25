@@ -398,7 +398,8 @@ class User
                         'operator' => '=='
                     ]
                 ],
-                'relation' => true
+                'relation' => true,
+                'debug' => true
             ]
         );
         d($response);
