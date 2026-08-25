@@ -62,11 +62,14 @@ class User
                 $input->status = UserLogger::STATUS_SUCCESS;
                 $logger = UserLogger::log($object, $input);
             }
+
             //might need an outputfilter
             $user->password = '[redacted]';
             $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
             $user->refresh_token = User::get_refresh_token($object, $user);
+            //write to node
+
             return (object) [
                 'node' => $user,
             ];
@@ -155,6 +158,7 @@ class User
         if(!property_exists($options, 'email')){
             throw new ErrorException('Option email is required.');
         }
+        $time = microtime(true);
         $node = new Node($object);
         $class = 'Account.User';
         $record = $node->record(
@@ -198,6 +202,20 @@ class User
                 is_array($record) &&
                 is_object($record['node'])
             ){
+                $key = Core::uuid() . '-' . Core::uuid();
+                $patch = (object) [
+                    'uuid' => $record['node']->uuid,
+                    'is' => (object) [
+                        'logged_in' => $time,
+                        'logged_in_date' => new DateTime('@' . $time),
+                    ],
+                    'key' => $key
+                ];
+                $response = $node->patch($class, $node->role_system(), $patch);
+                d($record);
+                d($resonse);
+                dd($patch);
+
                 $user = $record['node'];
             }
             return false;
