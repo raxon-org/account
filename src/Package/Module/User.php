@@ -395,7 +395,7 @@ class User
                     [
                         'attribute' => 'key',
                         'value' => $key,
-                        'operator' => '==='
+                        'operator' => '=='
                     ]
                 ],
                 'relation' => true
