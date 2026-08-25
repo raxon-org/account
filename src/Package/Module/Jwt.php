@@ -213,7 +213,7 @@ class Jwt {
                 d($expired);
                 if(stristr($expired, 'expired') !== false){
                     $is_expired = true;
-                    dd($is_expired);
+                    ddd($is_expired);
                     unset($expired);
                 }
             }
