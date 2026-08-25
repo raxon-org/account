@@ -548,11 +548,11 @@ class User
         $token_unencrypted = Jwt::decryptToken($object, $token);
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
-            $user = (object) $claims->get('user');
-            if(!property_exists($user, 'uuid')){
+            $user_claim = (object) $claims->get('user');
+            if(!property_exists($user_claim, 'uuid')){
                 return null;
             }
-            $uuid = $user->uuid;
+            $uuid = $user_claim->uuid;
             $active_value = 1;
             if(
                 property_exists($options, 'active') &&
@@ -660,6 +660,7 @@ class User
             }
             $item->is->logged_in = microtime(true);
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
+            dd($item);
             $object->config('user', $item);
             return $item;
 
