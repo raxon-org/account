@@ -307,7 +307,6 @@ class User
         if(array_key_exists('HTTP_REFERER', $_SERVER)){
             $options->{'frontend-host'} = $_SERVER['HTTP_REFERER'];
         }
-        ddd($options);
         $user = User::get_by_authorization($object, $options);;
         $user->password = '[redacted]';
         $data = [];
