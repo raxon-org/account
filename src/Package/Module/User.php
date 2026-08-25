@@ -396,12 +396,6 @@ class User
                         'attribute' => 'key',
                         'value' => $key,
                         'operator' => '==='
-                    ],
-                    'and',
-                    [
-                        'attribute' => 'is.active',
-                        'value' => $active_value,
-                        'operator' => $active_operator
                     ]
                 ],
                 'relation' => true
