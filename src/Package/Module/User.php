@@ -662,6 +662,7 @@ class User
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
             $item->token = $token;
             $item->refresh_token = User::get_refresh_token($object, $item);
+
             $object->config('user', $item);
             return $item;
 
