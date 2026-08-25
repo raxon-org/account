@@ -382,6 +382,7 @@ class User
         } else if(!$key){
             return null;
         }
+        d($item);
         ddd($key);
         if($item){
             if(property_exists($item, 'is')){
