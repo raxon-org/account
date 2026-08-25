@@ -660,7 +660,8 @@ class User
             }
             $item->is->logged_in = microtime(true);
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
-            dd($item);
+            $item->token = $token;
+            $item->refresh_token = User::get_refresh_token($object, $item);
             $object->config('user', $item);
             return $item;
 
