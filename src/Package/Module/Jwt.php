@@ -207,13 +207,13 @@ class Jwt {
             $message[] = 'Expired or invalid token...';
             $message[] = $e->getMessage();
             $explode = explode("details:\n- ", $e->getMessage());
-            dd($explode);
             $is_expired = false;
             if(array_key_exists(1, $explode)){
                 $expired = $explode[1];
-                ddd($expired);
+                d($expired);
                 if(stristr($expired, 'expired') !== false){
                     $is_expired = true;
+                    dd($is_expired);
                     unset($expired);
                 }
             }
