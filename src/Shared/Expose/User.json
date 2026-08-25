@@ -7,6 +7,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isCreated",
@@ -63,6 +64,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",
@@ -121,6 +123,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",
@@ -179,6 +182,7 @@
           "property" : [
             "id:{{user.token.id(config('user'))}}",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",
@@ -241,6 +245,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -298,6 +303,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -355,6 +361,7 @@
           "property" : [
             "id:{{user.token.id(config('user'))}}",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -416,6 +423,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -473,6 +481,7 @@
           "property" : [
             "id:{{user.token.id(config('user')}}",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -533,6 +542,7 @@
           "role" : "ROLE_ADMIN",
           "property" : [
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -590,6 +600,7 @@
           "property" : [
             "id:{{user.token.id(config('user'))}}",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -651,6 +662,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -694,6 +706,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "isActive",
             "isLoggedIn",
@@ -741,6 +754,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",
@@ -799,6 +813,7 @@
           "property" : [
             "id:{{user.token.id(config('user'))}}",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",
@@ -861,6 +876,7 @@
           "property" : [
             "id",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",
@@ -923,6 +939,7 @@
           "property" : [
             "id:{{user.token.id(config('user'))}}",
             "uuid",
+            "key",
             "email",
             "key",
             "isActive",

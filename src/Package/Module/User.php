@@ -329,6 +329,7 @@ class User
         }
         $user = User::get_by_authorization($object, $options);;
         $user->password = '[redacted]';
+
         $data = [];
         $data['node'] = $user;
         return $data;
