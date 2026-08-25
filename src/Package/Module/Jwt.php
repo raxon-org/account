@@ -206,7 +206,21 @@ class Jwt {
             $message = [];
             $message[] = 'Expired or invalid token...';
             $message[] = $e->getMessage();
-            throw new AuthorizationException(implode(PHP_EOL, $message));
+            $explode = explode('details:\n- ', $e->getMessage());
+            $is_expired = false;
+            if(array_key_exists(1, $explode)){
+                $expired = $explode[1];
+
+                if(stristr($expired, 'expired')){
+                    $is_expired = true;
+                    unset($expired);
+                }
+            }
+            if($is_expired){
+                throw new AuthorizationException('Expired token...');
+            } else {
+                throw new AuthorizationException(implode(PHP_EOL, $message));
+            }
         }
         return $token_unencrypted;
     }
