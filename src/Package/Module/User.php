@@ -68,7 +68,7 @@ class User
             $user->ip = $input->ip ?? '0.0.0.0';
             $user->token = User::get_token($object, $user);
             $user->refresh_token = User::get_refresh_token($object, $user);
-            //write to node
+            //write to node in is_blocked
 
             return (object) [
                 'node' => $user,
@@ -382,8 +382,33 @@ class User
         } else if(!$key){
             return null;
         }
-        d($item);
+        $class = 'Account.User';
+        $node = new Node($object);
+        $active_value = 1;
+        $active_operator = '>=';
+        $response = $node->record(
+            $class,
+            $node->role_system(),
+            [
+                'where' => [
+                    [
+                        'attribute' => 'key',
+                        'value' => $key,
+                        'operator' => '==='
+                    ],
+                    'and',
+                    [
+                        'attribute' => 'is.active',
+                        'value' => $active_value,
+                        'operator' => $active_operator
+                    ]
+                ],
+                'relation' => true
+            ]
+        );
+        d($response);
         ddd($key);
+        /*
         if($item){
             if(property_exists($item, 'is')){
                 if(!property_exists($item->is, 'active')){
@@ -412,6 +437,7 @@ class User
                 throw new AuthorizationException('Account has no is->active.');
             }
         }
+        */
         return null;
     }
 
@@ -680,6 +706,15 @@ class User
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
             $item->token = $token;
             $item->refresh_token = User::get_refresh_token($object, $item);
+            /*
+            $item->key = Core::uuid() . '-' . $item->uuid;
+            $patch = (object) [
+                'uuid' => $item->uuid,
+                'key' => $item->key,
+            ];
+            $response = $node->patch($class, $node->role_system(), $patch);
+            */
+            //make patch
 
             $object->config('user', $item);
             return $item;
