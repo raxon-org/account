@@ -150,7 +150,7 @@ class Permission
                 if(!$user){
                     $user = User::get_by_authorization($object, (object) [
                         'authorization' => $_SERVER['HTTP_AUTHORIZATION'],
-                        'frontend-host' => $_SERVER['HTTP_REFERER']
+                        'frontend-host' => $_SERVER['HTTP_ORIGIN']
                     ]);
                     if($user){
                         $user->password = '[redacted]';
