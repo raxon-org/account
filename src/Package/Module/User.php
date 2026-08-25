@@ -212,8 +212,11 @@ class User
                     'key' => $key
                 ];
                 $response = $node->patch($class, $node->role_system(), $patch);
+                $record['node']->is->logged_in = $time;
+                $record['node']->is->logged_in_date = new DateTime('@' . $time);
+                $record['node']->key = $key;
                 d($record);
-                d($resonse);
+                d($response);
                 dd($patch);
 
                 $user = $record['node'];
