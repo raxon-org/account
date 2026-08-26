@@ -408,7 +408,6 @@ class User
                     ]
                 ],
                 'relation' => true,
-                'debug' => true
             ]
         );
         if(!$response){
