@@ -328,8 +328,6 @@ class User
             $options->{'frontend-host'} = $_SERVER['HTTP_REFERER'];
         }
         $user = User::get_by_authorization($object, $options);;
-        $user->password = '[redacted]';
-
         $data = [];
         $data['node'] = $user;
         return $data;
@@ -390,6 +388,18 @@ class User
         $node = new Node($object);
         $active_value = 1;
         $active_operator = '>=';
+        if(
+            property_exists($options, 'active') &&
+            property_exists($options->active, 'operator')
+        ){
+            $active_operator = $options->active->operator;
+        }
+        if(
+            property_exists($options, 'active') &&
+            property_exists($options->active, 'value')
+        ){
+            $active_value = $options->active->value;
+        }
         $response = $node->record(
             $class,
             $node->role_system(),
@@ -399,12 +409,6 @@ class User
                         'attribute' => 'key',
                         'value' => $key,
                         'operator' => '==='
-                    ],
-                    'and',
-                    [
-                        'attribute' => 'is.active',
-                        'value' => $active_value,
-                        'operator' => $active_operator
                     ]
                 ],
                 'relation' => true,
@@ -415,6 +419,46 @@ class User
         }
         $item = $response['node'] ?? null;
         if(
+            property_exists($item->is, 'active')
+        ) {
+            switch($active_operator){
+                case '===' :
+                    if($item->is->active !== $active_value){
+                        $status = 401;
+                        Handler::header('Status: ' . $status, $status, true);
+                        throw new AuthorizationException('Account is not active.');
+                    }
+                case '>=':
+                case '>==':
+                    if($item->is->active < $active_value){
+                        $status = 401;
+                        Handler::header('Status: ' . $status, $status, true);
+                        throw new AuthorizationException('Account is not active.');
+                    }
+                default:
+                    //nothing
+            }
+            //nothing
+        } else {
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            throw new AuthorizationException('Account is not active.');
+        }
+        if(
+            !property_exists($item->is, 'deleted')
+        ){
+            //nothing
+        }
+        elseif(
+            property_exists($item->is, 'deleted') &&
+            $item->is->deleted !== null
+        ) {
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            throw new AuthorizationException('Account is deleted.');
+        }
+        /*
+        if(
             property_exists($item, 'is') &&
             property_exists($item->is, 'deleted')
             && !empty($item->is->deleted)
@@ -423,11 +467,13 @@ class User
             Handler::header('Status: ' . $status, $status, true);
             throw new AuthorizationException('Account is deleted.');
         }
+        */
         elseif(!property_exists($item, 'role') || empty($item->role)) {
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
             throw new AuthorizationException('Account has no roles.');
-        } else {
+        }
+        elseif($item) {
             $item->password = '[redacted]';
             $item->is->logged_in = microtime(true);
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
@@ -596,18 +642,18 @@ class User
             }
             $uuid = $user_claim->uuid;
             $active_value = 1;
-            if(
-                property_exists($options, 'active') &&
-                property_exists($options->active, 'value')
-            ){
-                $active_value = $options->active->value ?? 1;
-            }
             $active_operator = '>=';
             if(
                 property_exists($options, 'active') &&
                 property_exists($options->active, 'operator')
             ){
                 $active_operator = $options->active->operator;
+            }
+            if(
+                property_exists($options, 'active') &&
+                property_exists($options->active, 'value')
+            ){
+                $active_value = $options->active->value;
             }
             if(!$uuid){
                 return null;
@@ -623,12 +669,6 @@ class User
                             'attribute' => 'uuid',
                             'value' => $uuid,
                             'operator' => '==='
-                        ],
-                        'and',
-                        [
-                            'attribute' => 'is.active',
-                            'value' => $active_value,
-                            'operator' => $active_operator
                         ]
                     ],
                     'relation' => true
@@ -695,20 +735,11 @@ class User
                 Handler::header('Status: ' . $status, $status, true);
                 throw new AuthorizationException('Account has no roles.');
             }
+            $item->password = '[redacted]';
             $item->is->logged_in = microtime(true);
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
             $item->token = $token;
             $item->refresh_token = User::get_refresh_token($object, $item);
-            /*
-            $item->key = Core::uuid() . '-' . $item->uuid;
-            $patch = (object) [
-                'uuid' => $item->uuid,
-                'key' => $item->key,
-            ];
-            $response = $node->patch($class, $node->role_system(), $patch);
-            */
-            //make patch
-
             $object->config('user', $item);
             return $item;
 
