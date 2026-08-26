@@ -382,7 +382,7 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_key(App $object, object $options=null): null|object
+    public static function get_by_key(App $object, object|null $options=null): null|object
     {
         $item = $object->config('user');
         if($item){
@@ -487,7 +487,7 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_uuid(App $object, object $options=null): null|object
+    public static function get_by_uuid(App $object, object|null $options=null): null|object
     {
         $item = $object->config('user');
         if($item){
@@ -526,17 +526,101 @@ class User
                             'attribute' => 'uuid',
                             'value' => $uuid,
                             'operator' => '==='
-                        ],
-                        'and',
-                        [
-                            'attribute' => 'is.active',
-                            'value' => $active_value,
-                            'operator' => $active_operator
                         ]
                     ],
                     'relation' => true
                 ]
             );
+            if(!$uuid){
+                return null;
+            }
+            $class = 'Account.User';
+            $node = new Node($object);
+            $user = $node->record(
+                $class,
+                $node->role_system(),
+                [
+                    'where' => [
+                        [
+                            'attribute' => 'uuid',
+                            'value' => $uuid,
+                            'operator' => '==='
+                        ]
+                    ],
+                    'relation' => true
+                ]
+            );
+            $item = $user['node'] ?? null;
+            if(!$item){
+                return null;
+            }
+            if(!property_exists($item, 'is')){
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account missing is statements.');
+            }
+            if(
+                property_exists($item->is, 'active')
+            ) {
+                switch($active_operator){
+                    case '===' :
+                        if($item->is->active !== $active_value){
+                            $status = 401;
+                            Handler::header('Status: ' . $status, $status, true);
+                            throw new AuthorizationException('Account is not active.');
+                        }
+                    case '>=':
+                    case '>==':
+                        if($item->is->active < $active_value){
+                            $status = 401;
+                            Handler::header('Status: ' . $status, $status, true);
+                            throw new AuthorizationException('Account is not active.');
+                        }
+                    default:
+                        //nothing
+                }
+                //nothing
+            } else {
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is not active.');
+            }
+            if(
+                !property_exists($item->is, 'deleted')
+            ){
+                //nothing
+            }
+            elseif(
+                property_exists($item->is, 'deleted') &&
+                $item->is->deleted !== null
+            ) {
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account is deleted.');
+            }
+            if(
+                property_exists($item, 'role') &&
+                is_array($item->role) &&
+                array_key_exists(0, $item->role) &&
+                is_object($item->role[0]) &&
+                property_exists($item->role[0], '#class') &&
+                property_exists($item->role[0], 'permission') &&
+                is_array($item->role[0]->permission) &&
+                array_key_exists(0, $item->role[0]->permission)
+            ) {
+                //nothing
+            } else {
+                $status = 401;
+                Handler::header('Status: ' . $status, $status, true);
+                throw new AuthorizationException('Account has no roles.');
+            }
+            $item->password = '[redacted]';
+            $item->is->logged_in = microtime(true);
+            $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
+            $item->token = $token;
+            $item->refresh_token = User::get_refresh_token($object, $item);
+            $object->config('user', $item);
+            return $item;
         }
         /*
         if($item){
@@ -572,7 +656,7 @@ class User
      * @throws UrlEmptyException
      * @throws Exception
      */
-    public static function get_by_authorization(App $object, object $options=null): null|object
+    public static function get_by_authorization(App $object, object|null $options=null): null|object
     {
         $item = $object->config('user');
         if($item){
