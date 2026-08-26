@@ -398,7 +398,7 @@ class User
                     [
                         'attribute' => 'key',
                         'value' => $key,
-                        'operator' => '=='
+                        'operator' => '==='
                     ],
                     'and',
                     [
@@ -411,37 +411,32 @@ class User
                 'debug' => true
             ]
         );
-        dd($response);
-        /*
-        if($item){
-            if(property_exists($item, 'is')){
-                if(!property_exists($item->is, 'active')){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Account is not active.');
-                }
-                elseif(
-                    property_exists($item->is, 'deleted')
-                    && !empty($item->is->deleted)
-                ){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Account is deleted.');
-                }
-                elseif(!property_exists($item, 'role') || empty($item->role)) {
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Account has no roles.');
-                }
-                $item->is->logged_in = microtime(true);
-                $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
-                $object->config('user', $item);
-                return $item;
-            } else {
-                throw new AuthorizationException('Account has no is->active.');
-            }
+        if(!$response){
+            return null;
         }
-        */
+        $item = $response['node'] ?? null;
+        if(
+            property_exists($item, 'is') &&
+            property_exists($item->is, 'deleted')
+            && !empty($item->is->deleted)
+        ){
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            throw new AuthorizationException('Account is deleted.');
+        }
+        elseif(!property_exists($item, 'role') || empty($item->role)) {
+            $status = 401;
+            Handler::header('Status: ' . $status, $status, true);
+            throw new AuthorizationException('Account has no roles.');
+        } else {
+            $item->password = '[redacted]';
+            $item->is->logged_in = microtime(true);
+            $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
+            //no token available
+            //no refresh token available
+            $object->config('user', $item);
+            return $item;
+        }
         return null;
     }
 
@@ -641,11 +636,6 @@ class User
                 ]
             );
             $item = $user['node'];
-            if(!property_exists($item, 'uuid')){
-                $status = 401;
-                Handler::header('Status: ' . $status, $status, true);
-                throw new AuthorizationException('Account is not active.');
-            }
             if(!property_exists($item, 'is')){
                 $status = 401;
                 Handler::header('Status: ' . $status, $status, true);
