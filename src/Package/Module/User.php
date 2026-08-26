@@ -414,7 +414,6 @@ class User
                 'relation' => true,
             ]
         );
-        dd($response);
         if(!$response){
             return null;
         }
@@ -458,23 +457,12 @@ class User
             Handler::header('Status: ' . $status, $status, true);
             throw new AuthorizationException('Account is deleted.');
         }
-        /*
-        if(
-            property_exists($item, 'is') &&
-            property_exists($item->is, 'deleted')
-            && !empty($item->is->deleted)
-        ){
-            $status = 401;
-            Handler::header('Status: ' . $status, $status, true);
-            throw new AuthorizationException('Account is deleted.');
-        }
-        */
-        elseif(!property_exists($item, 'role') || empty($item->role)) {
+        if(!property_exists($item, 'role') || empty($item->role)) {
             $status = 401;
             Handler::header('Status: ' . $status, $status, true);
             throw new AuthorizationException('Account has no roles.');
         }
-        elseif($item) {
+        if($item) {
             $item->password = '[redacted]';
             $item->is->logged_in = microtime(true);
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
