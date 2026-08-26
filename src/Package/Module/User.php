@@ -17,8 +17,8 @@ use Raxon\Exception\AuthorizationException;
 use Raxon\Exception\ErrorException;
 use Raxon\Module\Core;
 use Raxon\Module\Handler;
-use Raxon\Module\Server;
 use Raxon\Node\Module\Node;
+
 class User
 {
     const BLOCK_EMAIL_COUNT = 5;
@@ -28,6 +28,15 @@ class User
 
     const TOKEN_DEFUSE_ROUND = 3;
     const REFRESH_TOKEN_DEFUSE_ROUND = 3;
+
+    const ROLES_ALLOWED = [
+        'ROLE_ADMIN',
+        'ROLE_USER',
+        'ROLE_BACKLOG',
+        'ROLE_SYSTEM',
+        'ROLE_DOCUMENTER',
+        'ROLE_TESTER',
+    ];
 
     /**
      * @throws ErrorException
@@ -759,6 +768,67 @@ class User
              */
         }
         return null;
+    }
+
+    /**
+     * @throws ObjectException
+     * @throws Exception
+     */
+    public static function list(App $object, array $roles_allowed=[]): array
+    {
+        $list = [];
+        $node = new Node($object);
+        $class = 'Account.User';
+        $role_system = $node->role_system();
+        $limit = 100;
+        $count = $node->count($class, $role_system);
+        $page_count = 1;
+        if($limit > 0){
+            $page_count = ceil($count / $limit);
+        }
+        $sort = $object->request('sort');
+        if(empty($sort)){
+            $sort = [
+                'uuid' => 'ASC'
+            ];
+        }
+        $filter = $object->request('filter');
+        if(empty($filter)){
+            $filter = [];
+        }
+        elseif(!is_array($filter)){
+            throw new Exception('Filter must be an array.');
+        }
+        for($page = 1; $page <= $page_count; $page++){
+            $response = $node->list($class, $role_system, [
+                "relation" => true,
+                'sort' => $sort,
+                'filter' => $filter,
+                'limit' =>  $limit,
+                'page' => $page
+            ]);
+            if(
+                $response !== null &&
+                is_array($response) &&
+                array_key_exists('list', $response)
+            ){
+                foreach($response['list'] as $nr => $user){
+                    foreach($user->role as $user_role){
+                        if(in_array($user_role->name, $roles_allowed, true)){
+                            $user->password = '[redacted]';
+                            $list[] = $user;
+                        }
+                        /*
+                        if(in_array($user_role->name, self::ROLES_ALLOWED, true)){
+                            $user->password = '[redacted]';
+                            $list[] = $user;
+                        }
+                        */
+                    }
+                }
+            }
+        }
+        return $list;
     }
 
 }
