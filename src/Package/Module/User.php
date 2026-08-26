@@ -375,19 +375,21 @@ class User
      * @throws AuthorizationException
      * @throws Exception
      */
-    public static function get_by_key(App $object, $key=null): null|object
+    public static function get_by_key(App $object, object $options=null): null|object
     {
         $item = $object->config('user');
         if($item){
             return $item;
-        } else if(!$key){
+        }
+        if(!property_exists($options, 'key')){
+            //might  be authorization error
             return null;
         }
+        $key = $options->key;
         $class = 'Account.User';
         $node = new Node($object);
         $active_value = 1;
         $active_operator = '>=';
-        dd($key);
         $response = $node->record(
             $class,
             $node->role_system(),
@@ -397,12 +399,19 @@ class User
                         'attribute' => 'key',
                         'value' => $key,
                         'operator' => '=='
+                    ],
+                    'and',
+                    [
+                        'attribute' => 'is.active',
+                        'value' => $active_value,
+                        'operator' => $active_operator
                     ]
                 ],
                 'relation' => true,
                 'debug' => true
             ]
         );
+        dd($response);
         /*
         if($item){
             if(property_exists($item, 'is')){
