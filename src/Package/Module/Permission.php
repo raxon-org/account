@@ -150,7 +150,7 @@ class Permission
             }
             elseif(
                 array_key_exists('HTTP_AUTHORIZATION', $_SERVER) &&
-                array_key_exists('frontend-host', $_SERVER['HTTP_ORIGIN'])
+                array_key_exists('HTTP_ORIGIN', $_SERVER)
             ){
                 if(!$user){
                     $user = User::get_by_authorization($object, (object) [
