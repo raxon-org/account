@@ -149,9 +149,11 @@ class Permission
                 }
             }
             elseif(
-                array_key_exists('HTTP_AUTHORIZATION', $_SERVER) &&
-                array_key_exists('HTTP_ORIGIN', $_SERVER)
+                array_key_exists('HTTP_AUTHORIZATION', $_SERVER)
             ){
+                if(!array_key_exists('HTTP_ORIGIN', $_SERVER)){
+                    throw new Exception('HTTP_ORIGIN is not set.');
+                }
                 if(!$user){
                     $user = User::get_by_authorization($object, (object) [
                         'authorization' => $_SERVER['HTTP_AUTHORIZATION'],
