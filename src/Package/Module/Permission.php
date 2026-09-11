@@ -96,6 +96,7 @@ class Permission
     public static function getAccessControl(App $object, $entity=null, $action=''): array
     {
         return [];
+        /*
         $access_control = $object->config('access_control');
         if(!is_array($access_control)){
             $parse = new Parse($object, $object->data());
@@ -128,6 +129,7 @@ class Permission
             }
         }
         return $roles;
+        */
     }
 
     public static function controller(App $object, $controller=null, $action='', &$user=null): ?object
@@ -146,7 +148,10 @@ class Permission
                     $object->config('user', $user);
                 }
             }
-            elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+            elseif(
+                array_key_exists('HTTP_AUTHORIZATION', $_SERVER) &&
+                array_key_exists('frontend-host', $_SERVER['HTTP_ORIGIN'])
+            ){
                 if(!$user){
                     $user = User::get_by_authorization($object, (object) [
                         'authorization' => $_SERVER['HTTP_AUTHORIZATION'],
