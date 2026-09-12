@@ -141,9 +141,10 @@ class Permission
         $has_permission = false;
         try {
             $key = $object->request('key');
-            d($key);
             if($key){
+                d($key);
                 $user = User::get_by_key($object, (object) ['key' => $key]);
+                ddd($user);
                 if($user){
                     $user->password = '[redacted]';
                     $object->config('user', $user);
