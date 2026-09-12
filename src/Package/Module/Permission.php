@@ -141,6 +141,7 @@ class Permission
         $has_permission = false;
         try {
             $key = $object->request('key');
+            d($key);
             if($key){
                 $user = User::get_by_key($object, (object) ['key' => $key]);
                 if($user){
