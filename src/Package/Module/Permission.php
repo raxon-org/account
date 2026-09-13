@@ -143,7 +143,8 @@ class Permission
             $key = $object->request('key');
             if(!in_array($controller, [
                 'Application:Desktop:Navigation',
-                'FileSystem'
+                'FileSystem',
+                'Application:Filemanager'
             ], true)){
                 d($controller);
                 d($action);
