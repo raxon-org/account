@@ -166,7 +166,7 @@ class Permission
 
                 }
             } else {
-                dd($object->request());
+                return null;
             }
             $uuid = $object->request('user.uuid');
             if(Core::is_uuid($uuid)){
