@@ -206,12 +206,10 @@ class Jwt {
             $validator->assert($token_unencrypted, new StrictValidAt($clock));
             $validator->assert($token_unencrypted, new LooseValidAt($clock));            
         } catch (RequiredConstraintsViolated $e) {
-            switch($e->getMessage()){
-                case 'The token is expired':
-                case 'The token violates some mandatory constraints, details:\n- The token is expired':
-                    throw new TokenExpiredException($e->getMessage());
-                default:
-                    throw new AuthorizationException($e->getMessage());
+            if(stristr($e->getMessage(), 'The token is expired') !== false){
+                throw new TokenExpiredException($e->getMessage());
+            } else {
+                throw new AuthorizationException($e->getMessage());
             }
         }
         return $token_unencrypted;
