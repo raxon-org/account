@@ -5,6 +5,7 @@ use Doctrine\ORM\Exception\ORMException;
 use Entity\User as EntityUser;
 use Exception;
 use Package\Raxon\Account\Exception\AuthorizationException;
+use Package\Raxon\Account\Exception\TokenExpiredException;
 use Raxon\App;
 use Raxon\Doctrine\Module\Entity as Module;
 use Raxon\Exception\ErrorException;
@@ -206,7 +207,10 @@ class Permission
                 }
             }
         } catch (Exception $exception){
-            if(!$user){
+            if($exception instanceof TokenExpiredException){
+                throw $exception;
+            }
+            else if(!$user){
                 $class = 'Account.Role';
                 $node = new Node($object);
                 $response = $node->record($class, $node->role_system(), [
