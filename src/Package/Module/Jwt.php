@@ -179,6 +179,7 @@ class Jwt {
      * @throws AuthorizationException
      * @throws ObjectException
      * @throws FileWriteException
+     * @throws TokenExpiredException
      */
     public static function decryptToken(App $object, $token): UnencryptedToken
     {
@@ -209,8 +210,10 @@ class Jwt {
             $message = [];
             $message[] = 'Expired or invalid token...';
             switch($e->getMessage()){
+                case 'The token is expired':
+                    throw new TokenExpiredException($e->getMessage());
                 default:
-                    throw new AuthorizationException($e->getMessage() . ' undefined');
+                    throw new AuthorizationException($e->getMessage());
             }
             $message[] = $e->getMessage();
             $explode = explode("details:\n- ", $e->getMessage());
