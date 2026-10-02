@@ -22,11 +22,14 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 use Lcobucci\JWT\Token\Plain;
+use Package\Raxon\Account\Exception\TokenExpiredException;
 use Raxon\App;
 use Raxon\Exception\AuthorizationException;
 use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
 use Raxon\Module\Data;
+
+
 
 class Jwt {
 
@@ -205,6 +208,10 @@ class Jwt {
             // list of constraints violation exceptions:
             $message = [];
             $message[] = 'Expired or invalid token...';
+            switch($e->getMessage()){
+                default:
+                    throw new AuthorizationException($e->getMessage() . ' undefined');
+            }
             $message[] = $e->getMessage();
             $explode = explode("details:\n- ", $e->getMessage());
             $is_expired = false;
@@ -216,7 +223,7 @@ class Jwt {
                 }
             }
             if($is_expired){
-                throw new AuthorizationException('Expired token...');
+                throw new TokenExpiredException('Expired token...');
             } else {
                 throw new AuthorizationException(implode(PHP_EOL, $message));
             }
