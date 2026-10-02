@@ -1,9 +1,7 @@
 <?php
 namespace Plugin;
 
-use Package\Raxon\Account\Module\User;
-
-use Raxon\Exception\AuthorizationException;
+use Package\Raxon\Account\Exception\AuthorizationException;
 use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
 
