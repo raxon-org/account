@@ -374,7 +374,7 @@ class User
         $options->authorization = $options->token;
         $options->is = (object) [
             'refresh_token' => true,
-        ]
+        ];
         $user = User::get_by_authorization($object, $options);;
         ddd($user);
         $data = [];
