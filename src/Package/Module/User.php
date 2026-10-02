@@ -343,40 +343,44 @@ class User
     }
 
     /**
-     * @throws AuthorizationException
      * @throws ObjectException
+     * @throws AuthorizationException
+     * @throws FileWriteException
      * @throws Exception
      */
-    public static function expose(App $object, object $user, string $function): object
+    public static function refresh_token(App $object): array
     {
-
-        $role = $user->role ?? false;
-        if($role === false){
-            throw new Exception('Role ROLE_USER not found.');
+        $options = (object) [
+            'token' => ''
+        ];
+        if($object->request('authorization')){
+            $options->token = $object->request('authorization');
         }
+        elseif($object->data(App::REQUEST_HEADER . '.' . 'Authorization')){
+            $options->token = $object->data(App::REQUEST_HEADER . '.' . 'Authorization');
+        }
+        elseif(array_key_exists('HTTP_AUTHORIZATION', $_SERVER)){
+            $options->token = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        elseif(array_key_exists('REDIRECT_HTTP_AUTHORIZATION', $_SERVER)){
+            $options->token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        if(array_key_exists('HTTP_ORIGIN"', $_SERVER)){
+            $options->{'frontend-host'} = $_SERVER['HTTP_ORIGIN"'];
+        }
+        elseif(array_key_exists('HTTP_REFERER', $_SERVER)){
+            $options->{'frontend-host'} = $_SERVER['HTTP_REFERER'];
+        }
+        $options->authorization = $options->token;
+        $options->is = (object) [
+            'refresh_token' => true,
+        ]
+        $user = User::get_by_authorization($object, $options);;
         ddd($user);
-
-
-        $entity = 'User';
-        $expose = \Raxon\Doctrine\Module\Entity::expose_get(
-            $object,
-            $entity,
-            $entity . '.' . $function . '.output'
-        );
-        $node = $record;
-        $record = [];
-        $record = \Raxon\Doctrine\Module\Entity::output(
-            $object,
-            $node,
-            $expose,
-            $entity,
-            $function,
-            $record,
-            $role
-        );
-        return (object) $record;
+        $data = [];
+        $data['node'] = $user;
+        return $data;
     }
-
 
     /**
      * @throws AuthorizationException
@@ -617,7 +621,7 @@ class User
             $item->password = '[redacted]';
             $item->is->logged_in = microtime(true);
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
-            $item->token = $token;
+            $item->token = User::get_token($object, $item);
             $item->refresh_token = User::get_refresh_token($object, $item);
             $object->config('user', $item);
             return $item;
@@ -668,13 +672,21 @@ class User
         if(!property_exists($options, 'authorization')){
             return null;
         }
+        $is_refresh_token = false;
+        if(property_exists($options, 'is') && property_exists($options->is, 'refresh_token')){
+            $is_refresh_token = true;
+        }
         if(!property_exists($options, 'frontend-host')){
             throw new Exception('-option frontend-host is required.');
         }
         $token = substr($options->authorization , 7);
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
-        $crypt_url = $config->get('token.crypt_url') ?? null;
+        if($is_refresh_token){
+            $crypt_url = $config->get('refresh.token.crypt_url') ?? null;
+        } else {
+            $crypt_url = $config->get('token.crypt_url') ?? null;
+        }
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
             $key = Core::key($crypt_url);
@@ -824,32 +836,6 @@ class User
             $item->refresh_token = User::get_refresh_token($object, $item);
             $object->config('user', $item);
             return $item;
-
-
-            /*
-
-                if(empty($item->getIsActive())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Account is not active.');
-                }
-                if(!empty($item->getIsDeleted())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Account is deleted.');
-                }
-                if(empty($item->getRole())){
-                    $status = 401;
-                    Handler::header('Status: ' . $status, $status, true);
-                    throw new AuthorizationException('Account has no roles.');
-                }
-                $item->setIsLoggedIn(new DateTime());
-                $em->persist($item);
-                $em->flush();
-                $object->config('user', $item);
-                return $item;
-            }
-             */
         }
         return null;
     }
