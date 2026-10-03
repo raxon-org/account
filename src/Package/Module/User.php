@@ -140,6 +140,7 @@ class User
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
         $config = $cache->get(sha1($url));
+        /*
         $crypt_url = $config->get('refresh.token.crypt_url') ?? null;
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
@@ -155,6 +156,8 @@ class User
         } else {
             throw new Exception('property token.crypt_url not set in data/Account/Jwt.json on refresh.token.crypt_url not set in data/Account/Jwt.json.');;
         }
+        */
+        return $string;
     }
 
     /**
