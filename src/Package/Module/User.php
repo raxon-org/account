@@ -376,7 +376,6 @@ class User
         $options->authorization = $options->token;
         $options->refresh = true;
         $user = User::get_by_authorization($object, $options);;
-        ddd($user);
         $data = [];
         $data['node'] = $user;
         return $data;
