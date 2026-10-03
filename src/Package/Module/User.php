@@ -678,6 +678,7 @@ class User
         $is_refresh_token = false;
         if(property_exists($options, 'is') && property_exists($options->is, 'refresh_token')){
             $is_refresh_token = true;
+            ddd($is_refresh_token);
         }
         if(!property_exists($options, 'frontend-host')){
             throw new Exception('-option frontend-host is required.');
