@@ -678,7 +678,6 @@ class User
         $is_refresh_token = false;
         if(property_exists($options, 'is') && property_exists($options->is, 'refresh_token')){
             $is_refresh_token = true;
-            ddd($is_refresh_token);
         }
         if(!property_exists($options, 'frontend-host')){
             throw new Exception('-option frontend-host is required.');
@@ -687,7 +686,8 @@ class User
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
         if($is_refresh_token){
-            $crypt_url = $config->get('refresh.token.crypt_url') ?? null;
+            return $token;
+            //$crypt_url = $config->get('refresh.token.crypt_url') ?? null;
         } else {
             $crypt_url = $config->get('token.crypt_url') ?? null;
         }
