@@ -732,11 +732,9 @@ class User
         }
         if($is_refresh_token){
             $token_unencrypted = Jwt::decryptRefreshToken($object, $token);
-            ddd($token_unencrypted);
         } else {
             $token_unencrypted = Jwt::decryptToken($object, $token);
         }
-
         $claims = $token_unencrypted->claims();
         if($claims->has('user')) {
             $user_claim = (object) $claims->get('user');
@@ -843,12 +841,10 @@ class User
             $item->is->logged_in_date = new DateTime('@' . $item->is->logged_in);
             if($is_refresh_token){
                 $item->token = User::get_token($object, $item);
-                $item->refresh_token = User::get_refresh_token($object, $item);
             } else {
                 $item->token = $token;
             }
             $item->refresh_token = User::get_refresh_token($object, $item);
-
             $object->config('user', $item);
             return $item;
         }
