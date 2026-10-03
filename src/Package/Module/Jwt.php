@@ -230,7 +230,6 @@ class Jwt {
         $configuration = Jwt::configuration($object, $options);        
         $token_unencrypted = $configuration->parser()->parse($token);
         d($token_unencrypted);
-        ddd($config);
         $clock = SystemClock::fromUTC(); // use the clock for issuing and validation
         $configuration->withValidationConstraints(
             new IssuedBy($config->get('refresh.token.issued_by')),

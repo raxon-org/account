@@ -131,10 +131,10 @@ class User
      */
     private static function get_refresh_token(App $object, object $user): string
     {
-        $configuration = Jwt::configuration($object);
         $options = [];
         $options['user'] = $user;
         $options['refresh'] = true;
+        $configuration = Jwt::configuration($object);
         $token = Jwt::refresh_get($object, $configuration, $options);
         $string = $token->toString();
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
