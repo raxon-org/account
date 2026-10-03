@@ -680,6 +680,7 @@ class User
             throw new Exception('-option frontend-host is required.');
         }
         $token = substr($options->authorization , 7);
+        d($options->authorization);
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
         if($is_refresh_token){
