@@ -16,6 +16,7 @@ use Raxon\Exception\FileWriteException;
 use Raxon\Exception\ObjectException;
 use Raxon\Exception\ErrorException;
 use Raxon\Module\Core;
+use Raxon\Module\File;
 use Raxon\Module\Handler;
 use Raxon\Node\Module\Node;
 
@@ -140,7 +141,7 @@ class User
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $cache = $object->data(App::CACHE);
         $config = $cache->get(sha1($url));
-        /*
+
         $crypt_url = $config->get('refresh.token.crypt_url') ?? null;
         if($crypt_url) {
             //if you want you can logout everyone from the system by changing the content of crypt_url
@@ -156,8 +157,6 @@ class User
         } else {
             throw new Exception('property token.crypt_url not set in data/Account/Jwt.json on refresh.token.crypt_url not set in data/Account/Jwt.json.');;
         }
-        */
-        return $string;
     }
 
     /**
@@ -687,34 +686,38 @@ class User
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
         $config = $object->parse_read($url, sha1($url));
         if($is_refresh_token){
-            //$crypt_url = $config->get('refresh.token.crypt_url') ?? null;
+            $crypt_url = $config->get('refresh.token.crypt_url') ?? null;
         } else {
             $crypt_url = $config->get('token.crypt_url') ?? null;
-            if($crypt_url) {
-                //if you want you can logout everyone from the system by changing the content of crypt_url
-                $key = Core::key($crypt_url);
-                if (strlen($token) >= 1 && $token !== 'null') {
-                    try {
-                        $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
-                        $token = gzdecode($token);
-                        for ($i = 0; $i < User::TOKEN_DEFUSE_ROUND; $i++) {
-                            $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
-                        }
-                    } catch (Exception|Ee $e) {
-                        $input = (object)[
-                            'ip' => (object)[
-                                'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
-                            ],
-                            'token' => $token,
-                            'status' => 'You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')'
-                        ];
-                        $logger = TokenLogger::log($object, $input);
-                        //need frontend-host as header
-                        throw new AuthorizationException($input->status);
-                        //                    Core::redirect($options->{'frontend-host'} . 'User/Login');
+        }
+        if(
+            $crypt_url &&
+            File::exist($crypt_url)
+        ) {
+            //if you want you can logout everyone from the system by changing the content of crypt_url
+            $key = Core::key($crypt_url);
+            if (strlen($token) >= 1 && $token !== 'null') {
+                try {
+                    $token = base64_decode($token); // around 5900 still doesn't fit in the 4KB cookie so its in localstorage which should be subdomain level specific and around 5 MB
+                    $token = gzdecode($token);
+                    for ($i = 0; $i < User::TOKEN_DEFUSE_ROUND; $i++) {
+                        $token = Crypto::decrypt($token, $key); //around: 7650 chars doesn't fit in the 4KB cookie
                     }
+                } catch (Exception|Ee $e) {
+                    $input = (object)[
+                        'ip' => (object)[
+                            'address' => $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0'
+                        ],
+                        'token' => $token,
+                        'status' => 'You don\'t have permission to access this resource. (Error: ' . $e->getMessage() . ' Line: ' . $e->getLine() . ' File:' . $e->getFile() . ')'
+                    ];
+                    $logger = TokenLogger::log($object, $input);
+                    //need frontend-host as header
+                    throw new AuthorizationException($input->status);
+                    //                    Core::redirect($options->{'frontend-host'} . 'User/Login');
                 }
             }
+
         }
         if(
             !$token ||
