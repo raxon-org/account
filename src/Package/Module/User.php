@@ -375,9 +375,7 @@ class User
             $options->{'frontend-host'} = $_SERVER['HTTP_REFERER'];
         }
         $options->authorization = $options->token;
-        $options->is = (object) [
-            'refresh_token' => true,
-        ];
+        $options->refresh => true;
         $user = User::get_by_authorization($object, $options);;
         ddd($user);
         $data = [];
@@ -676,7 +674,10 @@ class User
             return null;
         }
         $is_refresh_token = false;
-        if(property_exists($options, 'is') && property_exists($options->is, 'refresh_token')){
+        if(
+            property_exists($options, 'refresh') &&
+            $options->refresh === true
+        ){
             $is_refresh_token = true;
         }
         if(!property_exists($options, 'frontend-host')){
