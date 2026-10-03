@@ -134,7 +134,7 @@ class User
         $options = [];
         $options['user'] = $user;
         $options['refresh'] = true;
-        $configuration = Jwt::configuration($object);
+        $configuration = Jwt::configuration($object, $options);
         $token = Jwt::refresh_get($object, $configuration, $options);
         $string = $token->toString();
         $url = $object->config('project.dir.data') . 'Account/Jwt.json';
