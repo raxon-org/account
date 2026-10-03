@@ -375,7 +375,7 @@ class User
             $options->{'frontend-host'} = $_SERVER['HTTP_REFERER'];
         }
         $options->authorization = $options->token;
-        $options->refresh => true;
+        $options->refresh = true;
         $user = User::get_by_authorization($object, $options);;
         ddd($user);
         $data = [];
