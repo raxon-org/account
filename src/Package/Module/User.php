@@ -30,13 +30,20 @@ class User
     const TOKEN_DEFUSE_ROUND = 3;
     const REFRESH_TOKEN_DEFUSE_ROUND = 3;
 
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
+    const ROLE_BACKLOG = 'ROLE_BACKLOG';
+    const ROLE_SYSTEM = 'ROLE_SYSTEM';
+    const ROLE_DOCUMENTER = 'ROLE_DOCUMENTER';
+    const ROLE_TESTER = 'ROLE_TESTER';
+
     const ROLES_ALLOWED = [
-        'ROLE_ADMIN',
-        'ROLE_USER',
-        'ROLE_BACKLOG',
-        'ROLE_SYSTEM',
-        'ROLE_DOCUMENTER',
-        'ROLE_TESTER',
+        User::ROLE_ADMIN,
+        User::ROLE_USER,
+        User::ROLE_BACKLOG,
+        User::ROLE_SYSTEM,
+        User::ROLE_DOCUMENTER,
+        User::ROLE_TESTER
     ];
 
     /**
