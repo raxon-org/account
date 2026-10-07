@@ -167,17 +167,16 @@ class Permission
 
                 }
             } else {
-                return null;
-            }
-            $uuid = $object->request('user.uuid');
-            if(Core::is_uuid($uuid)){
-                if(!$user){
-                    $user = User::get_by_uuid($object, (object) [
-                        'uuid' => $uuid]
-                    );
-                    if($user){
-                        $user->password = '[redacted]';
-                        $object->config('user', $user);
+                $uuid = $object->request('user.uuid');
+                if(Core::is_uuid($uuid)){
+                    if(!$user){
+                        $user = User::get_by_uuid($object, (object) [
+                            'uuid' => $uuid]
+                        );
+                        if($user){
+                            $user->password = '[redacted]';
+                            $object->config('user', $user);
+                        }
                     }
                 }
             }
