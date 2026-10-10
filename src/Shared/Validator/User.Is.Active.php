@@ -26,11 +26,26 @@ function validate_user_is_active(App $object, object $record, mixed $value='', m
 {
     $dir_node = $object->config('project.dir.node');
     $data = new Data($record);
+    ddd($validate);
     $uuid = $data->get($attribute);
     $class = 'Account.User';
     $url = $dir_node . 'Data' . $object->config('ds') . $class . $object->config('extension.json');
     $node = new Node($object);
     $user = $node->read($class, $node->role_system(), ['uuid' => $uuid]);
-    ddd($user);
+    if($user){
+        if(
+            property_exists($user, 'is') &&
+            property_exists($user->is, 'active') &&
+            $user->is->active === true
+        ){
+            if(
+                property_exists($user->is, 'deleted') &&
+                !empty($user->is->deleted)
+            ){
+                return false;
+            }
+            return true;
+        }
+    }
     return false;
 }
