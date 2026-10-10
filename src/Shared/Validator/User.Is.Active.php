@@ -37,6 +37,7 @@ function validate_user_is_active(App $object, object $record, mixed $value='', m
     $class = 'Account.User';
     $node = new Node($object);
     $user = $node->read($class, $node->role_system(), ['uuid' => $uuid]);
+    ddd($user);
     if($user && is_object($user['node'])){
         if(
             property_exists($user['node'], 'is') &&
