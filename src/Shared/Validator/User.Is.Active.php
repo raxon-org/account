@@ -26,9 +26,13 @@ function validate_user_is_active(App $object, object $record, mixed $value='', m
 {
     $dir_node = $object->config('project.dir.node');
     $data = new Data($record);
-    d($value);
-    d($attribute);
-    ddd($validate);
+    if(
+        is_object($value) &&
+        property_exists($value, 'attribute') &&
+        is_string($value->attribute)
+    ){
+        $attribute = $value->attribute;
+    }
     $uuid = $data->get($attribute);
     $class = 'Account.User';
     $node = new Node($object);
