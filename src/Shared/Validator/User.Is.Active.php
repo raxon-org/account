@@ -26,10 +26,7 @@ function validate_user_is_active(App $object, object $record, mixed $value='', m
 {
     $dir_node = $object->config('project.dir.node');
     $data = new Data($record);
-    d($attribute);
-    d($validate);
-    ddd($data);
-    $uuid = $data->get('uuid');
+    $uuid = $data->get($attribute);
     $class = 'Account.User';
     $url = $dir_node . 'Data' . $object->config('ds') . $class . $object->config('extension.json');
     $node = new Node($object);
