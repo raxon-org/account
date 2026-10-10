@@ -36,17 +36,17 @@ function validate_user_is_active(App $object, object $record, mixed $value='', m
     $uuid = $data->get($attribute);
     $class = 'Account.User';
     $node = new Node($object);
-    $user = $node->read($class, $node->role_system(), ['uuid' => $uuid]);
-    ddd($user);
-    if($user && is_object($user['node'])){
+    $read = $node->read($class, $node->role_system(), ['uuid' => $uuid]);
+    $user = $read['node'] ?? null;
+    if($user){
         if(
-            property_exists($user['node'], 'is') &&
-            property_exists($user['node']->is, 'active') &&
-            $user['node']->is->active === true
+            property_exists($user, 'is') &&
+            property_exists($user->is, 'active') &&
+            $user->is->active >= 1
         ){
             if(
-                property_exists($user['node']->is, 'deleted') &&
-                !empty($user['node']->is->deleted)
+                property_exists($user->is, 'deleted') &&
+                !empty($user->is->deleted)
             ){
                 return false;
             }
