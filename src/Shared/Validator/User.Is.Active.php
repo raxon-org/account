@@ -30,7 +30,7 @@ function validate_user_is_active(App $object, object $record, mixed $value='', m
     $class = 'Account.User';
     $url = $dir_node . 'Data' . $object->config('ds') . $class . $object->config('extension.json');
     $node = new Node($object);
-    $user = $node->read($class, $node->role_system(), ['uuid' => $uuid, 'status' => 'active']);
+    $user = $node->read($class, $node->role_system(), ['uuid' => $uuid]);
     ddd($user);
     return false;
 }
